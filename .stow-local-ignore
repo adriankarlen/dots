@@ -21,3 +21,5 @@ _darcs
 ^/readme.*
 ^/LICENSE.*
 ^/COPYING
+
+.editorconfig
