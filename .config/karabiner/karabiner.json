@@ -1,0 +1,29 @@
+{
+  "profiles": [
+    {
+      "complex_modifications": {
+        "rules": [
+          {
+            "description": "Map the Left Option key to simulate pressing Left Command, Left Option, and Left Control simultaneously",
+            "manipulators": [
+              {
+                "from": { "key_code": "left_alt" },
+                "to": [
+                  {
+                    "key_code": "left_command",
+                    "modifiers": ["left_option", "left_control"]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          }
+        ]
+      },
+      "name": "Default profile",
+      "selected": true,
+      "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
+    }
+  ]
+}
+
