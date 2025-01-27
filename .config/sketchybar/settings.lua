@@ -4,6 +4,5 @@ return {
 
   icons = "sf-symbols", -- alternatively available: NerdFont
 
-  font = require("helpers.default_font"),
-
+  font = require "helpers.default_font",
 }
