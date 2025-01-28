@@ -1,13 +1,5 @@
 theme = rose-pine-moon
 
-# green
-palette = 2=#3e8fb0
-palette = 10=#3e8fb0
-# blue
-palette = 4=#9ccfd8
-palette = 12=#9ccfd8
-
-selection-background = #44415a
 
 font-family = SF Mono
 font-size = 14
