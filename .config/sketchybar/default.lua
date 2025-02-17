@@ -27,7 +27,7 @@ sbar.default {
   },
   background = {
     height = 26,
-    corner_radius = 8,
+    corner_radius = 4,
     color = colors.item.bg,
     border_color = colors.item.border,
     border_width = 2,
@@ -43,7 +43,7 @@ sbar.default {
       color = colors.item.bg,
       border_color = colors.item.border,
       border_width = 2,
-      corner_radius = 8,
+      corner_radius = 4,
       shadow = {
         drawing = true,
         angle = 45,

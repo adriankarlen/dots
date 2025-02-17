@@ -28,7 +28,7 @@ local rp_moon = {
 
 M.sections = {
   bar = {
-    bg = with_alpha(rp_moon.surface, 0.8),
+    bg = with_alpha(rp_moon.surface, 0.6),
     border = transparent,
   },
   item = {
