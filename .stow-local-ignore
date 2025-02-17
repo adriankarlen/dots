@@ -22,4 +22,5 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-.editorconfig
+\.editorconfig
+\.DS_Store
