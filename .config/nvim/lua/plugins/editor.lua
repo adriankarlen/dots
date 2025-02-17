@@ -30,46 +30,28 @@ return {
     },
   },
   {
-    "brenoprata10/nvim-highlight-colors",
+    "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
-    config = function()
-      require("nvim-highlight-colors").setup {
-        render = "virtual",
-        virtual_symbol = "",
-        enable_tailwind = true,
-        enable_named_colors = false,
-        exclude_filetypes = { "lazy" },
-      }
-    end,
+    opts = {
+      user_default_options = {
+        names = false,
+        mode = "virtualtext",
+        virtualtext = "",
+        virtualtext_inline = "before",
+      },
+    },
   },
   {
     "mvllow/modes.nvim",
     event = "BufReadPre",
-    config = function()
+    opts = function()
       local palette = require "rose-pine.palette"
-      require("modes").setup {
-        set_cursor = false,
+      return {
         colors = {
           bg = palette.base,
         },
       }
-      vim.opt.guicursor:append "n-c:Cursor"
     end,
-  },
-  {
-    "luckasRanarison/tailwind-tools.nvim",
-    name = "tailwind-tools",
-    ft = { "html", "typescriptreact", "javascriptreact", "svelte" },
-    build = ":UpdateRemotePlugins",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "neovim/nvim-lspconfig",
-    },
-    opts = {},
-    keys = {
-      { "<leader>co", "<cmd>TailwindSort(Sync)", desc = "tailwind sort" },
-      { "<leader>co", mode = "x", "<cmd>TailwindSortSelection(Sync)", desc = "tailwind sort" },
-    },
   },
   {
     "folke/todo-comments.nvim",

@@ -50,7 +50,7 @@ return {
           EasyDotnetTestRunnerSolution = { fg = "pine" },
           EasyDotnetTestRunnerProject = { fg = "rose" },
           EasyDotnetTestRunnerTest = { fg = "iris" },
-          SnacksIndentScope = { fg = "gold" },
+          SnacksIndentScope = { fg = "overlay" },
           MiniIconsAzureBlend = { fg = "foam", bg = "foam", blend = 25 },
           MiniIconsBlueBlend = { fg = "pine", bg = "pine", blend = 25 },
           MiniIconsCyanBlend = { fg = "foam", bg = "foam", blend = 25 },

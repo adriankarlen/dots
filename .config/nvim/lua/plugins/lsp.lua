@@ -13,20 +13,25 @@ return {
     local mason_lspconfig = require "mason-lspconfig"
 
     local servers = {
-      cssls = {},
+      cssls = {
+        settings = {
+          css = { validate = true, lint = {
+            unknownAtRules = "ignore",
+          } },
+          scss = { validate = true, lint = {
+            unknownAtRules = "ignore",
+          } },
+          less = { validate = true, lint = {
+            unknownAtRules = "ignore",
+          } },
+        },
+      },
       eslint = {},
       gopls = {},
       html = {},
       jsonls = {},
-      -- lemminx = {},
       lua_ls = {},
       marksman = {},
-      -- powershell_es = {
-      --   bundle_path = vim.fn.stdpath "data" .. "/mason/packages/powershell-editor-services",
-      --   init_options = {
-      --     enableProfileLoading = false,
-      --   },
-      -- },
       svelte = {},
       tailwindcss = {},
       taplo = {},
@@ -36,11 +41,8 @@ return {
 
     local ensure_installed = vim.tbl_keys(servers)
     vim.list_extend(ensure_installed, {
-      -- "csharpier", -- c# formatter
-      -- "netcoredbg", -- c# debugger
       "prettier", -- prettier formatter
       "stylua", -- lua formatter
-      -- "xmlformatter", -- xml formatter
     })
 
     mason.setup {
