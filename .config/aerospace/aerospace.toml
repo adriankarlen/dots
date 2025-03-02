@@ -55,7 +55,7 @@ outer.right =      12
 alt-cmd-ctrl-e = 'join-with right'
 alt-cmd-ctrl-v = 'join-with up'
 
-# alt-cmd-ctrl-e = 'layout tiles horizontal vertical'
+alt-cmd-ctrl-shift-space = 'layout floating tiling'
 
 alt-cmd-ctrl-h = 'focus left'
 alt-cmd-ctrl-j = 'focus down'
