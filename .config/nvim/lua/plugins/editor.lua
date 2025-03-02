@@ -10,7 +10,6 @@ return {
   {
     "MagicDuck/grug-far.nvim",
     opts = { headerMaxWidth = 80 },
-    cmd = "GrugFar",
     keys = {
       {
         "<leader>sr",
@@ -30,16 +29,33 @@ return {
     },
   },
   {
-    "catgoose/nvim-colorizer.lua",
+    "eero-lehtinen/oklch-color-picker.nvim",
     event = "BufReadPre",
+    version = "*",
     opts = {
-      user_default_options = {
-        names = false,
-        mode = "virtualtext",
-        virtualtext = "",
-        virtualtext_inline = "before",
+      highlight = {
+        style = "virtual_left",
+        virtual_text = " ",
       },
     },
+    keys = {
+      {
+        "<leader>v",
+        function()
+          require("oklch-color-picker").pick_under_cursor()
+        end,
+        desc = "color pick",
+      },
+    },
+  },
+  {
+    "xzbdmw/clasp.nvim",
+    opts = {},
+    -- stylua: ignore start
+    keys = {
+      { "<c-m>", function() require("clasp").wrap "prev" end, mode = { "n", "i" }, desc = "wrap next" },
+    },
+    -- stylua: ignore end
   },
   {
     "mvllow/modes.nvim",
@@ -148,6 +164,21 @@ return {
         info = { text = "", hl = "DiagnosticSignInfo" },
         hint = { text = "", hl = "DiagnosticSignHint" },
       },
+    },
+  },
+  {
+    "bassamsdata/namu.nvim",
+    opts = {
+      -- Enable the modules you want
+      namu_symbols = {
+        enable = true,
+        options = { window = { border = "single" } },
+      },
+      ui_select = { enable = false },
+      colorscheme = { enable = false },
+    },
+    keys = {
+      { "<leader>ss", "<cmd>Namu symbols<cr>", silent = true, desc = "jump to lsp symbol" },
     },
   },
 }
