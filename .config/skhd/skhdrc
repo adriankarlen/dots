@@ -1,0 +1,47 @@
+# focus workspace
+lalt - 1 : aerospace workspace 1
+lalt - 2 : aerospace workspace 2
+lalt - 3 : aerospace workspace 3
+lalt - 4 : aerospace workspace 4
+lalt - 5 : aerospace workspace 5
+
+# cycle workspace
+lalt - tab : aerospace workspace-back-and-forth
+
+# move workspace to monitor
+lalt + ctrl - 1 : aerospace move-workspace-to-monitor 1
+lalt + ctrl - 2 : aerospace move-workspace-to-monitor 2
+lalt + ctrl - 3 : aerospace move-workspace-to-monitor 3
+
+# move window to workspace
+lalt + shift - 1 : aerospace move-node-to-workspace 1
+lalt + shift - 2 : aerospace move-node-to-workspace 2
+lalt + shift - 3 : aerospace move-node-to-workspace 3
+lalt + shift - 4 : aerospace move-node-to-workspace 4
+lalt + shift - 5 : aerospace move-node-to-workspace 5
+
+# focus window
+lalt - h : aerospace focus left
+lalt - j : aerospace focus down
+lalt - k : aerospace focus up
+lalt - l : aerospace focus right
+
+# move window
+lalt + shift - h : aerospace move left
+lalt + shift - j : aerospace move down
+lalt + shift - k : aerospace move up
+lalt + shift - l : aerospace move right
+
+# resize window
+lalt + ctrl - n : aerospace resize smart -50
+lalt + ctrl - p : aerospace resize smart +50
+
+# toggle floating
+lalt + shift - space : aerospace layout floating tiling
+
+# change binding mode
+lalt - e : aerospace join-with right
+lalt - v : aerospace join-with up
+
+# # reload aerospace config
+lalt + ctrl - r : aerospace reload
