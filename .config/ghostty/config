@@ -1,3 +1,5 @@
+#!/bin/bash
+
 theme = rose-pine-moon
 
 
@@ -13,5 +15,3 @@ macos-titlebar-style = hidden
 
 window-padding-balance = true
 window-padding-color = extend-always
-
-#vim-ft=bash
