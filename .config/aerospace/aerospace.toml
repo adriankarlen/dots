@@ -1,3 +1,5 @@
+start-at-login = true
+
 after-startup-command = [
   'exec-and-forget borders',
   'exec-and-forget sketchybar',
@@ -8,7 +10,7 @@ exec-on-workspace-change = [
 	'/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
 ]
 
-start-at-login = true
+on-focus-changed = [ 'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_focus_change' ]
 
 [gaps]
 inner.horizontal = 10
@@ -31,6 +33,10 @@ outer.right =      12
   run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
+  if.app-id = 'dev.zed.Zed'
+  run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
   if.app-id = 'app.legcord.Legcord'
   run = 'move-node-to-workspace 3'
 
@@ -39,10 +45,7 @@ outer.right =      12
   run = 'move-node-to-workspace 4'
 
 [mode.main.binding]
-
-# all bindings are setup using skhd, the below commands are simply to create workspaces
 alt-cmd-ctrl-1 = 'workspace 1'
 alt-cmd-ctrl-2 = 'workspace 2'
 alt-cmd-ctrl-3 = 'workspace 3'
 alt-cmd-ctrl-4 = 'workspace 4'
-alt-cmd-ctrl-5 = 'workspace 5'

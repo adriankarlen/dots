@@ -24,6 +24,22 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
       padding_left = space_name == "1" and 0 or 4,
     })
 
+    local function update_windows()
+      sbar.exec("aerospace list-windows --format %{app-name} --workspace " .. space_name, function(windows)
+        local no_app = true
+        local icon_line = ""
+        for app in windows:gmatch "[^\r\n]+" do
+          no_app = false
+          local lookup = icon_map[app]
+          local icon = ((lookup == nil) and icon_map["default"] or lookup)
+          icon_line = icon_line .. " " .. icon
+        end
+        sbar.animate("tanh", 10, function()
+          space:set { label = no_app and " —" or icon_line }
+        end)
+      end)
+    end
+
     space:subscribe("aerospace_workspace_change", function(env)
       local selected = env.FOCUSED_WORKSPACE == space_name
       space:set {
@@ -55,22 +71,15 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
           }
         end)
       end
+      update_windows()
+    end)
+
+    space:subscribe("aerospace_focus_change", function()
+      update_windows()
     end)
 
     space:subscribe("space_windows_change", function()
-      sbar.exec("aerospace list-windows --format %{app-name} --workspace " .. space_name, function(windows)
-        local no_app = true
-        local icon_line = ""
-        for app in windows:gmatch "[^\r\n]+" do
-          no_app = false
-          local lookup = icon_map[app]
-          local icon = ((lookup == nil) and icon_map["default"] or lookup)
-          icon_line = icon_line .. " " .. icon
-        end
-        sbar.animate("tanh", 10, function()
-          space:set { label = no_app and " —" or icon_line }
-        end)
-      end)
+      update_windows()
     end)
 
     space:subscribe("mouse.clicked", function()
