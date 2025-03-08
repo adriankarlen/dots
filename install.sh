@@ -22,8 +22,8 @@ echo "Setting MacOS defaults..."
 defaults write -g NSWindowShouldDragOnGesture -bool true
 defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
 
-# Move all the files to the correct location
-echo "Moving files to the correct location..."
+# Stow dotfiles
+echo "Stowing dotfiles..."
 stow .
 
 # Fonts
