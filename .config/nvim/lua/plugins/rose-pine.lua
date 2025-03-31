@@ -12,6 +12,7 @@ return {
         highlight_groups = {
           MatchParen = { fg = "love", bg = "love", blend = 25 },
           CursorLineNr = { fg = "gold", bold = true },
+          StatusLineTerm = { fg = "subtle", bg = "none" },
           StatuslineSeparator = { fg = "overlay", bg = "none" },
           StatuslineTextMain = { fg = "text", bg = "overlay" },
           StatuslineTextBold = { link = "StatuslineTextMain", bg = "overlay", bold = true },
