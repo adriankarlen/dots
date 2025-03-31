@@ -23,7 +23,6 @@ zinit light zsh-users/zsh-autosuggestions
 # zsh snippets
 zinit snippet OMZP::bun
 zinit snippet OMZP::gh
-zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 
 # load completions
@@ -72,20 +71,22 @@ export FZF_DEFAULT_OPTS="
 	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
 
 # aliases
-alias vim='nvim'
-alias c='clear'
+alias v="nvim"
+alias vim="nvim"
+alias lkjh="nvim"
+alias hjkl="nvim"
+alias c="clear"
 alias l="eza -lh --icons=auto --color=always" # long list
 alias ls="eza --icons=auto --color=always" # short list
 alias ll="eza -lha --icons=auto --sort=name --group-directories-first --color=always" # long list all
 alias ld="eza -lhD --icons=auto --color=always" # long list dirs
 alias lt="eza --icons=auto --tree --color=always" # list folder as tree
-alias ..="cd .."
 alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
 alias .5="cd ../../../../.."
 alias gr="/"
-alias gc="cd ~/.config"
+alias gd="cd ~/dots"
 alias gdev="cd ~/repos"
 alias lg="lazygit"
 alias x="exit"
