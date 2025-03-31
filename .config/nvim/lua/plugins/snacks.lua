@@ -21,10 +21,20 @@ return {
         },
         preset = {
           keys = {
-            { icon = " ", key = "f", desc = "find file", action = ":lua Snacks.dashboard.pick('files')" },
-            { icon = " ", key = "w", desc = "find text", action = ":lua Snacks.dashboard.pick('live_grep')" },
+            {
+              icon = " ",
+              key = "f",
+              desc = "find file",
+              action = ":lua Snacks.dashboard.pick('files', { hidden = true })",
+            },
+            {
+              icon = " ",
+              key = "w",
+              desc = "find text",
+              action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })",
+            },
             { icon = " ", key = "r", desc = "recent files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            { icon = " ", key = "e", desc = "explorer", action = ":lua require('mini.files').open()" },
+            { icon = " ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
             { icon = " ", key = "g", desc = "browse git", action = ":lua Snacks.lazygit()" },
             { icon = "󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
             { icon = "󱌣 ", key = "m", desc = "mason", action = ":Mason" },
@@ -45,7 +55,7 @@ return {
             { section = "keys", padding = 1 },
             { title = "mru ", file = vim.fn.fnamemodify(".", ":~"), padding = 1 },
             { section = "recent_files", cwd = true, limit = 5, padding = 1 },
-            { section = "startup" },
+            { section = "startup", icon = " " },
           },
         },
       },
@@ -60,9 +70,10 @@ return {
         scope = {
           treesitter = {
             enabled = true,
-          }
+          },
         },
       },
+      image = {},
       lazygit = {
         theme = {
           activeBorderColor = { fg = "DiagnosticWarn", bold = true },
@@ -75,6 +86,44 @@ return {
       statuscolumn = {},
       rename = {},
       terminal = {},
+      picker = {
+        ui_select = false,
+        layout = {
+          preset = "minimal",
+        },
+        layouts = {
+          minimal = {
+            preview = false,
+            layout = {
+              backdrop = false,
+              height = 0.25,
+              width = 0.4,
+              box = "horizontal",
+              {
+                border = "single",
+                box = "vertical",
+                title = "{title}",
+                title_pos = "left",
+                { win = "input", height = 1, border = "bottom" },
+                { win = "list", border = "none" },
+              },
+              { win = "preview", title = "{preview}", title_pos = "left", border = "single" },
+            },
+          },
+        },
+        sources = {
+          grep = {
+            layout = {
+              preview = true,
+            },
+          },
+          icons = {
+            layout = {
+              preset = "minimal",
+            },
+          },
+        },
+      },
       styles = {
         notification = {
           border = "single",
@@ -100,17 +149,41 @@ return {
     { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
     { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
     { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
+    { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
+    { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
+    { "<leader>fw", function() Snacks.picker.grep( { hidden = true }) end, desc = "live grep" },
+    { "<leader>fw", function() Snacks.picker.grep_word() end, mode = "x", desc = "grep selection" },
+    { "<leader>fi", function() Snacks.picker.icons() end, desc = "icons" },
       -- stylua: ignore end
     },
+
     init = function()
-      -- Setup some globals for debugging (lazy-loaded)
-      _G.dd = function(...)
-        Snacks.debug.inspect(...)
-      end
-      _G.bt = function()
-        Snacks.debug.backtrace()
-      end
-      vim.print = _G.dd -- Override print to use snacks for `:=` command
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          -- Setup some globals for debugging (lazy-loaded)
+            
+          _G.dd = function(...)
+            Snacks.debug.inspect(...)
+          end
+          _G.bt = function()
+            Snacks.debug.backtrace()
+          end
+          vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+          -- Create some toggle mappings
+          Snacks.toggle.option("spell", { name = "Spelling" }):map "<leader>us"
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map "<leader>uw"
+          Snacks.toggle.diagnostics():map "<leader>ud"
+          Snacks.toggle
+            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            :map "<leader>uc"
+          Snacks.toggle.treesitter():map "<leader>uT"
+          Snacks.toggle.inlay_hints():map "<leader>uh"
+          Snacks.toggle.indent():map "<leader>ug"
+          Snacks.toggle.dim():map "<leader>uD"
+        end,
+      })
     end,
   },
 }

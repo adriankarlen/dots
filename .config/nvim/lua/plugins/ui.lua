@@ -74,56 +74,100 @@ return {
     },
   },
   {
-    "ibhagwan/fzf-lua",
+    "stevearc/oil.nvim",
+    opts = function()
+      -- helper function to parse output
+      local function parse_output(proc)
+        local result = proc:wait()
+        local ret = {}
+        if result.code == 0 then
+          for line in vim.gsplit(result.stdout, "\n", { plain = true, trimempty = true }) do
+            -- Remove trailing slash
+            line = line:gsub("/$", "")
+            ret[line] = true
+          end
+        end
+        return ret
+      end
+      -- build git status cache
+      local function new_git_status()
+        return setmetatable({}, {
+          __index = function(self, key)
+            local ignore_proc = vim.system(
+              { "git", "ls-files", "--ignored", "--exclude-standard", "--others", "--directory" },
+              {
+                cwd = key,
+                text = true,
+              }
+            )
+            local tracked_proc = vim.system({ "git", "ls-tree", "HEAD", "--name-only" }, {
+              cwd = key,
+              text = true,
+            })
+            local ret = {
+              ignored = parse_output(ignore_proc),
+              tracked = parse_output(tracked_proc),
+            }
+            rawset(self, key, ret)
+            return ret
+          end,
+        })
+      end
+      local git_status = new_git_status()
+
+      -- Clear git status cache on refresh
+      local refresh = require("oil.actions").refresh
+      local orig_refresh = refresh.callback
+      refresh.callback = function(...)
+        git_status = new_git_status()
+        orig_refresh(...)
+      end
+      return {
+        float = {
+          border = "single",
+          max_width = 0.4,
+          max_height = 0.25,
+        },
+        view_options = {
+          is_hidden_file = function(name, bufnr)
+            local dir = require("oil").get_current_dir(bufnr)
+            local is_dotfile = vim.startswith(name, ".") and name ~= ".."
+            -- if no local directory (e.g. for ssh connections), just hide dotfiles
+            if not dir then
+              return is_dotfile
+            end
+            -- dotfiles are considered hidden unless tracked
+            if is_dotfile then
+              return not git_status[dir].tracked[name]
+            else
+              -- Check if file is gitignored
+              return git_status[dir].ignored[name]
+            end
+          end,
+        },
+        keymaps = {
+          ["<tab>"] = "actions.select",
+          ["<s-tab>"] = "actions.parent",
+          ["q"] = { "actions.close", mode = "n" },
+          ["§"] = { "actions.cd", mode = "n" },
+          ["°"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+          ["g'"] = { "actions.toggle_trash", mode = "n" },
+        },
+        ssh = {
+          border = "single",
+        },
+
+        keymaps_help = {
+          border = "single",
+        },
+      }
+    end,
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+    lazy = false,
     keys = {
       -- stylua: ignore start
-      { "<leader>ff", function() require("fzf-lua").files() end, desc = "find files" },
-      { "<leader>fw", function() require("fzf-lua").live_grep() end, desc = "live grep" },
-      { "<leader>fw", function() require("fzf-lua").grep_visual() end, mode = "x", desc = "grep selection" },
-      { "<leader>fo", function() require("fzf-lua").oldfiles() end, desc = "old files" },
+      { "<leader>e", function() require("oil").toggle_float() end, desc = "toggle oil" },
       -- stylua: ignore end
-    },
-    opts = {
-      winopts = {
-        height = 0.25,
-        width = 0.4,
-        row = 0.5,
-        border = "single",
-        preview = {
-          hidden = "hidden",
-        },
-      },
-      fzf_opts = {
-        ["--no-info"] = "",
-        ["--info"] = "hidden",
-        ["--padding"] = "13%,5%,13%,5%",
-        ["--header"] = " ",
-        ["--no-scrollbar"] = "",
-      },
-      files = {
-        formatter = "path.filename_first",
-        git_icons = true,
-        prompt = "files:",
-        no_header = true,
-        cwd_header = false,
-        cwd_prompt = false,
-        cwd = require("utils.fn").root(),
-      },
-      grep = {
-        prompt = "search:",
-        cwd = require("utils.fn").root(),
-        winopts = {
-          preview = {
-            hidden = "nohidden",
-          },
-        },
-      },
-      buffers = {
-        prompt = "buffers:",
-      },
-      oldfiles = {
-        prompt = "history:",
-      },
     },
   },
   {
@@ -243,4 +287,5 @@ return {
       },
     },
   },
+  {
 }
