@@ -1,13 +1,5 @@
 return {
   {
-    "otavioschwanck/arrow.nvim",
-    opts = {
-      show_icons = true,
-      leader_key = ",", -- Recommended to be a single key
-      buffer_leader_key = "m", -- Per Buffer Mappings
-    },
-  },
-  {
     "MagicDuck/grug-far.nvim",
     opts = { headerMaxWidth = 80 },
     keys = {
@@ -47,15 +39,6 @@ return {
         desc = "color pick",
       },
     },
-  },
-  {
-    "xzbdmw/clasp.nvim",
-    opts = {},
-    -- stylua: ignore start
-    keys = {
-      { "<c-m>", function() require("clasp").wrap "prev" end, mode = { "n", "i" }, desc = "wrap next" },
-    },
-    -- stylua: ignore end
   },
   {
     "mvllow/modes.nvim",
