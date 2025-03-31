@@ -151,7 +151,7 @@ return {
     { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
     { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
     { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
-    { "<leader>fw", function() Snacks.picker.grep( { hidden = true }) end, desc = "live grep" },
+    { "<leader>fw", function() Snacks.picker.grep({ hidden = true }) end, desc = "live grep" },
     { "<leader>fw", function() Snacks.picker.grep_word() end, mode = "x", desc = "grep selection" },
     { "<leader>fi", function() Snacks.picker.icons() end, desc = "icons" },
       -- stylua: ignore end
@@ -162,7 +162,6 @@ return {
         pattern = "VeryLazy",
         callback = function()
           -- Setup some globals for debugging (lazy-loaded)
-            
           _G.dd = function(...)
             Snacks.debug.inspect(...)
           end

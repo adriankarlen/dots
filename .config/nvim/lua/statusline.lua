@@ -1,5 +1,7 @@
 local M = {}
 
+---@param n number
+---@return string
 local function _spacer(n)
   local spaces = string.rep(" ", n)
   return "%#StatuslineTextMain#" .. spaces
@@ -9,8 +11,21 @@ local function _align()
   return "%="
 end
 
+local function _reset()
+  return "%#StatusLineClear#"
+end
+
 local function _truncate()
   return "%<"
+end
+
+---@param side "left" | "right"
+---@return string
+local function _separator(side)
+  if side == "right" then
+    return "%#StatuslineSeparator#" .. ""
+  end
+  return "%#StatuslineSeparator#" .. ""
 end
 
 -- From TJDevries
@@ -61,68 +76,6 @@ local function get_mode()
   return mode_info.hl .. " " .. mode .. " " .. _spacer(1)
 end
 
-local function get_filetype()
-  local disabled_modes = {
-    "t",
-    "!",
-  }
-  if vim.tbl_contains(disabled_modes, vim.fn.mode()) then
-    return ""
-  end
-  local icon, hl, _ = require("mini.icons").get("filetype", vim.bo.filetype)
-  hl = "%#" .. hl .. "#"
-  return hl .. icon .. _spacer(1)
-end
-
-local function get_path()
-  if vim.fn.mode() == "t" then
-    return ""
-  end
-  if is_truncated(100) then
-    return _spacer(1)
-  end
-  local path = vim.fn.expand "%:~:.:h"
-  local hl = "%#StatuslineTextAccent#"
-  local max_width = 30
-  if path == "." or path == "" then
-    return ""
-  elseif #path > max_width then
-    path = "…" .. string.sub(path, -max_width + 2)
-  end
-  return hl .. path .. "/"
-end
-
-local function get_filename()
-  if vim.fn.mode() == "t" then
-    return ""
-  end
-  local filename = vim.fn.expand "%:~:t"
-  local path = vim.fn.expand "%:~:.:h"
-  local hl = "%#StatuslineTextMain#"
-  if filename == "" then
-    return hl .. "[No Name]" .. _spacer(1)
-  end
-  if path == "." then
-    return hl .. filename .. _spacer(1)
-  end
-  return hl .. filename .. _spacer(1)
-end
-
-local function get_modification_status()
-  local buf_modified = vim.bo.modified
-  local buf_modifiable = vim.bo.modifiable
-  local buf_readonly = vim.bo.readonly
-  local hi_notsaved = "%#StatuslineNotSaved#"
-  local hi_readonly = "%#StatuslineReadOnly#"
-  if buf_modified then
-    return hi_notsaved .. "•" .. _spacer(1)
-  elseif buf_modifiable == false or buf_readonly == true then
-    return hi_readonly .. "󰑇" .. _spacer(1)
-  else
-    return ""
-  end
-end
-
 local function get_lsp_status()
   local clients = vim.lsp.get_clients { bufnr = 0 }
   local hl = "%#StatuslineLspOn#"
@@ -155,45 +108,26 @@ local function get_copilot_status()
   return hl_copilot .. " " .. _spacer(1)
 end
 
-
 local function get_diagnostics()
-  local count_error = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-  local count_warning = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-  local count_info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-  local count_hint = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-  local diag_count = 0
-  local hl_error = "%#DiagnosticError#"
-  local hl_warning = "%#DiagnosticWarn#"
+  local severities = {
+    { name = "E", hl = "%#DiagnosticError#" },
+    { name = "W", hl = "%#DiagnosticWarn#" },
+    { name = "I", hl = "%#DiagnosticInfo#" },
+    { name = "H", hl = "%#DiagnosticHint#" },
+  }
 
-  local hl_info = "%#DiagnosticInfo#"
-  local hl_hint = "%#DiagnosticHint#"
-  local error, warning, info, hint = "", "", "", ""
-  if count_error == 0 then
-    error = ""
-  else
-    error = hl_error .. "• " .. count_error .. _spacer(1)
+  local result = ""
+  local diag_count = 0
+
+  for _, severity in ipairs(severities) do
+    local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[severity.name] })
+    if count > 0 then
+      result = result .. severity.hl .. "• " .. count .. _spacer(1)
+      diag_count = 1
+    end
   end
-  if count_warning == 0 then
-    warning = ""
-  else
-    warning = hl_warning .. "• " .. count_warning .. _spacer(1)
-  end
-  if count_info == 0 then
-    info = ""
-  else
-    info = hl_info .. "• " .. count_info .. _spacer(1)
-  end
-  if count_hint == 0 then
-    hint = ""
-  else
-    hint = hl_hint .. "• " .. count_hint .. _spacer(1)
-  end
-  if count_error + count_warning + count_info + count_hint == 0 then
-    diag_count = 0
-  else
-    diag_count = 1
-  end
-  return error .. warning .. info .. hint .. _spacer(diag_count)
+
+  return result .. _spacer(diag_count)
 end
 
 local function get_dotnet_solution()
@@ -251,7 +185,7 @@ local function get_percentage()
   else
     content = percent .. "%%"
   end
-  return hl_accent .. "≡ " .. hl_bold .. content .. _spacer(2)
+  return hl_accent .. "≡ " .. hl_bold .. content .. _spacer(1)
 end
 
 M.setup = function()
@@ -271,6 +205,7 @@ M.load = function()
 
   return table.concat {
     _align(),
+    _separator "left",
     get_mode(),
     get_lsp_status(),
     get_formatter_status(),
@@ -280,7 +215,8 @@ M.load = function()
     get_dotnet_solution(),
     get_branch(),
     get_percentage(),
-    -- _truncate(),
+    _truncate(),
+    _separator "right",
     _align(),
   }
 end

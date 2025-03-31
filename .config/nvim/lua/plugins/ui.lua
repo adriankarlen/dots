@@ -316,12 +316,13 @@ return {
         local diagnostics = vim.diagnostic.get(props.buf)
         return {
           guibg = palette.overlay,
+          { "", guifg = palette.overlay, guibg = palette.base },
           vim.bo[props.buf].modified and { " ", "", guifg = palette.gold } or "",
           icon and { " ", icon, " ", guifg = vim.fn.synIDattr(vim.fn.hlID(hl), "fg") } or "",
           { filename, guifg = #diagnostics > 0 and diagnostic_map[diagnostics[1].severity] or "" },
           " ",
-          { path, gui = "italic", guifg = palette.muted },
-          " ",
+          { path, " ", gui = "italic", guifg = palette.muted },
+          { "", guifg = palette.overlay, guibg = palette.base },
         }
       end,
     },
