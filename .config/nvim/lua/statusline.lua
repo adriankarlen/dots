@@ -155,16 +155,6 @@ local function get_copilot_status()
   return hl_copilot .. " " .. _spacer(1)
 end
 
-local function get_arrow_status()
-  local hl_main = "%#StatuslineTextMain#"
-  local hl_accent = "%#StatuslineTextAccent#"
-  local arrow = lazy_require "arrow.statusline"
-  if not arrow.is_on_arrow_file() then
-    return ""
-  end
-  local index = arrow.text_for_statusline()
-  return hl_accent .. "󱡁 " .. hl_main .. index .. _spacer(1)
-end
 
 local function get_diagnostics()
   local count_error = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
@@ -285,7 +275,6 @@ M.load = function()
     get_path(),
     get_filename(),
     get_modification_status(),
-    get_arrow_status(),
     get_lsp_status(),
     get_formatter_status(),
     get_copilot_status(),
