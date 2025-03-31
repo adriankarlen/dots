@@ -270,21 +270,18 @@ M.load = function()
   end
 
   return table.concat {
+    _align(),
     get_mode(),
-    get_filetype(),
-    get_path(),
-    get_filename(),
-    get_modification_status(),
     get_lsp_status(),
     get_formatter_status(),
     get_copilot_status(),
-    _align(),
     get_diagnostics(),
     get_recording(),
     get_dotnet_solution(),
     get_branch(),
     get_percentage(),
-    _truncate(),
+    -- _truncate(),
+    _align(),
   }
 end
 
