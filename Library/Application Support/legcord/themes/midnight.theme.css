@@ -23,17 +23,17 @@
 	--corner-text: 'discord';
 
 	/* color of status indicators and window controls */
-	--online-indicator: hsl(197deg, 48%, 47%); /* change to #23a55a for default green */
+	--online-indicator: hsl(197deg, 49%, 38%); /* change to #23a55a for default green */
 	--dnd-indicator: var(--accent-2); /* change to #f13f43 for default red */
 	--idle-indicator: hsl(35deg, 88%, 72%); /* change to #f0b232 for default yellow */
 	--streaming-indicator: hsl(267deg, 57%, 78%); /* change to #593695 for default purple */
 
 	/* accent colors */
-	--accent-1: oklch(76.51% 0.0967 21.92); /* links */
+	--accent-1: oklch(83.63% 0.0544 21.14); /* links */
 	--accent-2: hsl(343deg, 76%, 68%); /* general unread/mention elements */
 	--accent-3: var(--accent-1); /* accent buttons */
-	--accent-4: oklch(66.51% 0.0967 21.92); /* accent buttons when hovered */
-	--accent-5: oklch(56.51% 0.0967 21.92); /* accent buttons when clicked */
+	--accent-4: oklch(73.63% 0.0544 21.14); /* accent buttons when hovered */
+	--accent-5: oklch(63.63% 0.0544 21.14); /* accent buttons when clicked */
 	--mention: hsla(35deg, 88%, 72%, 0.1); /* mentions & mention messages */
 	--mention-hover: hsla(35deg, 88%, 72%, 0.0.5); /* mentions & mention messages when hovered */
 
@@ -46,13 +46,13 @@
 	--text-5: hsl(249deg, 12%, 47%); /* muted channels/chats and timestamps */
 
 	/* background and dark colors */
-	--bg-1: hsl(249deg, 15%, 38%); /* dark buttons when clicked */
-	--bg-2: hsl(248deg, 21%, 26%); /* dark buttons */
-	--bg-3: hsl(248deg, 24%, 20%); /* spacing, secondary elements */
-	--bg-4: hsl(246deg, 24%, 17%); /* main background color */
-	--hover: hsl(247deg, 16%, 30%); /* channels and buttons when hovered */
-	--active: hsl(249deg, 15%, 38%); /* channels and buttons when clicked or selected */
-	--message-hover: hsla(246, 0%, 0%, 0.1); /* messages when hovered */
+	--bg-1: hsl(248deg, 13%, 36%); /* dark buttons when clicked */
+	--bg-2: hsl(248deg, 25%, 18%); /* dark buttons */
+	--bg-3: hsl(247deg, 23%, 15%); /* spacing, secondary elements */
+	--bg-4: hsl(249deg, 22%, 12%); /* main background color */
+	--hover: hsl(249deg, 15%, 28%); /* channels and buttons when hovered */
+	--active: hsl(248deg, 13%, 36%); /* channels and buttons when clicked or selected */
+	--message-hover: hsla(249, 0%, 0%, 0.1); /* messages when hovered */
 
 	/* amount of spacing and padding */
 	--spacing: 12px;

@@ -6,7 +6,6 @@ return {
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require("rose-pine").setup {
-        dark_variant = "moon",
         styles = {
           transparency = true,
         },
@@ -51,6 +50,7 @@ return {
           EasyDotnetTestRunnerProject = { fg = "rose" },
           EasyDotnetTestRunnerTest = { fg = "iris" },
           SnacksIndentScope = { fg = "overlay" },
+          SnacksDashboardSpecial = { fg = "gold" },
           MiniIconsAzureBlend = { fg = "foam", bg = "foam", blend = 25 },
           MiniIconsBlueBlend = { fg = "pine", bg = "pine", blend = 25 },
           MiniIconsCyanBlend = { fg = "foam", bg = "foam", blend = 25 },
