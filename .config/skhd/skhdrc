@@ -46,4 +46,4 @@ lalt - e : aerospace join-with right
 lalt - v : aerospace join-with up
 
 # # reload aerospace config
-lalt + ctrl - r : aerospace reload
+lalt + shift - r : aerospace reload-config
