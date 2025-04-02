@@ -2,7 +2,7 @@
 
 theme = light:rose-pine-dawn,dark:rose-pine
 
-font-family = SF Mono
+font-family = Akkurat Mono
 font-size = 14
 
 cursor-invert-fg-bg = true
