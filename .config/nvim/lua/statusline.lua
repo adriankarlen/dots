@@ -11,14 +11,9 @@ local function _align()
   return "%="
 end
 
-local function _reset()
-  return "%#StatusLineClear#"
-end
-
 local function _truncate()
   return "%<"
 end
-
 ---@param side "left" | "right"
 ---@return string
 local function _separator(side)
@@ -110,10 +105,10 @@ end
 
 local function get_diagnostics()
   local severities = {
-    { name = "E", hl = "%#DiagnosticError#" },
-    { name = "W", hl = "%#DiagnosticWarn#" },
-    { name = "I", hl = "%#DiagnosticInfo#" },
-    { name = "H", hl = "%#DiagnosticHint#" },
+    { name = "E", hl = "%#StatuslineDiagnosticError#" },
+    { name = "W", hl = "%#StatuslineDiagnosticWarn#" },
+    { name = "I", hl = "%#StatuslineDiagnosticInfo#" },
+    { name = "H", hl = "%#StatuslineDiagnosticHint#" },
   }
 
   local result = ""
@@ -122,7 +117,7 @@ local function get_diagnostics()
   for _, severity in ipairs(severities) do
     local count = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity[severity.name] })
     if count > 0 then
-      result = result .. severity.hl .. "• " .. count .. _spacer(1)
+      result = result .. severity.hl .. " " .. count .. _spacer(1)
       diag_count = 1
     end
   end
@@ -166,26 +161,31 @@ local function get_recording()
   return hl_accent .. " " .. hl_main .. status .. _spacer(2)
 end
 
-local function get_percentage()
+local function get_scrollbar()
   if is_truncated(75) then
     return ""
   end
-  local current_line = vim.fn.line "."
-  local total_lines = vim.fn.line "$"
-  local percent = vim.fn.floor(current_line / total_lines * 100)
-  local content = ""
-  local hl_bold = "%#StatuslineTextBold#"
-  local hl_accent = "%#StatuslineTextAccent#"
-  if current_line == 1 then
-    content = "TOP"
-  elseif current_line == total_lines then
-    content = "END"
-  elseif percent < 10 then
-    content = hl_accent .. "·" .. hl_bold .. percent .. "%%"
-  else
-    content = percent .. "%%"
-  end
-  return hl_accent .. "≡ " .. hl_bold .. content .. _spacer(1)
+
+  local sbar_chars = {
+    '▔',
+    '🮂',
+    '🬂',
+    '🮃',
+    '▀',
+    '▄',
+    '▃',
+    '🬭',
+    '▂',
+    '▁',
+  }
+
+  local cur_line = vim.api.nvim_win_get_cursor(0)[1]
+  local lines = vim.api.nvim_buf_line_count(0)
+
+  local i = math.floor((cur_line - 1) / lines * #sbar_chars) + 1
+  local sbar = string.rep(sbar_chars[i], 2)
+
+  return "%#StatuslineScrollbar#" .. sbar .. _spacer(1)
 end
 
 M.setup = function()
@@ -214,7 +214,7 @@ M.load = function()
     get_recording(),
     get_dotnet_solution(),
     get_branch(),
-    get_percentage(),
+    get_scrollbar(),
     _truncate(),
     _separator "right",
     _align(),

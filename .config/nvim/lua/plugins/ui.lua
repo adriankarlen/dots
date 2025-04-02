@@ -315,14 +315,14 @@ return {
         local icon, hl, _ = require("mini.icons").get("filetype", vim.bo.filetype)
         local diagnostics = vim.diagnostic.get(props.buf)
         return {
-          guibg = palette.overlay,
-          { "", guifg = palette.overlay, guibg = palette.base },
-          vim.bo[props.buf].modified and { " ", "", guifg = palette.gold } or "",
+          guibg = palette.surface,
+          { "", guifg = palette.surface, guibg = palette.base },
+          { path, gui = "italic", guifg = palette.muted },
           icon and { " ", icon, " ", guifg = vim.fn.synIDattr(vim.fn.hlID(hl), "fg") } or "",
           { filename, guifg = #diagnostics > 0 and diagnostic_map[diagnostics[1].severity] or "" },
+          vim.bo[props.buf].modified and { " ", "", guifg = palette.gold } or "",
           " ",
-          { path, " ", gui = "italic", guifg = palette.muted },
-          { "", guifg = palette.overlay, guibg = palette.base },
+          { "", guifg = palette.surface, guibg = palette.base },
         }
       end,
     },
