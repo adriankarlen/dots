@@ -10,9 +10,10 @@ cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 shell-integration-features = no-cursor
-macos-titlebar-style = hidden
+macos-window-shadow = false
+macos-icon = custom-style
+macos-icon-frame = chrome
 
-# window-padding-color = extend
 window-padding-y = 4,0
 background-blur = true
 background-opacity = 0.98
