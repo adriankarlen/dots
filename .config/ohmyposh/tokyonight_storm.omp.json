@@ -1,0 +1,93 @@
+  console_title_template: " {{ .Folder }} :: {{if .Root}}Admin{{end}}",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "background": "transparent",
+          "foreground": "blue",
+          "template": "\u279c "
+        },
+        {
+          "type": "path",
+          "style": "plain",
+          "foreground": "magenta",
+          "properties": {
+            "style": "folder"
+          },
+          "template": "<b>{{ .Path }}</b> <blue>\u26a1</>"
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground": "blue",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}red{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0)}}blue {{ end }}",
+            "{{ if gt .Ahead 0 }}blue{{ end }}",
+            "{{ if gt .Behind 0 }}blue{{ end }}"
+          ],
+          "template": "({{ .HEAD}})",
+          "properties": {
+            "fetch_status": true,
+            "branch_icon": "\ue725 "
+          }
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "red",
+          "template": " \uf00d"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "overflow": "hide",
+      "segments": [
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "green",
+          "template": "\ue718 {{ .Full }} "
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "blue",
+          "template": "\uFCD1 {{ .Full}}"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "green",
+          "style": "plain",
+          "template": "\u25b6",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "blue",
+    "template": "\u279c "
+  },
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "blue",
+    "template": "\u279c "
+  },
+  "final_space": true,
+  "version": 3,
+  "terminal_background": "transparent"
+}

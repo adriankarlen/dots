@@ -10,9 +10,10 @@ if [ ! -d "$ZINIT_HOME" ]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
-# starship
-zinit ice from"gh-r" as"command" atload'eval "$(starship init zsh)"'
-zinit load starship/starship
+# oh-my-posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/theme.toml)"
+fi
 
 # zsh plugins
 zinit light Aloxaf/fzf-tab
@@ -58,6 +59,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --icons -a --group-d
 
 # env vars
 export EZA_CONFIG_DIR="$HOME/.config/eza"
+export EDITOR=nvim
 
 # opts
 setopt auto_cd
@@ -73,7 +75,6 @@ export FZF_DEFAULT_OPTS="
 # aliases
 alias v="nvim"
 alias vim="nvim"
-alias lkjh="nvim"
 alias hjkl="nvim"
 alias c="clear"
 alias l="eza -lh --icons=auto --color=always" # long list
