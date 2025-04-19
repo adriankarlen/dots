@@ -11,7 +11,18 @@ return {
         },
         palette = {
           main = {
-            pine = "#4097BA",
+            -- base = "#142022",
+            -- surface = "#293649",
+            -- overlay = "#303d4f",
+            -- text = "#e0e0e0",
+            -- subtle = "#a7a9a7",
+            -- muted = "#8e908e",
+            -- love = "#ff6961",
+            -- gold = "#FED77F",
+            -- pine = "#4097BA",
+            -- rose = "#fdb4b8",
+            -- iris = "#FED4F3",
+            -- foam = "#93c2ff",
           },
         },
         highlight_groups = {

@@ -73,7 +73,13 @@ return {
           },
         },
       },
-      image = {},
+      image = {
+        doc = {
+          inline = false,
+          max_height = 12,
+          max_width = 24,
+        },
+      },
       lazygit = {
         theme = {
           activeBorderColor = { fg = "DiagnosticWarn", bold = true },
@@ -132,6 +138,14 @@ return {
         ["notification.history"] = {
           border = "single",
         },
+        snacks_image = {
+          relative = "editor",
+          border = "single",
+          focusable = false,
+          backdrop = false,
+          row = 1,
+          col = -1,
+        },
         lazygit = {
           border = "single",
         },
@@ -142,18 +156,19 @@ return {
       },
     },
     keys = {
-    -- stylua: ignore start
-    { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
-    { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
-    { "<leader>gl", function() Snacks.lazygit() end, desc = "lazygit" },
-    { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
-    { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
-    { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
-    { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
-    { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
-    { "<leader>fw", function() Snacks.picker.grep({ hidden = true }) end, desc = "live grep" },
-    { "<leader>fw", function() Snacks.picker.grep_word() end, mode = "x", desc = "grep selection" },
-    { "<leader>fi", function() Snacks.picker.icons() end, desc = "icons" },
+      -- stylua: ignore start
+      { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
+      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
+      { "<leader>gl", function() Snacks.lazygit() end, desc = "lazygit" },
+      { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
+      { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
+      { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
+      { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
+      { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
+      { "<leader>fw", function() Snacks.picker.grep({ hidden = true }) end, desc = "live grep" },
+      { "<leader>fw", function() Snacks.picker.grep_word() end, mode = "x", desc = "grep selection" },
+      { "<leader>fi", function() Snacks.picker.icons() end, desc = "icons" },
+      { "<leader>ti", function() Snacks.image.hover() end, desc = "image hover" },
       -- stylua: ignore end
     },
 
@@ -171,16 +186,14 @@ return {
           vim.print = _G.dd -- Override print to use snacks for `:=` command
 
           -- Create some toggle mappings
-          Snacks.toggle.option("spell", { name = "Spelling" }):map "<leader>us"
-          Snacks.toggle.option("wrap", { name = "Wrap" }):map "<leader>uw"
-          Snacks.toggle.diagnostics():map "<leader>ud"
+          Snacks.toggle.option("spell", { name = "Spelling" }):map "<leader>ts"
+          Snacks.toggle.option("wrap", { name = "Wrap" }):map "<leader>tw"
           Snacks.toggle
             .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-            :map "<leader>uc"
-          Snacks.toggle.treesitter():map "<leader>uT"
-          Snacks.toggle.inlay_hints():map "<leader>uh"
-          Snacks.toggle.indent():map "<leader>ug"
-          Snacks.toggle.dim():map "<leader>uD"
+            :map "<leader>tC"
+          Snacks.toggle.inlay_hints():map "<leader>th"
+          Snacks.toggle.indent():map "<leader>tg"
+          Snacks.toggle.dim():map "<leader>tD"
         end,
       })
     end,

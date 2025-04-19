@@ -53,15 +53,6 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "neovim/nvim-lspconfig",
     },
-    opts = {
-      document_color = {
-        -- enabled = false,
-        inline_symbol = " ",
-      },
-      conceal = {
-        enabled = true,
-      },
-    },
     keys = {
       { "<leader>co", "<cmd>TailwindSort(Sync)<cr>", desc = "tailwind sort" },
       { "<leader>co", mode = "x", "<cmd>TailwindSortSelection(Sync)<cr>", desc = "tailwind sort" },

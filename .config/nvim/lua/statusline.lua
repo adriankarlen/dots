@@ -11,9 +11,6 @@ local function _align()
   return "%="
 end
 
-local function _truncate()
-  return "%<"
-end
 ---@param side "left" | "right"
 ---@return string
 local function _separator(side)
@@ -215,7 +212,6 @@ M.load = function()
     get_dotnet_solution(),
     get_branch(),
     get_scrollbar(),
-    _truncate(),
     _separator "right",
     _align(),
   }
