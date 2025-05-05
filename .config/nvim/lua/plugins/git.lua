@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd({ "BufRead" }, {
         if return_code == 0 then
           vim.api.nvim_del_augroup_by_name "LazyLoadGitPlugins"
           vim.schedule(function()
-            require("lazy").load { plugins = { "mini.diff", "mini-git", "git-conflict.nvim" } }
+            require("lazy").load { plugins = { "mini.diff", "mini-git" } }
           end)
         end
       end,
@@ -25,11 +25,4 @@ end
 local au_opts = { pattern = "MiniGitUpdated", callback = format_summary }
 vim.api.nvim_create_autocmd("User", au_opts)
 
-return {
-  {
-    "akinsho/git-conflict.nvim",
-    
-    version = "*",
-    opts = {},
-  },
-}
+return {}
