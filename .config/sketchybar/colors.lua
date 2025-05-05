@@ -56,7 +56,7 @@ M.sections = {
     border = theme.base,
     text = theme.text,
   },
-  apple = theme.rose,
+  apple = theme.text,
   spaces = {
     icon = {
       color = theme.subtle,

@@ -1,10 +1,9 @@
 local icons = require "icons"
 local colors = require("colors").sections.media
 
-local whitelist = { ["Spotify"] = true, ["Music"] = true }
-
-local media_playback = sbar.add("item", {
+local spotify = sbar.add("item", {
   position = "right",
+  -- drawing = false,
   icon = {
     max_chars = 50,
     padding_left = 8,
@@ -23,43 +22,44 @@ local media_playback = sbar.add("item", {
 })
 
 sbar.add("item", {
-  position = "popup." .. media_playback.name,
+  position = "popup." .. spotify.name,
   padding_left = 6,
   padding_right = 6,
   icon = { string = icons.media.back },
   label = { drawing = false },
   background = { drawing = false },
-  click_script = "nowplaying-cli previous",
+  click_script = [[osascript -e 'tell application "Spotify" to play previous track']],
 })
 sbar.add("item", {
-  position = "popup." .. media_playback.name,
+  position = "popup." .. spotify.name,
   padding_left = 6,
   padding_right = 6,
   icon = { string = icons.media.play_pause },
   label = { drawing = false },
   background = { drawing = false },
-  click_script = "nowplaying-cli togglePlayPause",
+  click_script = [[osascript -e 'tell application "Spotify" to playpause']],
 })
 sbar.add("item", {
-  position = "popup." .. media_playback.name,
+  position = "popup." .. spotify.name,
   padding_left = 6,
   padding_right = 6,
   icon = { string = icons.media.forward },
   label = { drawing = false },
   background = { drawing = false },
-  click_script = "nowplaying-cli next",
+  click_script = [[osascript -e 'tell application "Spotify" to play next track']],
 })
 
-media_playback:subscribe("media_change", function(env)
-  if whitelist[env.INFO.app] then
-    local drawing = (env.INFO.state == "playing")
-    media_playback:set { drawing = drawing, icon = env.INFO.artist .. " - " .. env.INFO.title }
-  end
+sbar.add("event", "playback_state_changed", "com.spotify.client.PlaybackStateChanged")
+
+spotify:subscribe("playback_state_changed", function(env)
+  local playing = (env.INFO["Player State"] == "Playing")
+  -- local playing = true
+  spotify:set { drawing = playing, icon = env.INFO.Artist .. " - " .. env.INFO.Name }
 end)
 
-media_playback:subscribe("mouse.clicked", function(_)
+spotify:subscribe("mouse.clicked", function(_)
   sbar.animate("tanh", 8, function()
-    media_playback:set {
+    spotify:set {
       background = {
         shadow = {
           distance = 0,
@@ -69,7 +69,7 @@ media_playback:subscribe("mouse.clicked", function(_)
       padding_left = 8,
       padding_right = 4,
     }
-    media_playback:set {
+    spotify:set {
       background = {
         shadow = {
           distance = 4,
@@ -80,5 +80,5 @@ media_playback:subscribe("mouse.clicked", function(_)
       padding_right = 8,
     }
   end)
-  media_playback:set { popup = { drawing = "toggle" } }
+  spotify:set { popup = { drawing = "toggle" } }
 end)

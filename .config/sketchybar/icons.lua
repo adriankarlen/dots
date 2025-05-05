@@ -24,6 +24,7 @@ local icons = {
       on = "􁏮",
       off = "􁏯",
     },
+    menu = "􀌇",
     volume = {
       _100 = "􀊨",
       _66 = "􀊦",
