@@ -1,0 +1,37 @@
+git:
+  overrideGpg: true
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+    useConfig: false
+gui:
+  authorColors:
+    "*": magenta
+  showNumstatInFilesView: true
+  skipRewordInEditorWarning: true
+  tabWidth: 2
+  theme:
+    activeBorderColor:
+      - yellow
+    inactiveBorderColor:
+      - "#6e6a86"
+    selectedLineBgColor:
+      - black
+  border: single
+  nerdFontsVersion: "3"
+  spinner:
+    frames:
+      - "⠋"
+      - "⠙"
+      - "⠹"
+      - "⠸"
+      - "⠼"
+      - "⠴"
+      - "⠦"
+      - "⠧"
+      - "⠇"
+      - "⠏"
+    rate: 80
+keybinding:
+  files:
+    viewResetOptions: <disabled>
