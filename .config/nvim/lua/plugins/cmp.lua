@@ -14,20 +14,6 @@ return {
           border = "single",
           draw = {
             padding = 0,
-            components = {
-              kind_icon = {
-                ellipsis = false,
-                text = function(ctx)
-                  local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                  return " " .. kind_icon .. ctx.icon_gap
-                end,
-                highlight = function(ctx)
-                  local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                  local blended = hl .. "Blend"
-                  return blended
-                end,
-              },
-            },
           },
         },
       },
