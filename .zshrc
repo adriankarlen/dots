@@ -58,6 +58,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons -a --group-directori
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --icons -a --group-directories-first --git --color=always $realpath'
 
 # env vars
+export XDG_CONFIG_HOME="$HOME/.config"
 export EZA_CONFIG_DIR="$HOME/.config/eza"
 export EDITOR=nvim
 
@@ -97,7 +98,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # tmux
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ] && [ -z "$WEZTERM_EXECUTABLE" ]; then
   exec tmux
 fi
 
