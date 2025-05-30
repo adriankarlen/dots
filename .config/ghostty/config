@@ -2,8 +2,8 @@
 
 theme = light:rose-pine-dawn,dark:rose-pine
 
-font-family = Akkurat Mono
-font-size = 14
+font-family = Code Saver
+font-size = 15
 
 cursor-invert-fg-bg = true
 cursor-style = block
