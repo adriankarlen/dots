@@ -19,7 +19,10 @@ return {
         dapui.close()
       end
 
-      vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticError", linehl = "DapBreakpoint", numhl = "" })
+      vim.fn.sign_define(
+        "DapBreakpoint",
+        { text = "", texthl = "DiagnosticError", linehl = "DapBreakpoint", numhl = "" }
+      )
       vim.fn.sign_define("DapStopped", { text = "󰳟", texthl = "", linehl = "DapStopped", numhl = "" })
 
       require("dap-config.netcore").register_net_dap()
@@ -36,53 +39,9 @@ return {
       -- stylua: ignore end
     },
     dependencies = {
-      { "jbyuki/one-small-step-for-vimkind" },
-      { "nvim-neotest/nvim-nio" },
       {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-          require("dapui").setup {
-            icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
-            mappings = { expand = { "<CR>" }, open = "o", remove = "d", edit = "e", repl = "r", toggle = "t" },
-            element_mappings = {},
-            expand_lines = true,
-            force_buffers = true,
-            layouts = {
-              {
-                elements = { { id = "scopes", size = 0.33 }, { id = "repl", size = 0.66 } },
-                size = 10,
-                position = "bottom",
-              },
-              {
-                elements = { "breakpoints", "console", "stacks", "watches" },
-                size = 45,
-                position = "right",
-              },
-            },
-            floating = {
-              max_height = nil,
-              max_width = nil,
-              border = "single",
-              mappings = { ["close"] = { "q", "<Esc>" } },
-            },
-            controls = {
-              enabled = vim.fn.exists "+winbar" == 1,
-              element = "repl",
-              icons = {
-                pause = "",
-                play = "",
-                step_into = "",
-                step_over = "",
-                step_out = "",
-                step_back = "",
-                run_last = "",
-                terminate = "",
-                disconnect = "",
-              },
-            },
-            render = { max_type_length = nil, max_value_lines = 100, indent = 1 },
-          }
-        end,
+        "igorlfs/nvim-dap-view",
+        opts = {},
       },
     },
   },
