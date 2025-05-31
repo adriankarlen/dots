@@ -57,6 +57,9 @@ return {
         chat = {
           render_headers = false,
         },
+        action_palette = {
+          provider = "default",
+        },
       },
     },
     keys = {
