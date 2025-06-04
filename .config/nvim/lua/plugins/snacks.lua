@@ -35,7 +35,6 @@ return {
             },
             { icon = " ", key = "r", desc = "recent files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = " ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
-            { icon = " ", key = "g", desc = "browse git", action = ":lua Snacks.lazygit()" },
             { icon = "󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
             { icon = "󱌣 ", key = "m", desc = "mason", action = ":Mason" },
             { icon = "󰭿 ", key = "q", desc = "quit", action = ":qa" },
@@ -78,12 +77,6 @@ return {
           inline = false,
           max_height = 12,
           max_width = 24,
-        },
-      },
-      lazygit = {
-        theme = {
-          activeBorderColor = { fg = "DiagnosticWarn", bold = true },
-          searchingActiveBorderColor = { fg = "DiagnosticWarn", bold = true },
         },
       },
       notifier = {
@@ -159,7 +152,6 @@ return {
       -- stylua: ignore start
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
-      { "<leader>gl", function() Snacks.lazygit() end, desc = "lazygit" },
       { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
       { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
       { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
