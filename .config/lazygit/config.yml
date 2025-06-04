@@ -13,6 +13,10 @@ gui:
   theme:
     activeBorderColor:
       - yellow
+      - bold
+    searchingActiveBorderColor:
+      - yellow
+      - bold
     inactiveBorderColor:
       - "#6e6a86"
     selectedLineBgColor:
