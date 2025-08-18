@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   cond = not vim.g.vscode,
-  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  event = { "BufReadPre" },
   dependencies = {
     { "williamboman/mason.nvim", config = true },
     { "williamboman/mason-lspconfig.nvim" },
@@ -63,6 +63,7 @@ return {
     mason_tool_installer.setup { ensure_installed = ensure_installed }
     mason_lspconfig.setup {
       ensure_installed = {},
+      automatic_enable = true,
       automatic_installation = true,
       handlers = {
         function(server_name)

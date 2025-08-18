@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 require "autocmds"
 require "options"
 require "mappings"
-require("statusline").setup()
+-- require("statusline").setup()
 
 require("lazy").setup {
   spec = {

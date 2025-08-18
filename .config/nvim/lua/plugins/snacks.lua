@@ -42,7 +42,7 @@ return {
         sections = {
           {
             section = "terminal",
-            cmd = "chafa ~/.config/arctic-sunset.png --format symbols --symbols vhalf --size 60x15 --stretch; sleep .1",
+            cmd = "chafa ~/.config/clouds.jpg --format symbols --symbols vhalf --size 60x15 --stretch; sleep .1",
             height = 17,
             padding = 1,
           },

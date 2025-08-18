@@ -9,6 +9,8 @@ g.maplocalleader = ","
 -- ─[ options ]────────────────────────────────────────────────────────
 opt.clipboard = "unnamedplus"
 opt.cursorline = true
+opt.laststatus = 3
+opt.showmode = false
 
 -- split
 opt.splitkeep = "screen"

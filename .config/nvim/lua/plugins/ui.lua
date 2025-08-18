@@ -335,4 +335,20 @@ return {
     -- Optional: Lazy load Incline
     event = "VeryLazy",
   },
+{
+    "sschleemilch/slimline.nvim",
+    opts = {
+    bold = true,
+	style = "fg",
+	components = {
+		left = { "mode", "path", "git" },
+		center = { "recording" },
+		right = { "diagnostics", "progress" },
+	},
+	configs = { progress = { column = true } },
+	hl = {
+		base = "StatusLine",
+		primary = "StatusLine",
+	},}
+},
 }
