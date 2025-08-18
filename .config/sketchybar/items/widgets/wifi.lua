@@ -119,32 +119,10 @@ local function toggle_details()
 end
 
 wifi:subscribe("mouse.clicked", function()
-  -- sbar.animate("tanh", 8, function()
-  -- 	wifi:set({
-  -- 		background = {
-  -- 			shadow = {
-  -- 				distance = 0,
-  -- 			},
-  -- 		},
-  -- 		y_offset = -4,
-  -- 		padding_left = 8,
-  -- 		padding_right = 0,
-  -- 	})
-  -- 	wifi:set({
-  -- 		background = {
-  -- 			shadow = {
-  -- 				distance = 4,
-  -- 			},
-  -- 		},
-  -- 		y_offset = 0,
-  -- 		padding_left = 4,
-  -- 		padding_right = 4,
-  -- 	})
-  -- end)
   toggle_details()
 end)
 
--- wifi:subscribe("mouse.exited.global", hide_details)
+wifi:subscribe("mouse.exited.global", hide_details)
 
 local function copy_label_to_clipboard(env)
   local label = sbar.query(env.NAME).label.value

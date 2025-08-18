@@ -48,25 +48,23 @@ local theme = rp
 
 M.sections = {
   bar = {
-    bg = with_alpha(rp_moon.overlay, 0.6),
+    bg = with_alpha(rp_moon.base, 0.6),
     border = theme.highlight_low,
   },
   item = {
-    bg = theme.overlay,
+    bg = transparent,
+    popup = with_alpha(rp_moon.base, 0.8),
     border = theme.base,
     text = theme.text,
   },
-  apple = theme.text,
+  apple = {
+    bg = transparent,
+    icon = theme.text,
+  },
   spaces = {
-    icon = {
-      color = theme.subtle,
-      highlight = theme.text,
-    },
-    label = {
-      color = theme.subtle,
-      highlight = theme.gold,
-    },
-    indicator = theme.iris,
+    inactive = theme.highlight_med,
+    unselected = theme.text,
+    selected = theme.rose,
   },
   media = {
     label = theme.subtle,

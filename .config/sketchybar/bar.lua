@@ -13,4 +13,5 @@ sbar.bar {
   blur_radius = 20,
   margin = 12,
   corner_radius = 8,
+  shadow = true,
 }

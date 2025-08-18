@@ -16,11 +16,15 @@ inner.horizontal = 10
 inner.vertical =   10
 outer.left =       12
 outer.bottom =     10
-outer.top =        50
+outer.top =        52
 outer.right =      12
 
 [[on-window-detected]]
   if.app-id = 'org.mozilla.firefox'
+  run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+  if.app-id = 'company.thebrowser.dia'
   run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]

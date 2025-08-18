@@ -58,27 +58,5 @@ spotify:subscribe("playback_state_changed", function(env)
 end)
 
 spotify:subscribe("mouse.clicked", function(_)
-  sbar.animate("tanh", 8, function()
-    spotify:set {
-      background = {
-        shadow = {
-          distance = 0,
-        },
-      },
-      y_offset = -4,
-      padding_left = 8,
-      padding_right = 4,
-    }
-    spotify:set {
-      background = {
-        shadow = {
-          distance = 4,
-        },
-      },
-      y_offset = 0,
-      padding_left = 4,
-      padding_right = 8,
-    }
-  end)
   spotify:set { popup = { drawing = "toggle" } }
 end)
