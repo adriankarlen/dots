@@ -3,18 +3,21 @@
 theme = light:rose-pine-dawn,dark:rose-pine
 
 font-family = Code Saver
-font-size = 15
+font-size = 16
 
 cursor-invert-fg-bg = true
 cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 shell-integration-features = no-cursor
-macos-window-shadow = false
-macos-icon = custom-style
-macos-icon-frame = chrome
+# macos-window-shadow = false
+# macos-icon = custom-style
+# macos-icon-frame = chrome
 
+window-theme = dark
 window-padding-y = 4,0
+window-padding-x = 4,0
 background-blur = true
 background-opacity = 0.98
 
+title = " "
