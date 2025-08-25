@@ -1,16 +1,21 @@
 return {
   {
-    "OlegGulevskyy/better-ts-errors.nvim",
-    ft = { "typescript", "typescriptreact" },
+    'dmmulroy/ts-error-translator.nvim',
     event = "LspAttach",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    opts = {
-      keymaps = {
-        toggle = "<leader>xb",
-        go_to_definition = "<leader>xB",
-      },
-    },
+    opts = {},
   },
+  -- {
+  --   "OlegGulevskyy/better-ts-errors.nvim",
+  --   ft = { "typescript", "typescriptreact" },
+  --   event = "LspAttach",
+  --   dependencies = { "MunifTanjim/nui.nvim" },
+  --   opts = {
+  --     keymaps = {
+  --       toggle = "<leader>xb",
+  --       go_to_definition = "<leader>xB",
+  --     },
+  --   },
+  -- },
   {
     "RaafatTurki/corn.nvim",
     event = "LspAttach",

@@ -14,6 +14,14 @@ return {
     },
   },
   {
+    "dmmulroy/tsc.nvim",
+    event = "LspAttach",
+    opts = {},
+    keys = {
+      { "<leader>jt", "<cmd>TSC<cr>", desc = "typecheck project" },
+    },
+  },
+  {
     "smjonas/inc-rename.nvim",
     cmd = "IncRename",
     opts = {},
@@ -56,7 +64,7 @@ return {
     keys = {
       { "<leader>co", "<cmd>TailwindSort(Sync)<cr>", desc = "tailwind sort" },
       { "<leader>co", mode = "x", "<cmd>TailwindSortSelection(Sync)<cr>", desc = "tailwind sort" },
-      { "<leader>tt", "<cmd>TailwindConcealToggle<cr>", desc = "tailwind conceal"}
+      { "<leader>tt", "<cmd>TailwindConcealToggle<cr>", desc = "tailwind conceal" },
     },
   },
 }
