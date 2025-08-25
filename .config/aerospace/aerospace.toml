@@ -14,9 +14,9 @@ on-focus-changed = [ 'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchyba
 [gaps]
 inner.horizontal = 10
 inner.vertical =   10
-outer.left =       12
+outer.left =       60
 outer.bottom =     10
-outer.top =        52
+outer.top =        10
 outer.right =      12
 
 [[on-window-detected]]

@@ -11,9 +11,9 @@ local volume_icon = sbar.add("item", "widgets.volume", {
   label = { drawing = false },
   background = { drawing = false },
   popup = {
-    align = "center",
-    y_offset = 2,
+    align = "bottom",
   },
+  y_offset = 10,
   padding_right = 8,
 })
 

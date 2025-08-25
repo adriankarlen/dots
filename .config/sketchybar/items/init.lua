@@ -6,4 +6,4 @@ require "items.menus"
 --right (reverse order)
 require "items.calendar"
 require "items.widgets"
-require "items.spotify"
+-- require "items.spotify"

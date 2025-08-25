@@ -1,4 +1,4 @@
-local colors = require("colors").sections.spaces
+local colors = require("colors").sections
 local icons = require "icons"
 local icon_map = require "helpers.icon_map"
 
@@ -7,15 +7,15 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
     local space = sbar.add("item", "space." .. space_name, {
       position = "left",
       icon = {
-        width = 8,
+        width = 10,
       },
       label = {
         drawing = false,
       },
       background = {
-        color = colors.inactive,
-        height = 8,
-        corner_radius = 4,
+        height = 20,
+        color = colors.spaces.inactive,
+        corner_radius = 2,
         padding_left = space_name == "1" and 0 or 4,
         padding_right = 4,
       },
@@ -34,8 +34,8 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
         end
         space:set {
           background = {
-            color = not no_app and colors.unselected or colors.inactive,
-          }
+            color = not no_app and colors.spaces.unselected or colors.spaces.inactive,
+          },
         }
       end)
     end
@@ -44,9 +44,9 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
       local selected = env.FOCUSED_WORKSPACE == space_name
       sbar.animate("circ", 15, function()
         space:set {
-          icon = { width = selected and 48 or 8 },
           background = {
-            color = selected and colors.selected or colors.unselected,
+            color = selected and colors.spaces.selected or colors.spaces.unselected,
+            height = selected and 30 or 20,
           },
         }
       end)
@@ -63,26 +63,28 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
   end
 end)
 
-local spaces_indicator = sbar.add("item", {
-  icon = {
-    padding_left = 15,
-    padding_right = 15,
-    string = icons.switch.on,
-    color = colors.indicator,
-  },
-  label = {
-    drawing = false,
-  },
-  padding_right = 8,
-})
+sbar.add("bracket", {"/space\\..*/"}, { background = { drawing = true, color = colors.bracket.bg, border_color = colors.bracket.border } })
 
-spaces_indicator:subscribe("swap_menus_and_spaces", function()
-  local currently_on = spaces_indicator:query().icon.value == icons.switch.on
-  spaces_indicator:set {
-    icon = currently_on and icons.switch.off or icons.switch.on,
-  }
-end)
-
-spaces_indicator:subscribe("mouse.clicked", function()
-  sbar.trigger "swap_menus_and_spaces"
-end)
+-- local spaces_indicator = sbar.add("item", {
+--   icon = {
+--     -- padding_left = 15,
+--     -- padding_right = 15,
+--     string = icons.switch.on,
+--     color = colors.indicator,
+--   },
+--   label = {
+--     drawing = false,
+--   },
+--   -- padding_right = 8,
+-- })
+--
+-- spaces_indicator:subscribe("swap_menus_and_spaces", function()
+--   local currently_on = spaces_indicator:query().icon.value == icons.switch.on
+--   spaces_indicator:set {
+--     icon = currently_on and icons.switch.off or icons.switch.on,
+--   }
+-- end)
+--
+-- spaces_indicator:subscribe("mouse.clicked", function()
+--   sbar.trigger "swap_menus_and_spaces"
+-- end)

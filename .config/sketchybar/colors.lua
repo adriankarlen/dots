@@ -48,14 +48,18 @@ local theme = rp
 
 M.sections = {
   bar = {
-    bg = with_alpha(rp_moon.base, 0.6),
+    bg = with_alpha(theme.base, 0.6),
     border = theme.highlight_low,
   },
   item = {
     bg = transparent,
-    popup = with_alpha(rp_moon.base, 0.8),
+    popup = with_alpha(theme.base, 0.8),
     border = theme.base,
     text = theme.text,
+  },
+  bracket = {
+    bg = theme.overlay,
+    border = theme.highlight_low,
   },
   apple = {
     bg = transparent,
