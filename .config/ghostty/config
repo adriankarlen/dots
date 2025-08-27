@@ -2,22 +2,30 @@
 
 theme = light:rose-pine-dawn,dark:rose-pine
 
-font-family = Code Saver
-font-size = 16
+adjust-cell-height = 45%
+font-family = Berkeley Mono
+font-size = 14
+
+background-opacity = 0.95
+background-blur = true
+
+confirm-close-surface = false
+
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+macos-option-as-alt = false
+macos-titlebar-style = hidden
+window-padding-balance = true
 
 cursor-invert-fg-bg = true
 cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
 shell-integration-features = no-cursor
-# macos-window-shadow = false
-# macos-icon = custom-style
-# macos-icon-frame = chrome
 
-window-theme = dark
-window-padding-y = 4,0
-window-padding-x = 4,0
-background-blur = true
-background-opacity = 0.98
+window-padding-x = 4
+window-padding-y = 4
+
 
 title = " "
