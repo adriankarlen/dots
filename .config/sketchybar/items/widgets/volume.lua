@@ -14,7 +14,8 @@ local volume_icon = sbar.add("item", "widgets.volume", {
     align = "bottom",
   },
   y_offset = 10,
-  padding_right = 8,
+  padding_right = 10,
+  padding_left = 10,
 })
 
 local volume_slider = sbar.add("slider", popup_width, {

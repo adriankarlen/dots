@@ -1,8 +1,7 @@
 local colors = require("colors").sections
-local icons = require "icons"
-local icon_map = require "helpers.icon_map"
 
 sbar.exec("aerospace list-workspaces --all", function(spaces)
+  local space_names = {}
   for space_name in spaces:gmatch "[^\r\n]+" do
     local space = sbar.add("item", "space." .. space_name, {
       position = "left",
@@ -46,7 +45,7 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
         space:set {
           background = {
             color = selected and colors.spaces.selected or colors.spaces.unselected,
-            height = selected and 30 or 20,
+            height = selected and 40 or 20,
           },
         }
       end)
@@ -60,10 +59,22 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
     -- space:subscribe("space_windows_change", function()
     --   update_windows()
     -- end)
+    space_names[space_name] = "space." .. space_name
   end
-end)
 
-sbar.add("bracket", {"/space\\..*/"}, { background = { drawing = true, color = colors.bracket.bg, border_color = colors.bracket.border } })
+  local function printTable(t)
+    for k, v in pairs(t) do
+      print(k, v)
+    end
+  end
+
+  printTable(space_names)
+  sbar.add(
+    "bracket",
+    { "/space\\..*/" },
+    { background = { drawing = true, color = colors.bracket.bg, border_color = colors.bracket.border } }
+  )
+end)
 
 -- local spaces_indicator = sbar.add("item", {
 --   icon = {

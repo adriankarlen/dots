@@ -30,13 +30,6 @@ sbar.default {
     corner_radius = 4,
     color = colors.item.bg,
     border_color = colors.item.border,
-    -- border_width = 2,
-    -- shadow = {
-    --   drawing = true,
-    --   angle = 45,
-    --   distance = 4,
-    --   color = colors.item.border,
-    -- },
   },
   popup = {
     background = {
