@@ -87,11 +87,8 @@ alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
 alias .5="cd ../../../../.."
-alias gr="/"
-alias gd="cd ~/dots"
-alias gdev="cd ~/repos"
-alias lg="lazygit"
 alias x="exit"
+alias g="git"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -107,5 +104,5 @@ eval "$(zoxide init zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-nerdfetch
-
+# bun completions
+[ -s "/Users/adriankarlen/.bun/_bun" ] && source "/Users/adriankarlen/.bun/_bun"
