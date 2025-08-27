@@ -1,9 +1,5 @@
 #!/bin/zsh
 
-# Install command line tools
-echo "Installing command line tools..."
-xcode-select --install
-
 # Install Homebrew
 echo "Installing Homebrew..."
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

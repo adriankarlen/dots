@@ -44,8 +44,6 @@ sbar.default {
       border_color = colors.item.border,
       border_width = 2,
       corner_radius = 8,
-      blur_radius = 20,
-      shadow = true,
     },
   },
   padding_left = 4,
