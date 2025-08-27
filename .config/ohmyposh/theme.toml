@@ -18,7 +18,7 @@ terminal_background = "transparent"
     type = "path"
     style = "plain"
     foreground = "magenta"
-    template = "<b>{{ .Path }}</b> <yellow></>"
+    template = "<b>{{ .Path }}</b> <yellow> </>"
 
     [blocks.segments.properties]
       style = "folder"
