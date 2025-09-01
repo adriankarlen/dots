@@ -64,7 +64,7 @@ return {
         highlight = { enable = true },
         indent = { enable = true },
         ignore_install = {},
-        ensure_installed = {},
+        ensure_installed = { "regex" },
         sync_install = false,
         modules = {},
       }
