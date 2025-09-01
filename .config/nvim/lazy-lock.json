@@ -5,7 +5,7 @@
   "conform.nvim": { "branch": "master", "commit": "a0ab60ed666c56b37fd7ed1847d2ac52f2482ce0" },
   "copilot.lua": { "branch": "master", "commit": "1e37de649033b5519bef030287fbb590eb4472eb" },
   "corn.nvim": { "branch": "master", "commit": "5106eff0d02decb76e823ae2abb2f74113579100" },
-  "dart.nvim": { "branch": "master", "commit": "ee67dae5e3d970f98b83e0f08b1ab36a0177583b" },
+  "dart.nvim": { "branch": "master", "commit": "d20c6c077ecf08a9c1dc2f3fa834c3dbe13c9336" },
   "easy-dotnet.nvim": { "branch": "main", "commit": "d23d2fdcffea11d18ef160672e81c9d63a9a78fa" },
   "edgy.nvim": { "branch": "main", "commit": "7e8dedc39abebe40c289b8012cc89b11c69aa7a0" },
   "fastaction.nvim": { "branch": "main", "commit": "b147d91727cb35be4f722f17e7d4ed5b4a5801d8" },
