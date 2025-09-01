@@ -110,7 +110,7 @@ return {
         { "<leader>d", group = "debug" },
         { "<leader>f", group = "find" },
         { "<leader>g", group = "git" },
-        { "<leader>h", group = "hurl", icon = "" },
+        { "<leader>r", group = "rest", icon = "" },
         { "<leader>j", group = "js", icon = "" },
         { "<leader>l", group = "lsp" },
         { "<leader>n", group = ".net", icon = "󰌛" },
