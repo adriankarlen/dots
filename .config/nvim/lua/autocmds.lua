@@ -78,9 +78,21 @@ autocmd("LspProgress", {
       id = "lsp_progress",
       title = client.name,
       opts = function(notif)
-        notif.icon = #progress[client.id] == 0 and " "
-          or ""
+        notif.icon = #progress[client.id] == 0 and " " or ""
       end,
     })
+  end,
+})
+autocmd("User", {
+  pattern = { "SnacksDashboardOpened", "SnacksDashboardUpdatePost" },
+  callback = function()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      local conf = vim.api.nvim_win_get_config(win)
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft = vim.bo[buf].ft
+      if ft == "snacks_dashboard" and conf.relative ~= "" then
+        vim.api.nvim_win_set_config(win, { border = "none" })
+      end
+    end
   end,
 })

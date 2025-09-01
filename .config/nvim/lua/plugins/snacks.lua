@@ -34,6 +34,7 @@ return {
               action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })",
             },
             { icon = " ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
+            { icon = " ", key = "p", desc = "packages", action = ":lua require('plugin-view').open()" },
             { icon = "󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
             { icon = "󰭿 ", key = "q", desc = "quit", action = ":qa" },
           },
@@ -131,14 +132,11 @@ return {
         },
         snacks_image = {
           relative = "editor",
-          border = "single",
+          border = "none",
           focusable = false,
           backdrop = false,
           row = 1,
           col = -1,
-        },
-        lazygit = {
-          border = "single",
         },
         blame_line = {
           border = "single",

@@ -11,6 +11,7 @@ opt.clipboard = "unnamedplus"
 opt.cursorline = true
 opt.laststatus = 3
 opt.showmode = false
+o.winborder = "single"
 
 -- split
 opt.splitkeep = "screen"
