@@ -25,13 +25,12 @@ return {
       graphql = { "prettier" },
       go = { "gofmt" },
       cs = { "csharpier" },
-      xml = { "xmlformat" },
-      svg = { "xmlformat" },
-      rust = { "rustfmt" },
+      xml = { "xmlformatter" },
+      svg = { "xmlformatter" },
     },
     formatters = {
-      xmlformat = {
-        cmd = { "xmlformat" },
+      xmlformatter = {
+        cmd = { "xmlformatter" },
         args = { "--selfclose", "-" },
       },
       injected = { options = { ignore_errors = false } },
