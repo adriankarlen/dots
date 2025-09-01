@@ -1,11 +1,11 @@
 return {
-  { "echasnovski/mini.ai", version = false, event = "BufReadPre", opts = { n_lines = 500 } },
-  { "echasnovski/mini.align", version = false, event = "BufReadPre", opts = {} },
-  { "echasnovski/mini.bracketed", version = false, event = "BufReadPre", opts = {} },
-  { "echasnovski/mini-git", version = false, main = "mini.git", opts = {} },
-  { "echasnovski/mini.operators", version = false, event = "BufReadPre", opts = { replace = { prefix = "gR" } } },
+  { "nvim-mini/mini.ai", version = false, event = "BufReadPre", opts = { n_lines = 500 } },
+  { "nvim-mini/mini.align", version = false, event = "BufReadPre", opts = {} },
+  { "nvim-mini/mini.bracketed", version = false, event = "BufReadPre", opts = {} },
+  { "nvim-mini/mini-git", version = false, main = "mini.git", opts = {} },
+  { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = { replace = { prefix = "gR" } } },
   {
-    "echasnovski/mini.cursorword",
+    "nvim-mini/mini.cursorword",
     version = false,
     event = "BufReadPre",
     config = function()
@@ -29,7 +29,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.diff",
+    "nvim-mini/mini.diff",
     version = false,
     opts = {
       view = {
@@ -39,7 +39,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.icons",
+    "nvim-mini/mini.icons",
     opts = {
       filetype = {
         dotenv = { glyph = "", hl = "MiniIconsYellow" },
@@ -61,7 +61,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.move",
+    "nvim-mini/mini.move",
     version = false,
     event = "BufReadPre",
     opts = {
@@ -77,13 +77,13 @@ return {
       },
     },
   },
-  { "echasnovski/mini.pairs", version = false, event = "InsertEnter", opts = {} },
+  { "nvim-mini/mini.pairs", version = false, event = "InsertEnter", opts = {} },
   {
-    "echasnovski/mini.splitjoin",
+    "nvim-mini/mini.splitjoin",
     version = false,
     event = "BufReadPre",
     opts = { mappings = { toggle = "<leader>cm" } },
   },
-  { "echasnovski/mini.surround", event = "BufReadPre", version = false, opts = {} },
-  { "echasnovski/mini.doc", version = false, opts = {}, ft = "lua" },
+  { "nvim-mini/mini.surround", event = "BufReadPre", version = false, opts = {} },
+  { "nvim-mini/mini.doc", version = false, opts = {}, ft = "lua" },
 }
