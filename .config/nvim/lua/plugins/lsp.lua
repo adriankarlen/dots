@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   cond = not vim.g.vscode,
-  event = { "BufReadPre" },
+  lazy = false,
   dependencies = {
     { "williamboman/mason.nvim", config = true },
     { "williamboman/mason-lspconfig.nvim" },
@@ -32,6 +32,17 @@ return {
       jsonls = {},
       lua_ls = {},
       marksman = {},
+      roslyn = {
+        settings = {
+          ["csharp|inlay_hints"] = {
+            csharp_enable_inlay_hints_for_implicit_object_creation = true,
+            csharp_enable_inlay_hints_for_implicit_variable_types = true,
+          },
+          ["csharp|code_lens"] = {
+            dotnet_enable_references_code_lens = true,
+          },
+        },
+      },
       svelte = {},
       tailwindcss = {},
       taplo = {},
@@ -43,6 +54,9 @@ return {
     vim.list_extend(ensure_installed, {
       "prettier", -- prettier formatter
       "stylua", -- lua formatter
+      "rustywind", -- tailwindcss formatter
+      "xmlformatter", -- xml formatter
+      "csharpier", -- csharp formatter
     })
 
     mason.setup {
@@ -57,7 +71,7 @@ return {
       },
       registries = {
         "github:mason-org/mason-registry",
-        "github:syndim/mason-registry",
+        "github:Crashdummyy/mason-registry",
       },
     }
     mason_tool_installer.setup { ensure_installed = ensure_installed }
