@@ -67,8 +67,8 @@ M.sections = {
   },
   spaces = {
     inactive = theme.highlight_med,
-    unselected = theme.text,
-    selected = theme.iris,
+    unselected = theme.muted,
+    selected = theme.rose,
   },
   media = {
     label = theme.subtle,
