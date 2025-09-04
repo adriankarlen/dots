@@ -12,6 +12,8 @@ opt.cursorline = true
 opt.laststatus = 3
 opt.showmode = false
 o.winborder = "single"
+require("vim._extui").enable {}
+o.cmdheight = 0
 
 -- split
 opt.splitkeep = "screen"

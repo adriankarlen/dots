@@ -192,12 +192,11 @@ local function get_dotnet_solution()
 end
 
 local function get_recording()
-  local noice = lazy_require "noice"
-  local status = noice.api.status.mode.get()
-  if status == nil then
+  local recording = vim.fn.reg_recording()
+  if recording == "" then
     return ""
   end
-  return tools.hl_str("StatuslineTextAccent", "󰑋 ") .. tools.hl_str("StatuslineRec", status .. _spacer(2))
+  return tools.hl_str("StatuslineTextAccent", "󰑋 ") .. tools.hl_str("StatuslineRec", recording .. " recording" .. _spacer(2))
 end
 
 local function get_branch()

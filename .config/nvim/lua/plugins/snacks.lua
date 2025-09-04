@@ -9,52 +9,60 @@ return {
       dashboard = {
         formats = {
           key = function(item)
-            return { { "[", hl = "function" }, { item.key, hl = "key" }, { "]", hl = "function" } }
+            return { { "[", hl = "NonText" }, { item.key, hl = "Normal" }, { "]", hl = "NonText" } }
           end,
-          header = { "%s", align = "center", hl = "MiniIconsBlue" },
+          header = { "%s", align = "center", hl = "Normal" },
           icon = function(item)
             if item.file and item.icon == "file" or item.icon == "directory" then
-              return Snacks.dashboard.icon(item.file, item.icon)
+              return { "" }
             end
-            return { item.icon, width = 2, hl = "MiniIconsPurple" }
+            return { item.icon, width = 2, hl = "Normal" }
+          end,
+          file = function(item, ctx)
+            local fname = vim.fn.fnamemodify(item.file, ":~")
+            fname = ctx.width and #fname > ctx.width and vim.fn.pathshorten(fname) or fname
+            if #fname > ctx.width then
+              local dir = vim.fn.fnamemodify(fname, ":h")
+              local file = vim.fn.fnamemodify(fname, ":t")
+              if dir and file then
+                file = file:sub(-(ctx.width - #dir - 2))
+                fname = dir .. "/…" .. file
+              end
+            end
+            local dir, file = fname:match "^(.*)/(.+)$"
+            local icon, icon_hl = "", ""
+            if file:match "%." then
+              icon, icon_hl = require("mini.icons").get("file", file)
+            end
+            return dir
+                and {
+                  { dir .. " ", hl = "dir" },
+                  icon ~= "" and { icon .. " ", hl = icon_hl } or { "" },
+                  { file, hl = "file" },
+                }
+              or { { fname, hl = "file" } }
           end,
         },
         preset = {
           keys = {
-            {
-              icon = " ",
-              key = "f",
-              desc = "find file",
-              action = ":lua Snacks.dashboard.pick('files', { hidden = true })",
-            },
-            {
-              icon = " ",
-              key = "w",
-              desc = "find text",
-              action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })",
-            },
-            { icon = " ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
-            { icon = " ", key = "p", desc = "packages", action = ":lua require('plugin-view').open()" },
-            { icon = "󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
-            { icon = "󰭿 ", key = "q", desc = "quit", action = ":qa" },
+            -- stylua: ignore start
+            { icon = "  ", key = "f", desc = "find file", action = ":lua Snacks.dashboard.pick('files', { hidden = true })" },
+            { icon = "  ", key = "w", desc = "find text", action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })" },
+            { icon = "  ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
+            { icon = "  ", key = "p", desc = "packages", action = ":lua require('plugin-view').open()" },
+            { icon = " 󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
+            { icon = " 󰭿 ", key = "q", desc = "quit", action = ":qa" },
+            -- stylua: ignore end
           },
-          header = require("utils.ascii").snufkin,
         },
         sections = {
-          {
-            section = "terminal",
-            cmd = "chafa ~/.config/clouds.jpg --format symbols --symbols vhalf --size 60x15 --stretch; sleep .1",
-            height = 17,
-            padding = 1,
-          },
-          {
-            pane = 2,
-            { title = "shortcuts", hl = ""},
-            { section = "keys", padding = 1 },
-            { title = "mru ", file = vim.fn.fnamemodify(".", ":~")},
-            { section = "recent_files", cwd = true, limit = 5, padding = 1 },
-            { section = "startup", icon = " " },
-          },
+          --stylua: ignore start
+          { header = { { "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" } }, padding = 1, align = "center" },
+          { section = "keys", padding = 1 },
+          { title = " mru ", file = vim.fn.fnamemodify(".", ":~") },
+          { section = "recent_files", cwd = true, limit = 6, padding = 1 },
+          { section = "startup", icon = " " },
+          --stylua: ignore end
         },
       },
       git = {},
@@ -77,9 +85,6 @@ return {
           max_height = 12,
           max_width = 24,
         },
-      },
-      notifier = {
-        timeout = 3000,
       },
       statuscolumn = {},
       rename = {},
@@ -122,13 +127,12 @@ return {
           },
         },
       },
+      input = { enabled = true },
       styles = {
-        notification = {
+        input = {
           border = "single",
-          wo = { wrap = true, winblend = 0 }, -- Wrap notifications
-        },
-        ["notification.history"] = {
-          border = "single",
+          relative = "cursor",
+          title = "",
         },
         snacks_image = {
           relative = "editor",
@@ -149,7 +153,7 @@ return {
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
       { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
-      { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
+      -- { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
       { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
       { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
       { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },

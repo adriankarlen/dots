@@ -5,6 +5,23 @@ return {
   { "nvim-mini/mini-git", version = false, main = "mini.git", opts = {} },
   { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = { replace = { prefix = "gR" } } },
   {
+    "nvim-mini/mini.notify",
+    version = false,
+    event = "VeryLazy",
+    opts = {
+      content = {
+        format = function(notif)
+          local time = vim.fn.strftime("%H:%M:%S", math.floor(notif.ts_update))
+          return string.format("%s   %s", time, notif.msg)
+        end,
+      },
+      window = { config = { title = "" }, winblend = 0 },
+    },
+    init = function()
+      vim.notify = require("mini.notify").make_notify()
+    end,
+  },
+  {
     "nvim-mini/mini.cursorword",
     version = false,
     event = "BufReadPre",
