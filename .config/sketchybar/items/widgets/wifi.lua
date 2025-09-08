@@ -19,8 +19,8 @@ local wifi = sbar.add("item", "widgets.wifi", {
     height = 30,
     y_offset = 2,
   },
-  padding_left = 10,
-  padding_right = 10,
+  padding_left = 4,
+  padding_right = 4,
 })
 
 local ip = sbar.add("item", {

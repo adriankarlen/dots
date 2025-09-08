@@ -3,15 +3,9 @@ local colors = require("colors").sections.media
 
 local spotify = sbar.add("item", {
   position = "right",
-  -- drawing = false,
   icon = {
     max_chars = 50,
     padding_left = 8,
-  },
-  label = {
-    string = icons.separators.left .. " " .. icons.music,
-    padding_right = 8,
-    color = colors.label,
   },
   popup = {
     horizontal = true,
@@ -52,8 +46,8 @@ sbar.add("item", {
 sbar.add("event", "playback_state_changed", "com.spotify.client.PlaybackStateChanged")
 
 spotify:subscribe("playback_state_changed", function(env)
-  local playing = (env.INFO["Player State"] == "Playing")
-  -- local playing = true
+  -- local playing = (env.INFO["Player State"] == "Playing")
+  local playing = true
   spotify:set { drawing = playing, icon = env.INFO.Artist .. " - " .. env.INFO.Name }
 end)
 

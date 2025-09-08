@@ -13,12 +13,12 @@ exec-on-workspace-change = [
 on-focus-changed = [ 'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_focus_change' ]
 
 [gaps]
-inner.horizontal = 10
-inner.vertical =   10
-outer.left =       50
-outer.bottom =     10
-outer.top =        10
-outer.right =      12
+inner.horizontal = 5
+inner.vertical = 5
+outer.left = 5
+outer.bottom = 5
+outer.top = [{ monitor."^built-in retina display$" = 10 }, 42]
+outer.right = 5
 
 [[on-window-detected]]
   if.app-id = 'org.mozilla.firefox'

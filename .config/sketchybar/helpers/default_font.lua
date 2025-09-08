@@ -1,6 +1,6 @@
 return {
 	text = "SF Pro", -- Used for text
-	numbers = "SF Mono", -- Used for numbers
+	numbers = "SF Pro", -- Used for numbers
 	weather = "Symbols Nerd Font",
 
 	-- Unified font style map

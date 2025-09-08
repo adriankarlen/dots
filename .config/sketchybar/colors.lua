@@ -48,7 +48,7 @@ local theme = rp
 
 M.sections = {
   bar = {
-    bg = with_alpha(theme.base, 0.6),
+    bg = with_alpha(theme.base, 0.5),
     border = theme.highlight_low,
   },
   item = {
@@ -68,7 +68,7 @@ M.sections = {
   spaces = {
     inactive = theme.highlight_med,
     unselected = theme.muted,
-    selected = theme.rose,
+    selected = theme.text,
   },
   media = {
     label = theme.subtle,
@@ -76,18 +76,18 @@ M.sections = {
   widgets = {
     battery = {
       low = theme.love,
-      mid = theme.gold,
-      high = theme.pine,
+      mid = theme.muted,
+      high = theme.muted,
     },
-    wifi = { icon = theme.rose },
+    wifi = { icon = theme.muted },
     volume = {
-      icon = theme.foam,
+      icon = theme.muted,
       popup = {
         item = theme.subtle,
         highlight = theme.text,
       },
       slider = {
-        highlight = theme.foam,
+        highlight = theme.text,
         bg = theme.highlight_med,
         border = theme.highlight_low,
       },
