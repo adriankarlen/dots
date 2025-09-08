@@ -75,5 +75,6 @@ vim.filetype.add {
   },
   pattern = {
     ["*.user.css"] = "less",
+    [".*%.conf"] = "nginx",
   },
 }
