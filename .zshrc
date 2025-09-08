@@ -106,3 +106,5 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # bun completions
 [ -s "/Users/adriankarlen/.bun/_bun" ] && source "/Users/adriankarlen/.bun/_bun"
+
+export PATH=$PATH:/Users/adriankarlen/.spicetify
