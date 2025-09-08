@@ -9,7 +9,7 @@ return {
       },
       highlight_groups = {
         MatchParen = { fg = "love", bg = "love", blend = 25 },
-        CursorLineNr = { fg = "gold", bold = true },
+        -- CursorLineNr = { fg = "gold", bold = true },
         StatusLineTerm = { fg = "subtle", bg = "none" },
         StatuslineSeparator = { fg = "none", bg = "none" },
         StatuslineTextMain = { fg = "text", bg = "none" },

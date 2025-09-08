@@ -69,13 +69,15 @@ return {
   },
   {
     "NickvanDyke/opencode.nvim",
-    opts = {
+    init = function()
+      vim.g.opencode_opts = {
       terminal = {
         env = {
           OPENCODE_THEME = "rosepine",
         },
       },
-    },
+      }
+    end,
     keys = {
       -- stylua: ignore start
       -- Recommended keymaps

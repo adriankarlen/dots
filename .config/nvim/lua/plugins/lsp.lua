@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
   cond = not vim.g.vscode,
-  lazy = false,
+  event = "VeryLazy",
   dependencies = {
     { "williamboman/mason.nvim", config = true },
     { "williamboman/mason-lspconfig.nvim" },

@@ -1,3 +1,6 @@
 return {
-  { lazy = false, dir = "~/repos/plugin-view.nvim" },
+  {
+    "adriankarlen/plugin-view.nvim",
+    lazy = false,
+  },
 }
