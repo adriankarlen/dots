@@ -14,7 +14,7 @@ sbar.exec("aerospace list-workspaces --all", function(spaces)
       background = {
         height = 10,
         color = colors.spaces.inactive,
-        corner_radius = 2,
+        corner_radius = 5,
         padding_left = space_name == "1" and 0 or 4,
         padding_right = 4,
       },
