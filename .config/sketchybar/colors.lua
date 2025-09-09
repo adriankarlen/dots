@@ -9,23 +9,6 @@ end
 
 local transparent = 0x00000000
 
-local rp_moon = {
-  base = 0xff232136,
-  surface = 0xff2a273f,
-  overlay = 0xff393552,
-  muted = 0xff6e6a86,
-  subtle = 0xff908caa,
-  text = 0xffe0def4,
-  love = 0xffeb6f92,
-  gold = 0xfff6c177,
-  rose = 0xffea9a97,
-  iris = 0xffc4a7e7,
-  pine = 0xff3e8fb0,
-  foam = 0xff9ccfd8,
-  highlight_low = 0xff21202e,
-  highlight_med = 0xff44415a,
-}
-
 local rp = {
   base = 0xff191724,
   surface = 0xff1f1d2e,
