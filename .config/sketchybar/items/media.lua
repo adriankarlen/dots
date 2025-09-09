@@ -1,5 +1,4 @@
 local icons = require "icons"
-local colors = require("colors").sections.media
 
 local media = sbar.add("item", {
   position = "right",
