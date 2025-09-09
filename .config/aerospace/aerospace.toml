@@ -2,7 +2,8 @@ start-at-login = true
 
 after-startup-command = [
   'exec-and-forget sketchybar',
-  'exec-and-forget borders'
+  'exec-and-forget borders',
+  'exec-and-forget sh ~/.config/sketchybar/helpers/media-stream.sh'
 ]
 exec-on-workspace-change = [
 	'/bin/bash',
