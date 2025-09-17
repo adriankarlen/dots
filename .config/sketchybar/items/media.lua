@@ -42,9 +42,7 @@ sbar.add("item", {
   click_script = "media-control next-track",
 })
 
-
 media:subscribe("media_stream_changed", function(env)
-  print("media_stream_changed", env)
   media:set { label = env.artist .. " - " .. env.title }
 end)
 
