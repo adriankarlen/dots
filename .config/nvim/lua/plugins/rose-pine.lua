@@ -54,7 +54,7 @@ return {
         EasyDotnetTestRunnerProject = { fg = "rose" },
         EasyDotnetTestRunnerTest = { fg = "iris" },
         SnacksIndentScope = { fg = "overlay" },
-        SnacksDashboardSpecial = { fg = "muted" },
+        SnacksDashboardSpecial = { fg = "muted", italic = true },
         SnacksDashboardTitle = { fg = "text" },
         SnacksDashboardDesc = { fg = "muted" },
         SnacksDashboardDir = { fg = "muted", italic = true },

@@ -57,7 +57,7 @@ return {
         },
         sections = {
           --stylua: ignore start
-          { header = { { "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" } }, padding = 1, align = "center" },
+          { title = {{ "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" }}, padding = 1, align = "center" },
           { section = "keys", padding = 1 },
           { title = " mru ", file = vim.fn.fnamemodify(".", ":~") },
           { section = "recent_files", cwd = true, limit = 6, padding = 1 },
