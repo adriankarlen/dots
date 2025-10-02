@@ -3,9 +3,17 @@ local colors = require("colors").sections.widgets.battery
 
 local battery = sbar.add("item", "widgets.battery", {
   position = "right",
-  icon = {},
-  label = { drawing = false },
-  background = { drawing = false },
+  icon = {
+    padding_left = 6,
+    padding_right = 3,
+  },
+  label = {
+    padding_left = 3,
+    padding_right = 6,
+  },
+  background = {
+    corner_radius = 9999,
+  },
   padding_left = 4,
   padding_right = 4,
   update_freq = 180,
@@ -24,7 +32,9 @@ local remaining_time = sbar.add("item", {
     width = 100,
     align = "right",
   },
-  background = { drawing = false },
+  background = {
+    drawing = false,
+  },
 })
 
 battery:subscribe({ "routine", "power_source_change", "system_woke" }, function()
@@ -36,7 +46,8 @@ battery:subscribe({ "routine", "power_source_change", "system_woke" }, function(
       charge = tonumber(charge)
     end
 
-    local color = colors.high
+    local fg = colors.high.icon
+    local bg = colors.high.bg
     local charging, _, _ = batt_info:find "AC Power"
 
     if charging then
@@ -50,20 +61,30 @@ battery:subscribe({ "routine", "power_source_change", "system_woke" }, function(
         icon = icons.battery._50
       elseif found and charge > 30 then
         icon = icons.battery._50
-        color = colors.mid
+        fg = colors.mid.icon
+        bg = colors.mid.bg
       elseif found and charge > 20 then
         icon = icons.battery._25
-        color = colors.mid
+        fg = colors.mid.icon
+        bg = colors.mid.bg
       else
         icon = icons.battery._0
-        color = colors.low
+        fg = colors.low.icon
+        bg = colors.low.bg
       end
     end
 
     battery:set {
       icon = {
         string = icon,
-        color = color,
+        color = fg,
+      },
+      label = {
+        string = found and (charge .. "%") or "N/A",
+        color = fg,
+      },
+      background = {
+        color = bg,
       },
     }
   end)

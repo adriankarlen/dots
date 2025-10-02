@@ -1,6 +1,6 @@
 local M = {}
 
-local with_alpha = function(color, alpha)
+M.with_alpha = function(color, alpha)
   if alpha > 1.0 or alpha < 0.0 then
     return color
   end
@@ -31,40 +31,66 @@ local theme = rp
 
 M.sections = {
   bar = {
-    bg = with_alpha(theme.base, 0.5),
-    border = theme.highlight_low,
+    bg = transparent,
+    border = transparent,
   },
   item = {
     bg = transparent,
-    popup = with_alpha(theme.base, 0.8),
+    popup = M.with_alpha(theme.base, 0.8),
     border = theme.base,
     text = theme.text,
   },
   bracket = {
-    bg = theme.overlay,
+    bg = M.with_alpha(theme.base, 0.7),
     border = theme.highlight_low,
   },
   apple = {
-    bg = transparent,
-    icon = theme.text,
+    bg = M.with_alpha(theme.love, 0.2),
+    icon = theme.love,
+  },
+  menu = {
+    fg = theme.text,
+    bg = M.with_alpha(theme.text, 0.2),
   },
   spaces = {
-    inactive = theme.highlight_med,
-    unselected = theme.highlight_high,
-    selected = theme.iris,
+    icon = {
+      theme.love,
+      theme.gold,
+      theme.rose,
+      theme.pine,
+      theme.foam,
+      theme.iris,
+    },
+  },
+  apps = {
+    focused = theme.text,
+    unfocused = theme.subtle,
   },
   media = {
     label = theme.subtle,
   },
   widgets = {
     battery = {
-      low = theme.love,
-      mid = theme.muted,
-      high = theme.muted,
+      low = {
+        icon = theme.love,
+        bg = M.with_alpha(theme.love, 0.2),
+      },
+      mid = {
+        icon = theme.gold,
+        bg = M.with_alpha(theme.gold, 0.2),
+      },
+      high = {
+        icon = theme.pine,
+        bg = M.with_alpha(theme.pine, 0.2),
+      },
     },
-    wifi = { icon = theme.muted },
+    wifi = {
+      icon = theme.foam,
+      bg = M.with_alpha(theme.foam, 0.2),
+    },
     volume = {
-      icon = theme.muted,
+      icon = theme.rose,
+      bg = M.with_alpha(theme.rose, 0.2),
       popup = {
         item = theme.subtle,
         highlight = theme.text,
@@ -75,7 +101,10 @@ M.sections = {
         border = theme.highlight_low,
       },
     },
-    messages = { icon = theme.love },
+    messages = {
+      icon = theme.love,
+      bg = M.with_alpha(theme.love, 0.2),
+    },
   },
   calendar = {
     label = theme.subtle,

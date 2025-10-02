@@ -11,9 +11,18 @@ local wifi = sbar.add("item", "widgets.wifi", {
   position = "right",
   icon = {
     color = colors.icon,
+    padding_left = 6,
+    padding_right = 3,
   },
-  label = { drawing = false },
-  background = { drawing = false },
+  label = {
+    color = colors.icon,
+    padding_left = 3,
+    padding_right = 6,
+  },
+  background = {
+    color = colors.bg,
+    corner_radius = 9999,
+  },
   popup = {
     align = "center",
     height = 30,
@@ -69,11 +78,14 @@ local router = sbar.add("item", {
 })
 
 wifi:subscribe({ "wifi_change", "system_woke" }, function(_)
-  sbar.exec([[ipconfig getsummary en1 | awk -F ' SSID : '  '/ SSID : / {print $2}']], function(wifi_name)
+  sbar.exec([[ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}']], function(wifi_name)
     local connected = not (wifi_name == "")
     wifi:set {
       icon = {
         string = connected and icons.wifi.connected or icons.wifi.disconnected,
+      },
+      label = {
+        string = connected and wifi_name or "not connected",
       },
     }
 
@@ -83,13 +95,11 @@ wifi:subscribe({ "wifi_change", "system_woke" }, function(_)
 
       if vpnconnected then
         Wifi_icon = icons.wifi.vpn
-        Wifi_color = colors.green
       end
 
       wifi:set {
         icon = {
           string = Wifi_icon,
-          color = Wifi_color,
         },
       }
     end)

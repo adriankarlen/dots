@@ -1,0 +1,12 @@
+import = [ "~/.config/sesh/spp.toml"]
+
+blacklist = [
+  "^scratch$",
+  "^_"
+]
+
+[[session]]
+name = "dots"
+path = "~/dots"
+startup_command = "nvim"
+

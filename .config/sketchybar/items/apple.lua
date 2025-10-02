@@ -1,13 +1,13 @@
 local colors = require("colors").sections
 local icons = require "icons"
 
-sbar.add("item", {
-  padding_left = 8,
+sbar.add("item", "system.apple", {
+  padding_left = 4,
   icon = {
-    font = { size = 16 },
+    font = { size = 14 },
     string = icons.apple,
-    padding_right = 6,
-    padding_left = 6,
+    padding_right = 4,
+    padding_left = 4,
     color = colors.apple.icon,
   },
   background = {

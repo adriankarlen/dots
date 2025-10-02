@@ -1,6 +1,6 @@
 local icons = require "icons"
 
-local media = sbar.add("item", {
+local media = sbar.add("item", "widgets.media", {
   position = "right",
   label = {
     max_chars = 50,
@@ -11,7 +11,8 @@ local media = sbar.add("item", {
     align = "center",
     y_offset = 2,
   },
-  padding_right = 8,
+  padding_right = 16,
+  padding_left = 4,
 })
 
 sbar.add("item", {
@@ -43,6 +44,7 @@ sbar.add("item", {
 })
 
 media:subscribe("media_stream_changed", function(env)
+  local playback_available = env.artist ~= "" and env.title ~= ""
   media:set { label = env.artist .. " - " .. env.title }
 end)
 

@@ -4,7 +4,7 @@ local icons = {
   sf_symbols = {
     plus = "􀅼",
     loading = "􀖇",
-    apple = "􀣺",
+    apple = "􁂂",
     gear = "􀍟",
     cpu = "󰒆",
     clipboard = "􀉄",
@@ -16,13 +16,13 @@ local icons = {
       right = "􀄫",
     },
     space_indicator = {
-      on = "󰄯",
-      off = "󰄰",
+      on = "􀀁",
+      off = "􀀀",
     },
 
     switch = {
-      on = "􁏮",
-      off = "􁏯",
+      on = "􁏻",
+      off = "􁏼",
     },
     menu = "􀌇",
     volume = {

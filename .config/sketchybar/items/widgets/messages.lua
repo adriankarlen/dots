@@ -4,14 +4,25 @@ local colors = require("colors").sections.widgets.messages
 local messages = sbar.add("item", "widgets.messages", {
   position = "right",
   icon = {
+    drawing = false,
     color = colors.icon,
     string = icons.message,
+    padding_left = 6,
+    padding_right = 3,
   },
-  label = { drawing = false },
-  background = { drawing = false },
+  label = {
+    drawing = false,
+    color = colors.icon,
+    padding_left = 3,
+    padding_right = 6,
+  },
+  background = {
+    color = colors.bg,
+    corner_radius = 9999,
+  },
   update_freq = 30,
   padding_left = 4,
-  padding_right = 4,
+  padding_right = 0,
 })
 
 messages:subscribe({ "routine", "front_app_changed", "space_change", "space_windows_change" }, function(env)
@@ -29,6 +40,10 @@ messages:subscribe({ "routine", "front_app_changed", "space_change", "space_wind
       messages:set {
         icon = {
           drawing = drawing,
+        },
+        label = {
+          drawing = drawing,
+          string = newmess,
         },
         padding_right = drawing and 4 or 0,
       }
