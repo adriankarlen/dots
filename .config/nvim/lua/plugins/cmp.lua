@@ -1,9 +1,20 @@
 return {
   {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    lazy = false,
+    opts = {
+      library = {
+
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  {
     "saghen/blink.cmp",
-    dependencies = "rafamadriz/friendly-snippets",
+    dependencies = { "rafamadriz/friendly-snippets", "alexandre-abrioux/blink-cmp-npm.nvim" },
     version = "*",
-    event = "InsertEnter",
+    event = "VeryLazy",
     opts = {
       completion = {
         menu = {
@@ -14,14 +25,12 @@ return {
                   local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
                   return kind_icon
                 end,
-                -- (optional) use highlights from mini.icons
                 highlight = function(ctx)
                   local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
                   return hl
                 end,
               },
               kind = {
-                -- (optional) use highlights from mini.icons
                 highlight = function(ctx)
                   local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
                   return hl
@@ -31,12 +40,43 @@ return {
           },
         },
       },
+      keymap = {
+        ["<Tab>"] = {
+          "snippet_forward",
+          function()
+            return require("sidekick").nes_jump_or_apply()
+          end,
+          function()
+            return vim.lsp.inline_completion.get()
+          end,
+          "fallback",
+        },
+      },
       sources = {
+        default = { "lazydev", "lsp", "easy-dotnet", "npm", "path", "snippets", "buffer" },
         providers = {
           lazydev = {
             name = "LazyDev",
             module = "lazydev.integrations.blink",
             score_offset = 100,
+          },
+          ["easy-dotnet"] = {
+            name = "easy-dotnet",
+            enabled = true,
+            module = "easy-dotnet.completion.blink",
+            score_offset = 10000,
+            async = true,
+          },
+          npm = {
+            name = "npm",
+            module = "blink-cmp-npm",
+            async = true,
+            score_offset = 100,
+            opts = {
+              ignore = {},
+              only_semantic_versions = true,
+              only_latest_version = false,
+            },
           },
         },
       },

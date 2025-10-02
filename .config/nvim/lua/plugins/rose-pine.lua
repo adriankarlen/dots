@@ -9,7 +9,6 @@ return {
       },
       highlight_groups = {
         MatchParen = { fg = "love", bg = "love", blend = 25 },
-        -- CursorLineNr = { fg = "gold", bold = true },
         StatusLineTerm = { fg = "subtle", bg = "none" },
         StatuslineSeparator = { fg = "none", bg = "none" },
         StatuslineTextMain = { fg = "text", bg = "none" },
@@ -24,7 +23,6 @@ return {
         StatuslineModeVisual = { fg = "iris", bg = "none", bold = true },
         StatuslineLspOn = { fg = "gold", bg = "none" },
         StatuslineFormatterStatus = { fg = "foam", bg = "none" },
-        StatuslineCopilot = { fg = "iris", bg = "none" },
         StatuslineRec = { fg = "love", bg = "none" },
         StatuslineScrollbar = { fg = "love", bg = "none" },
         StatuslineDiagnosticError = { fg = "love", bg = "none" },
@@ -74,6 +72,11 @@ return {
         DartCurrentLabelModified = { fg = "gold", bg = "overlay", bold = true },
         DartVisibleLabel = { fg = "gold", bg = "surface", bold = true },
         DartVisibleLabelModified = { fg = "gold", bg = "text", bold = true },
+        DartMarkedCurrentLabel = { fg = "gold", bg = "overlay", bold = true },
+        DartMarkedCurrentModified = { fg = "text", bg = "overlay", bold = true },
+        DartMarkedCurrentLabelModified = { fg = "gold", bg = "overlay", bold = true },
+        DartMarkedLabel = { fg = "gold", bg = "surface", bold = true },
+        DartMarkedLabelModified = { fg = "gold", bg = "text", bold = true },
         DartPickLabel = { fg = "gold", bg = "none", bold = true },
       },
     }

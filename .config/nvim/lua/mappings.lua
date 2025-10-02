@@ -2,7 +2,6 @@
 local map = vim.keymap
 local api = vim.api
 local ui = vim.ui
-local cmd = vim.cmd
 local fn = vim.fn
 
 -- go to beginning and end
@@ -16,12 +15,6 @@ map.set("n", "<C-h>", "<C-w>h", { desc = "move to left window" })
 map.set("n", "<C-j>", "<C-w>j", { desc = "move to lower window" })
 map.set("n", "<C-k>", "<C-w>k", { desc = "move to upper window" })
 map.set("n", "<C-l>", "<C-w>l", { desc = "move to right window" })
-
--- save
-map.set("n", "<C-s>", "<cmd> w <cr>", { desc = "save current file" })
-
--- copy all
-map.set("n", "<C-c>", "<cmd> %y+ <cr>", { desc = "copy all to clipboard" })
 
 -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
 map.set(
@@ -58,11 +51,9 @@ map.set("n", "<leader>bD", "<cmd> %bd|e#|bd#|'\" <cr>", { desc = "delete all buf
 map.set("x", "p", 'p:let @+=@0<cr>:let @"=@0<cr>', { desc = "paste without copying" })
 
 -- simpler movement on nordic keyboards
-map.set("n", ";", ":", { desc = "replace semicolon with colon", remap = true })
 map.set( "n" , "å", "\\", { desc = "replace å with backslash", remap = true })
 map.set( "n" , "ö", "[", { desc = "replace ö with left bracket", remap = true })
 map.set( "n" , "ä", "]", { desc = "replace ä with right bracket", remap = true })
-map.set({ "n", "x" }, "*", '"', { desc = "replace * with double quote", remap = true })
 map.set({ "n", "x" }, "Ö", "{", { desc = "replace Ö with left curly brace", remap = true })
 map.set({ "n", "x" }, "Ä", "}", { desc = "replace Ä with right curly brace", remap = true })
 map.set({ "n", "s", "x" }, "&", "^", { desc = "replace & with caret", remap = true })

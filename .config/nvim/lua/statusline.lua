@@ -143,15 +143,12 @@ local function get_formatter_status()
 end
 
 local function get_copilot_status()
-  local ok, c = pcall(lazy_require, "copilot.client")
-  if not ok then
+  local status = require("sidekick.status").get()
+  if not status then
     return ""
   end
-  ok = not c.is_disabled() and c.buf_is_attached(vim.api.nvim_get_current_buf())
-  if not ok then
-    return ""
-  end
-  return tools.hl_str("StatuslineCopilot", " " .. _spacer(1))
+  local hl = status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "Define"
+  return tools.hl_str(hl, " " .. _spacer(1))
 end
 
 local function get_diagnostics()
@@ -210,18 +207,6 @@ local function get_branch()
   return tools.hl_str("StatuslineTextAccent", " ") .. tools.hl_str("StatuslineTextMain", branch .. _spacer(2))
 end
 
-local function get_codecompanion_status()
-  if not state.codecompanion.status then
-    return ""
-  end
-  local index = state.codecompanion.spinner_index
-  local spinner_char = state.spinner_chars[index]
-  local status_text = state.codecompanion.status == "thinking" and " ai is thinking" or " ai is responding"
-
-  return tools.hl_str("StatuslineSpinner", spinner_char) ..
-         tools.hl_str("StatuslineTextAccent", status_text .. _spacer(2))
-end
-
 local function get_scrollbar()
   if is_truncated(75) then
     return ""
@@ -266,7 +251,6 @@ M.load = function()
     _align(),
     get_recording(),
     _align(),
-    get_codecompanion_status(),
     get_dotnet_solution(),
     get_branch(),
     get_scrollbar(),
@@ -285,44 +269,6 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
 })
 
 local global_timer = nil
-
-local function codecompanion_spinner()
-  global_timer = vim.loop.new_timer()
-  if global_timer == nil then
-    vim.notify("Failed to create global timer for statusline spinner", vim.log.levels.ERROR)
-    return
-  end
-  global_timer:start(
-    0,
-    100,
-    vim.schedule_wrap(function()
-      if state.codecompanion.status == nil then
-        global_timer:stop()
-        return
-      end
-      state.codecompanion.spinner_index = (state.codecompanion.spinner_index % #state.spinner_chars) + 1
-      vim.o.statusline = "%!v:lua.require'statusline'.load()"
-    end)
-  )
-end
-
-local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
-
-vim.api.nvim_create_autocmd({ "User" }, {
-  pattern = "CodeCompanionRequest*",
-  group = group,
-  callback = function(request)
-    if request.match == "CodeCompanionRequestStarted" then
-      state.codecompanion.status = "thinking"
-      codecompanion_spinner()
-    elseif request.match == "CodeCompanionRequestStreaming" then
-      state.codecompanion.status = "streaming"
-      codecompanion_spinner()
-    elseif request.match == "CodeCompanionRequestFinished" then
-      state.codecompanion.status = nil
-    end
-  end,
-})
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
   callback = function()

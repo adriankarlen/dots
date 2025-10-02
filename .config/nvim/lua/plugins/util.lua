@@ -27,18 +27,6 @@ return {
     opts = {},
   },
   {
-    "Jari27/lazydev.nvim",
-    branch = "deprecate_client_notify",
-    ft = "lua",
-    cmd = "LazyDev",
-    opts = {
-      library = {
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
-      },
-    },
-  },
-  {
     "tris203/precognition.nvim",
     opts = {
       highlightColor = { link = "Comment" },

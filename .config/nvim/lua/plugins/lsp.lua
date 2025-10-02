@@ -1,7 +1,7 @@
 return {
   "neovim/nvim-lspconfig",
+  lazy = false,
   cond = not vim.g.vscode,
-  event = "VeryLazy",
   dependencies = {
     { "williamboman/mason.nvim", config = true },
     { "williamboman/mason-lspconfig.nvim" },
@@ -52,6 +52,7 @@ return {
 
     local ensure_installed = vim.tbl_keys(servers)
     vim.list_extend(ensure_installed, {
+      "copilot-language-server", -- copilot lsp
       "prettier", -- prettier formatter
       "stylua", -- lua formatter
       "rustywind", -- tailwindcss formatter
@@ -87,13 +88,13 @@ return {
         end,
       },
     }
+    -- vim.lsp.inline_completion.enable()
   end,
   keys = {
     -- stylua: ignore start
     { "gD", "<cmd>Trouble lsp_declarations<cr>", desc = "lsp declaration" },
     { "gd", "<cmd>Trouble lsp_definitions<cr>", desc = "lsp definition" },
     { "gi", "<cmd>Trouble lsp_implementations<cr>", desc = "lsp implementation" },
-    { "gk", function() vim.lsp.buf.hover()end, desc = "lsp hover" },
     { "gr", "<cmd>Trouble lsp_references<cr>", desc = "lsp references" },
     { "gy", "<cmd>Trouble lsp_type_definitions<cr>", desc = "lsp type definition" },
     -- stylua: ignore start

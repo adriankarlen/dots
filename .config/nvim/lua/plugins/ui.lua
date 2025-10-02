@@ -192,6 +192,7 @@ return {
       buflist = {},
       tabline = {
         always_show = false,
+        label_fg = "",
       },
       picker = {
         border = "single",

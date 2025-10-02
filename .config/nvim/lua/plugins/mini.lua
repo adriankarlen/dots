@@ -94,7 +94,21 @@ return {
       },
     },
   },
-  { "nvim-mini/mini.pairs", version = false, event = "InsertEnter", opts = {} },
+  {
+    "nvim-mini/mini.pairs",
+    version = false,
+    event = "InsertEnter",
+    opts = {
+      mappings = {
+        ["["] = { action = "open", pair = "[]", neigh_pattern = ".[%s%z%)}%]]", register = { cr = false } },
+        ["{"] = { action = "open", pair = "{}", neigh_pattern = ".[%s%z%)}%]]", register = { cr = false } },
+        ["("] = { action = "open", pair = "()", neigh_pattern = ".[%s%z%)]", register = { cr = false } },
+        ['"'] = { action = "closeopen", pair = '""', neigh_pattern = "[^%w\\][^%w]", register = { cr = false } },
+        ["'"] = { action = "closeopen", pair = "''", neigh_pattern = "[^%w\\][^%w]", register = { cr = false } },
+        ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^%w\\][^%w]", register = { cr = false } },
+      },
+    },
+  },
   {
     "nvim-mini/mini.splitjoin",
     version = false,
