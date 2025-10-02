@@ -12,6 +12,8 @@ return {
     local mason_tool_installer = require "mason-tool-installer"
     local mason_lspconfig = require "mason-lspconfig"
 
+    local capabilities = require("blink-cmp").get_lsp_capabilities()
+
     local servers = {
       cssls = {
         settings = {
@@ -83,12 +85,12 @@ return {
       handlers = {
         function(server_name)
           local server = servers[server_name] or {}
-          server.capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities or {})
+          server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
           require("lspconfig")[server_name].setup(server)
         end,
       },
     }
-    -- vim.lsp.inline_completion.enable()
+    vim.lsp.inline_completion.enable()
   end,
   keys = {
     -- stylua: ignore start
