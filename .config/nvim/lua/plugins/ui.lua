@@ -2,6 +2,7 @@ return {
   {
     "Chaitanyabsprip/fastaction.nvim",
     event = "VeryLazy",
+    enabled = false,
     opts = {
       register_ui_select = true,
       popup = {
@@ -196,6 +197,35 @@ return {
       },
       picker = {
         border = "single",
+      },
+    },
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "LspAttach",
+    opts = {
+      backend = "delta",
+      picker = {
+        "buffer",
+        opts = {
+          hotkeys = true,
+          hotkeys_mode = "text_diff_based",
+          auto_accept = true,
+          position = "cursor",
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>ca",
+        function()
+          ---@diagnostic disable-next-line: missing-parameter
+          require("tiny-code-action").code_action()
+        end,
+        desc = "code action",
+        mode = { "n", "x" },
+        buffer = true,
       },
     },
   },

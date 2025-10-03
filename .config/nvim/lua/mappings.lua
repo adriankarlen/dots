@@ -59,19 +59,3 @@ map.set({ "n", "x" }, "Ä", "}", { desc = "replace Ä with right curly brace", r
 map.set({ "n", "s", "x" }, "&", "^", { desc = "replace & with caret", remap = true })
 map.set({ "n", "s", "x" }, "€", "$", { desc = "replace € with dollar sign", remap = true })
 
--- capitalize word in insert mode
-map.set("i", "GG", "<esc>bgUiwea", { desc = "make word uppercase" })
-
--- select buffer
-map.set("n", "<leader><tab>", function()
-  local buffers = vim.tbl_filter(function(bufnr)
-    return fn.buflisted(bufnr) == 1 and bufnr ~= api.nvim_get_current_buf()
-  end, api.nvim_list_bufs())
-  local named = vim.tbl_map(function(bufnr)
-    local path = fn.bufname(bufnr)
-    return fn.fnamemodify(path, ":~:.:h") .. "/" .. fn.fnamemodify(path, ":t")
-  end, buffers)
-  ui.select(named, { prompt = "select buffer" }, function(selection)
-    vim.cmd.edit(selection)
-  end)
-end, { desc = "buffers" })

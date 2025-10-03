@@ -90,7 +90,6 @@ return {
       rename = {},
       terminal = {},
       picker = {
-        ui_select = false,
         layout = {
           preset = "minimal",
         },
@@ -114,6 +113,12 @@ return {
             },
           },
         },
+        previewers = {
+          diff = {
+            builtin = false,
+            cmd = { "delta" },
+          },
+        },
         sources = {
           grep = {
             layout = {
@@ -121,6 +126,11 @@ return {
             },
           },
           icons = {
+            layout = {
+              preset = "minimal",
+            },
+          },
+          select = {
             layout = {
               preset = "minimal",
             },
@@ -153,8 +163,8 @@ return {
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
       { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
-      -- { "<leader>fn", function() Snacks.notifier.show_history() end, desc = "notification history" },
       { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
+      { "<leader><tab>", function() Snacks.picker.buffers() end, desc = "buffers" },
       { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
       { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
       { "<leader>fw", function() Snacks.picker.grep({ hidden = true }) end, desc = "live grep" },

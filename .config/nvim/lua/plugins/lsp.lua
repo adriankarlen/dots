@@ -50,6 +50,7 @@ return {
       taplo = {},
       vtsls = {},
       yamlls = {},
+      copilot = {},
     }
 
     local ensure_installed = vim.tbl_keys(servers)
