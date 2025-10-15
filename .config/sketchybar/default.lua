@@ -33,10 +33,10 @@ sbar.default {
   },
   popup = {
     background = {
-      color = colors.item.popup,
-      border_color = colors.item.border,
+      color = colors.popup.bg,
+      border_color = colors.popup.border,
       border_width = 2,
-      corner_radius = 8,
+      corner_radius = 17,
     },
   },
   padding_left = 4,

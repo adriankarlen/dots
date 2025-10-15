@@ -42,7 +42,11 @@ M.sections = {
   },
   bracket = {
     bg = M.with_alpha(theme.base, 0.7),
-    border = theme.highlight_low,
+    border = transparent,
+  },
+  popup = {
+    bg = M.with_alpha(theme.base, 0.7),
+    border = transparent,
   },
   apple = {
     bg = M.with_alpha(theme.love, 0.2),
@@ -101,8 +105,8 @@ M.sections = {
       },
       slider = {
         highlight = theme.text,
-        bg = theme.highlight_med,
-        border = theme.highlight_low,
+        bg = theme.muted,
+        border = theme.highlight_med,
       },
     },
     messages = {
