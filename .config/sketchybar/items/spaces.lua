@@ -2,7 +2,7 @@ local with_alpha = require("colors").with_alpha
 local colors = require("colors").sections
 local icons = require "icons"
 
-sbar.add("item", "spaces.padding", {
+sbar.add("item", "q_bracket.padding", {
   position = "q",
   background = {
     drawing = false,

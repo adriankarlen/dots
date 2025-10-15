@@ -1,9 +1,15 @@
 local colors = require("colors").sections
 local icon_map = require "helpers.icon_map"
 
+sbar.add("item", "e_bracket.padding", {
+  position = "e",
+  background = {
+    drawing = false,
+  },
+  width = 8,
+})
 local front_app = sbar.add("item", "front_app", {
   position = "e",
-  padding_left = 4,
   display = "active",
   icon = {
     padding_left = 8,
@@ -18,12 +24,18 @@ local front_app = sbar.add("item", "front_app", {
     color = colors.front_app.label,
   },
   background = {
+    drawing = false,
+  },
+  updates = true,
+})
+
+sbar.add("bracket", { "/front\\_app/" }, {
+  background = {
     color = colors.bracket.bg,
     height = 34,
     border_color = colors.bracket.border,
     corner_radius = 9999,
   },
-  updates = true,
 })
 
 front_app:subscribe("front_app_switched", function(env)
