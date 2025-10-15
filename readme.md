@@ -1,3 +1,3 @@
 # ☕ dots
 
-![Screenshot 2025-09-04 at 20 34 25](https://github.com/user-attachments/assets/080abf47-cf4d-4759-a984-118e84fdc73f)
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/469e1785-5238-41b2-9b94-f2557ef10563" />
