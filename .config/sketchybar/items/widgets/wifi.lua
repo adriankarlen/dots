@@ -78,7 +78,7 @@ local router = sbar.add("item", {
 })
 
 wifi:subscribe({ "wifi_change", "system_woke" }, function(_)
-  sbar.exec([[ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}']], function(wifi_name)
+  sbar.exec("networksetup -listpreferredwirelessnetworks en0 | sed -n '2p' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'", function(wifi_name)
     local connected = not (wifi_name == "")
     wifi:set {
       icon = {
