@@ -2,11 +2,12 @@ return {
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    lazy = false,
+    cmd = "LazyDev",
     opts = {
       library = {
-
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      { path = "snacks.nvim", words = { "Snacks" } },
+        { path = "mini"}
       },
     },
   },
@@ -14,7 +15,7 @@ return {
     "saghen/blink.cmp",
     dependencies = { "rafamadriz/friendly-snippets", "alexandre-abrioux/blink-cmp-npm.nvim" },
     version = "*",
-    event = "VeryLazy",
+    event = { "InsertEnter", "CmdlineEnter" },
     opts = {
       completion = {
         menu = {

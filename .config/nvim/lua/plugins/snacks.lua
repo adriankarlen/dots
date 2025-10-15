@@ -4,8 +4,8 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      bigfile = {},
-      bufdelete = {},
+      bigfile = { enabled = true},
+      bufdelete = {enabled = true},
       dashboard = {
         formats = {
           key = function(item)
@@ -24,7 +24,8 @@ return {
             if #fname > ctx.width then
               local dir = vim.fn.fnamemodify(fname, ":h")
               local file = vim.fn.fnamemodify(fname, ":t")
-              if dir and file then
+              if dir and file ~= nil then
+                ---@diagnostic disable-next-line: param-type-not-match
                 file = file:sub(-(ctx.width - #dir - 2))
                 fname = dir .. "/…" .. file
               end
@@ -65,7 +66,7 @@ return {
           --stylua: ignore end
         },
       },
-      git = {},
+      git = {enabled = true},
       indent = {
         indent = {
           enabled = false,
@@ -86,9 +87,14 @@ return {
           max_width = 24,
         },
       },
-      statuscolumn = {},
-      rename = {},
-      terminal = {},
+      statuscolumn = {enabled = true},
+      rename = {enabled = true},
+      terminal = {
+        win = {
+          border = "single",
+          size = { width = 0.8, height = 0.8 },
+        },
+      },
       picker = {
         layout = {
           preset = "minimal",

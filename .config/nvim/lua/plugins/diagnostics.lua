@@ -9,7 +9,7 @@ return {
     event = "LspAttach",
     priority = 1000,
     opts = {
-      preset = "simple",
+      preset ="simple",
       signs = {
         diag = "",
       },

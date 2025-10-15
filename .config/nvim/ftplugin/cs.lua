@@ -1,1 +1,1 @@
-require("lang.dotnet.commands").setup()
+-- require("lang.dotnet.commands").setup()

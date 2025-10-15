@@ -5,7 +5,7 @@ return {
   event = { "BufWritePre" },
   opts = {
     quiet = true,
-    lsp_fallback = true,
+    lsp_format = "fallback",
     formatters_by_ft = {
       lua = { "stylua" },
       javascript = { "prettier", "eslint", stop_after_first = true },
@@ -22,7 +22,6 @@ return {
       yaml = { "prettier" },
       markdown = { "prettier" },
       mdx = { "prettier" },
-      graphql = { "prettier" },
       go = { "gofmt" },
       cs = { "csharpier" },
       xml = { "xmlformatter" },
@@ -40,7 +39,7 @@ return {
     {
       "<leader>cf",
       function()
-        require("conform").format()
+        require("conform").format {}
       end,
       desc = "format",
       silent = true,

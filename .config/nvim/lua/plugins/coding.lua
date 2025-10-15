@@ -39,7 +39,6 @@ return {
       },
     },
   },
-  { "folke/ts-comments.nvim", event = "BufReadPre", opts = {} },
   {
     "luckasRanarison/tailwind-tools.nvim",
     name = "tailwind-tools",

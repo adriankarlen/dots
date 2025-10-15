@@ -2,6 +2,7 @@ return {
   {
     "folke/sidekick.nvim",
     lazy = false,
+    opts = {},
     keys = {
       {
         "<tab>",

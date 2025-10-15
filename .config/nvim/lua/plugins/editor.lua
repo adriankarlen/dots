@@ -127,7 +127,6 @@ return {
         { "<leader>cf", icon = "" },
         { "<leader>cm", icon = "󱓡", desc = "join/split block" },
         { "<leader>cr", icon = "󰏪" },
-        { "<leader>db", icon = "󰃤" },
         { "<leader>e", icon = "󰙅" },
       },
       disable = {

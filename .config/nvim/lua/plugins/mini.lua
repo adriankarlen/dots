@@ -1,9 +1,22 @@
 return {
-  { "nvim-mini/mini.ai", version = false, event = "BufReadPre", opts = { n_lines = 500 } },
-  { "nvim-mini/mini.align", version = false, event = "BufReadPre", opts = {} },
-  { "nvim-mini/mini.bracketed", version = false, event = "BufReadPre", opts = {} },
-  { "nvim-mini/mini-git", version = false, main = "mini.git", opts = {} },
-  { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = { replace = { prefix = "gR" } } },
+  { "nvim-mini/mini.ai", version = false, event = "VeryLazy", opts = { n_lines = 500 } },
+  { "nvim-mini/mini.bracketed", version = false, event = "VeryLazy", opts = {} },
+  { "nvim-mini/mini-git", version = false, main = "mini.git", event = "VeryLazy", opts = {} },
+  { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = {} },
+  { "nvim-mini/mini.comment", version = false, opts = {} },
+  { "nvim-mini/mini.surround", event = "BufReadPre", version = false, opts = {} },
+  { "nvim-mini/mini.doc", version = false, opts = {}, ft = "lua" },
+  {
+    "nvim-mini/mini.trailspace",
+    version = false,
+    event = "BufReadPre",
+    opts = {},
+    keys = {
+      --stylua: ignore start
+      { "<leader>ct", function() require("mini.trailspace").trim() end, desc = "trim trailing whitespace" },
+      --stylua: ignore end
+    },
+  },
   {
     "nvim-mini/mini.notify",
     version = false,
@@ -48,6 +61,7 @@ return {
   {
     "nvim-mini/mini.diff",
     version = false,
+    event = "VeryLazy",
     opts = {
       view = {
         style = "sign",
@@ -115,6 +129,4 @@ return {
     event = "BufReadPre",
     opts = { mappings = { toggle = "<leader>cm" } },
   },
-  { "nvim-mini/mini.surround", event = "BufReadPre", version = false, opts = {} },
-  { "nvim-mini/mini.doc", version = false, opts = {}, ft = "lua" },
 }

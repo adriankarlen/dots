@@ -15,7 +15,6 @@ require "autocmds"
 require "options"
 require "mappings"
 require "utils.tools"
--- require "packages"
 require("statusline").setup()
 
 require("lazy").setup {

@@ -198,6 +198,8 @@ return {
       picker = {
         border = "single",
       },
+      mappings = {
+      },
     },
   },
   {

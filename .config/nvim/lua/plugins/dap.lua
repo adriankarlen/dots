@@ -1,48 +1,36 @@
+--lazy.nvim
+--nvim-dap config
 return {
   {
     "mfussenegger/nvim-dap",
+    event = "VeryLazy",
     config = function()
-      local dap, dapui = require "dap", require "dapui"
-      dap.set_log_level "TRACE"
+      local dap = require "dap"
 
-      dap.listeners.after.event_initialized.dapui_config = function()
-        dapui.open()
-        vim.cmd("colorscheme " .. vim.g.colors_name)
-      end
-      dap.listeners.before.launch.dapui_config = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated.dapui_config = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited.dapui_config = function()
-        dapui.close()
-      end
+      -- Keymaps for controlling the debugger
+      vim.keymap.set("n", "q", function()
+        dap.terminate()
+        dap.clear_breakpoints()
+      end, { desc = "Terminate and clear breakpoints" })
 
-      vim.fn.sign_define(
-        "DapBreakpoint",
-        { text = "", texthl = "DiagnosticError", linehl = "DapBreakpoint", numhl = "" }
-      )
-      vim.fn.sign_define("DapStopped", { text = "󰳟", texthl = "", linehl = "DapStopped", numhl = "" })
+      vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Start/continue debugging" })
+      vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Step over" })
+      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+      vim.keymap.set("n", "<leader>du", dap.step_out, { desc = "Step out" })
+      vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+      vim.keymap.set("n", "<leader>dO", dap.step_over, { desc = "Step over (alt)" })
+      vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor" })
+      vim.keymap.set("n", "<leader>dr", dap.repl.toggle, { desc = "Toggle DAP REPL" })
+      vim.keymap.set("n", "<leader>dj", dap.down, { desc = "Go down stack frame" })
+      vim.keymap.set("n", "<leader>dk", dap.up, { desc = "Go up stack frame" })
 
-      require("dap-config.netcore").register_net_dap()
+      -- .NET specific setup using `easy-dotnet`
+      require("easy-dotnet.netcoredbg").register_dap_variables_viewer() -- special variables viewer specific for .NET
     end,
-    keys = {
-      -- stylua: ignore start
-      {"<leader>dc", function() require("dap").continue() end, noremap = true, silent = true, desc = "continue",},
-      {"<leader>do", function() require("dap").step_over() end, noremap = true, silent = true, desc = "step over",},
-      {"<leader>di", function() require("dap").step_into() end, noremap = true, silent = true, desc = "step into",},
-      {"<leader>du", function() require("dap").step_out() end, noremap = true, silent = true, desc = "step out",},
-      {"<leader>dr", function() require("dap").restart() end, noremap = true, silent = true, desc = "restart",},
-      {"<leader>dt", function() require("dap").terminate() end, noremap = true, silent = true, desc = "terminate",},
-      {"<leader>db", function() require("dap").toggle_breakpoint() end, noremap = true, silent = true, desc = "toggle breakpoint",},
-      -- stylua: ignore end
-    },
-    dependencies = {
-      {
-        "igorlfs/nvim-dap-view",
-        opts = {},
-      },
-    },
+  },
+  {
+    "igorlfs/nvim-dap-view",
+    event = "VeryLazy",
+    opts = {},
   },
 }

@@ -4,14 +4,9 @@ local state = {
     diagnostics = "",
     last_update = 0,
   },
-  spinner_chars = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-  codecompanion = {
-    status = nil, -- "thinking", "streaming"
-    spinner_index = 1,
-  },
 }
 
----@param n number
+---@param n integer
 ---@return string
 local function _spacer(n)
   return string.rep(" ", n)
@@ -67,7 +62,6 @@ local function get_mode()
   local mode_info = modes[vim.fn.mode()]
   local mode = is_truncated(120) and mode_info.short or mode_info.long
   return tools.hl_str(mode_info.hl, _spacer(1) .. mode .. _spacer(1))
-  -- return mode_info.hl .. " " .. mode .. " " .. _spacer(1)
 end
 
 local function get_path()
@@ -114,9 +108,9 @@ local function get_modification_status()
   local buf_modifiable = vim.bo.modifiable
   local buf_readonly = vim.bo.readonly
   if buf_modified then
-    return tools.hl_str("StatuslineNotSaved", "●" .. _spacer(2))
+    return tools.hl_str("DiagnosticWarn", "●" .. _spacer(2))
   elseif buf_modifiable == false or buf_readonly == true then
-    return tools.hl_str("StatuslineReadOnly", "󰑇" .. _spacer(2))
+    return tools.hl_str("DiagnosticError", "󰑇" .. _spacer(2))
   else
     return _spacer(2) -- No modification status
   end
@@ -125,7 +119,7 @@ end
 local function get_lsp_status()
   local clients = vim.lsp.get_clients { bufnr = 0 }
   if #clients > 0 and clients[1].initialized then
-    return tools.hl_str("StatuslineLspOn", " " .. _spacer(1))
+    return tools.hl_str("DiagnosticWarn", " " .. _spacer(1))
   else
     return ""
   end
@@ -136,7 +130,7 @@ local function get_formatter_status()
 
   local formatters = conform.list_formatters(0)
   if #formatters > 0 then
-    return tools.hl_str("StatuslineFormatterStatus", " " .. _spacer(1))
+    return tools.hl_str("Special", " " .. _spacer(1))
   else
     return ""
   end
@@ -152,14 +146,14 @@ local function get_copilot_status()
 end
 
 local function get_diagnostics()
-  if state.cache.diagnostics and vim.loop.now() - state.cache.last_update < 100 then
+  if state.cache.diagnostics and vim.uv.now() - state.cache.last_update < 100 then
     return state.cache.diagnostics
   end
   local severities = {
-    { name = "E", hl = "StatuslineDiagnosticError" },
-    { name = "W", hl = "StatuslineDiagnosticWarn" },
-    { name = "I", hl = "StatuslineDiagnosticInfo" },
-    { name = "H", hl = "StatuslineDiagnosticHint" },
+    { name = "E", hl = "DiagnosticError" },
+    { name = "W", hl = "DiagnosticWarn" },
+    { name = "I", hl = "DiagnosticInfo" },
+    { name = "H", hl = "DiagnosticHint" },
   }
 
   local result = ""
@@ -193,7 +187,8 @@ local function get_recording()
   if recording == "" then
     return ""
   end
-  return tools.hl_str("StatuslineTextAccent", "󰑋 ") .. tools.hl_str("StatuslineRec", recording .. " recording" .. _spacer(2))
+  return tools.hl_str("StatuslineTextAccent", "󰑋 ")
+    .. tools.hl_str("DiagnosticError", recording .. " recording" .. _spacer(2))
 end
 
 local function get_branch()
@@ -220,7 +215,7 @@ local function get_scrollbar()
   local i = math.floor((cur_line - 1) / lines * #sbar_chars) + 1
   local sbar = string.rep(sbar_chars[i], 2)
 
-  return tools.hl_str("StatuslineScrollbar", sbar .. _spacer(1))
+  return tools.hl_str("DiagnosticError", sbar .. _spacer(1))
 end
 
 M.setup = function()
@@ -239,7 +234,6 @@ M.load = function()
   end
 
   return table.concat {
-    -- _separator "left",
     get_mode(),
     get_path(),
     get_filename(),
@@ -254,8 +248,6 @@ M.load = function()
     get_dotnet_solution(),
     get_branch(),
     get_scrollbar(),
-    -- _separator "right",
-    -- _align(),
   }
 end
 
@@ -265,17 +257,6 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
   pattern = "*",
   callback = function()
     vim.o.statusline = "%!v:lua.require'statusline'.load()"
-  end,
-})
-
-local global_timer = nil
-
-vim.api.nvim_create_autocmd("VimLeavePre", {
-  callback = function()
-    if global_timer then
-      global_timer:stop()
-      global_timer:close()
-    end
   end,
 })
 

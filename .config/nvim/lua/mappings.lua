@@ -1,8 +1,5 @@
 -- ─[ mappings ]───────────────────────────────────────────────────────
 local map = vim.keymap
-local api = vim.api
-local ui = vim.ui
-local fn = vim.fn
 
 -- go to beginning and end
 map.set("i", "<C-6>", "<esc>^i", { desc = "go to beginning of line" })
