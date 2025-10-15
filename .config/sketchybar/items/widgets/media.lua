@@ -49,7 +49,6 @@ sbar.add("item", {
 })
 
 media:subscribe("media_stream_changed", function(env)
-  local playback_available = env.artist ~= "" and env.title ~= ""
   media:set { label = env.artist .. " - " .. env.title }
 end)
 
