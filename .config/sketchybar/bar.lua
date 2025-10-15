@@ -4,7 +4,7 @@ local colors = require("colors").sections.bar
 sbar.bar {
   topmost = "window",
   position = "top",
-  height = 37,
+  height = 40,
   color = colors.bg,
   y_offset = 0,
   padding_right = 4,

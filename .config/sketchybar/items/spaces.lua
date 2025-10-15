@@ -2,12 +2,19 @@ local with_alpha = require("colors").with_alpha
 local colors = require("colors").sections
 local icons = require "icons"
 
+sbar.add("item", "spaces.padding", {
+  position = "q",
+  background = {
+    drawing = false,
+  },
+  width = 4,
+})
 sbar.exec("aerospace list-workspaces --all", function(spaces)
-  for space_name in spaces:gmatch "[^\r\n]+" do
+  for space_name in string.reverse(spaces):gmatch "[^\r\n]+" do
     local icon_index = math.fmod(tonumber(space_name) or 1, 6)
-    local icon_color = colors.spaces.icon[icon_index]
+    local icon_color = colors.spaces.icon[math.fmod(icon_index, #colors.spaces.icon)]
     local space = sbar.add("item", "space." .. space_name, {
-      position = "center",
+      position = "q",
       icon = {
         color = icon_color,
         string = icons.space_indicator.off,

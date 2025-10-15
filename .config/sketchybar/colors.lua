@@ -66,6 +66,10 @@ M.sections = {
     focused = theme.text,
     unfocused = theme.subtle,
   },
+  front_app = {
+    icon = theme.iris,
+    label = theme.subtle,
+  },
   media = {
     label = theme.subtle,
   },

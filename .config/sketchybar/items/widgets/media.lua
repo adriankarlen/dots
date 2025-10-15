@@ -1,10 +1,15 @@
+local colors = require("colors").sections
 local icons = require "icons"
 
 local media = sbar.add("item", "widgets.media", {
   position = "right",
+  icon = {
+    display = false,
+  },
   label = {
     max_chars = 50,
     padding_left = 8,
+    color = colors.media.label,
   },
   popup = {
     horizontal = true,
