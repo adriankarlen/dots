@@ -1,0 +1,95 @@
+prSections:
+  - title: my pull requests
+    filters: is:open author:@me
+    type: null
+  - title: needs my review
+    filters: is:open review-requested:@me
+    type: null
+  - title: involved
+    filters: is:open involves:@me -author:@me
+    type: null
+issuesSections:
+  - title: my issues
+    filters: is:open author:@me
+  - title: assigned
+    filters: is:open assignee:@me
+  - title: involved
+    filters: is:open involves:@me -author:@me
+repo:
+  branchesRefetchIntervalSeconds: 30
+  prsRefetchIntervalSeconds: 60
+defaults:
+  preview:
+    open: true
+    width: 100
+  prsLimit: 20
+  prApproveComment: LGTM
+  issuesLimit: 20
+  view: prs
+  layout:
+    prs:
+      updatedAt:
+        width: 5
+      createdAt:
+        width: 5
+      repo:
+        width: 20
+      author:
+        width: 15
+      authorIcon:
+        hidden: false
+      assignees:
+        width: 20
+        hidden: true
+      base:
+        width: 15
+        hidden: true
+      lines:
+        width: 15
+    issues:
+      updatedAt:
+        width: 5
+      createdAt:
+        width: 5
+      repo:
+        width: 15
+      creator:
+        width: 10
+      creatorIcon:
+        hidden: false
+      assignees:
+        width: 20
+        hidden: true
+  refetchIntervalMinutes: 30
+keybindings:
+  universal: []
+  issues: []
+  prs: []
+  branches: []
+repoPaths: {}
+theme:
+  ui:
+    sectionsShowCount: true
+  table:
+    showSeparator: true
+    compact: false
+  colors:
+    text:
+      primary: "#e0def4"
+      secondary: "#c4a7e7"
+      inverted: "#403d52"
+      faint: "#6e6a86"
+      warning: "#f6c177"
+      success: "#31748f"
+      error: "#eb6f92"
+    background:
+      selected: "#403d52"
+    border:
+      primary: "#c4a7e7"
+      secondary: "#6e6a86"
+      faint: "#403d52"
+pager:
+  diff: ""
+confirmQuit: false
+showAuthorIcons: true
+smartFilteringAtLaunch: true
