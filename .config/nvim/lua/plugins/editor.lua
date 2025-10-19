@@ -164,20 +164,4 @@ return {
       { "<leader>ss", "<cmd>Namu symbols<cr>", silent = true, desc = "jump to lsp symbol" },
     },
   },
-  {
-    "monaqa/dial.nvim",
-    lazy = false,
-    config = function()
-      local augend = require "dial.augend"
-      require("dial.config").augends:register_group {
-        default = {
-          augend.constant.alias.bool,
-          augend.integer.alias.decimal_int,
-          augend.date.alias["%Y-%m-%d"],
-        },
-      }
-      vim.keymap.set("n", "<leader>ci", require("dial.map").inc_normal(), { noremap = true })
-      vim.keymap.set("n", "<leader>cd", require("dial.map").dec_normal(), { noremap = true })
-    end,
-  },
 }
