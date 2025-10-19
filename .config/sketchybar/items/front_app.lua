@@ -6,7 +6,7 @@ sbar.add("item", "e_bracket.padding", {
   background = {
     drawing = false,
   },
-  width = 8,
+  width = 12,
 })
 local front_app = sbar.add("item", "front_app", {
   position = "e",

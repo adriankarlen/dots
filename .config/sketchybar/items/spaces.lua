@@ -7,7 +7,7 @@ sbar.add("item", "q_bracket.padding", {
   background = {
     drawing = false,
   },
-  width = 4,
+  width = 12,
 })
 sbar.exec("aerospace list-workspaces --all", function(spaces)
   for space_name in string.reverse(spaces):gmatch "[^\r\n]+" do
