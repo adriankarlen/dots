@@ -106,7 +106,6 @@ return {
       }
     end,
     dependencies = { { "echasnovski/mini.icons", opts = {} } },
-    lazy = false,
     keys = {
       -- stylua: ignore start
       { "<leader>e", function() require("oil").toggle_float() end, desc = "toggle oil" },
