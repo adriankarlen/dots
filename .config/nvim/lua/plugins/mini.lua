@@ -68,6 +68,9 @@ return {
         signs = { add = "┃", change = "┃", delete = "_" },
       },
     },
+    keys = {
+      { "<leader>gd", function() MiniDiff.toggle_overlay(0) end, desc = "toggle diff overlay" },
+    }
   },
   {
     "nvim-mini/mini.icons",
