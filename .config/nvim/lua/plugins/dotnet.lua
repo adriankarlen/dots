@@ -5,6 +5,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     ft = { "cs", "vb", "csproj", "sln", "slnx", "props", "csx", "targets" },
     cmd = "Dotnet",
+    event = "VeryLazy",
     opts = {
       terminal = function(path, action, args)
         args = args or ""
