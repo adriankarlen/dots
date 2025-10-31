@@ -1,5 +1,6 @@
 return {
   { "nvim-mini/mini.ai", version = false, event = "VeryLazy", opts = { n_lines = 500 } },
+  { "nvim-mini/mini.jump", version = false, event = "BufReadPre", opts = {} },
   { "nvim-mini/mini.bracketed", version = false, event = "VeryLazy", opts = {} },
   { "nvim-mini/mini-git", version = false, main = "mini.git", event = "VeryLazy", opts = {} },
   { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = {} },
@@ -69,8 +70,14 @@ return {
       },
     },
     keys = {
-      { "<leader>gd", function() MiniDiff.toggle_overlay(0) end, desc = "toggle diff overlay" },
-    }
+      {
+        "<leader>gd",
+        function()
+          MiniDiff.toggle_overlay(0)
+        end,
+        desc = "toggle diff overlay",
+      },
+    },
   },
   {
     "nvim-mini/mini.icons",
