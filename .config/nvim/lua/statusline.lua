@@ -6,6 +6,14 @@ local state = {
   },
 }
 
+local buffer_not_code_buffer = function()
+  local curr_ft = vim.bo.filetype
+  local disabled_filetypes = {
+    "snacks_terminal",
+  }
+  return vim.tbl_contains(disabled_filetypes, curr_ft) or vim.fn.mode() == "t"
+end
+
 ---@param n integer
 ---@return string
 local function _spacer(n)
@@ -65,7 +73,7 @@ local function get_mode()
 end
 
 local function get_path()
-  if vim.fn.mode() == "t" then
+  if buffer_not_code_buffer() then
     return ""
   end
   if is_truncated(100) then
@@ -82,7 +90,7 @@ local function get_path()
 end
 
 local function get_filename()
-  if vim.fn.mode() == "t" then
+  if buffer_not_code_buffer() then
     return ""
   end
   local filename = vim.fn.expand "%:~:t"
@@ -117,6 +125,9 @@ local function get_modification_status()
 end
 
 local function get_lsp_status()
+  if buffer_not_code_buffer() then
+    return ""
+  end
   local clients = vim.lsp.get_clients { bufnr = 0 }
   if #clients > 0 and clients[1].initialized then
     return tools.hl_str("DiagnosticWarn", " " .. _spacer(1))
@@ -126,6 +137,9 @@ local function get_lsp_status()
 end
 
 local function get_formatter_status()
+  if buffer_not_code_buffer() then
+    return ""
+  end
   local conform = lazy_require "conform"
 
   local formatters = conform.list_formatters(0)
@@ -137,6 +151,9 @@ local function get_formatter_status()
 end
 
 local function get_copilot_status()
+  if buffer_not_code_buffer() then
+    return ""
+  end
   local status = require("sidekick.status").get()
   if not status then
     return ""
@@ -146,6 +163,9 @@ local function get_copilot_status()
 end
 
 local function get_diagnostics()
+  if buffer_not_code_buffer() then
+    return ""
+  end
   if state.cache.diagnostics and vim.uv.now() - state.cache.last_update < 100 then
     return state.cache.diagnostics
   end
@@ -203,7 +223,7 @@ local function get_branch()
 end
 
 local function get_scrollbar()
-  if is_truncated(75) then
+  if is_truncated(75) or buffer_not_code_buffer() then
     return ""
   end
 
