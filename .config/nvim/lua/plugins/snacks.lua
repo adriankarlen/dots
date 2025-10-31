@@ -91,7 +91,6 @@ return {
       rename = {enabled = true},
       terminal = {
         win = {
-          border = "single",
           size = { width = 0.8, height = 0.8 },
         },
       },
@@ -146,7 +145,6 @@ return {
       input = { enabled = true },
       styles = {
         input = {
-          border = "single",
           relative = "cursor",
           title = "",
         },
@@ -159,7 +157,6 @@ return {
           col = -1,
         },
         blame_line = {
-          border = "single",
           title = "git blame",
         },
       },

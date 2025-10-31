@@ -1,23 +1,5 @@
 return {
   {
-    "Chaitanyabsprip/fastaction.nvim",
-    event = "VeryLazy",
-    enabled = false,
-    opts = {
-      register_ui_select = true,
-      popup = {
-        x_offset = vim.api.nvim_get_option_value("columns", {}),
-        border = "single",
-        title = "select:",
-      },
-    },
-    keys = {
-      -- stylua: ignore start
-      { "<leader>ca", function() require("fastaction").code_action() end, desc = "code action", buffer = true },
-      -- stylua: ignore end
-    },
-  },
-  {
     "stevearc/oil.nvim",
     opts = function()
       -- helper function to parse output
@@ -192,12 +174,11 @@ return {
       buflist = {},
       tabline = {
         always_show = false,
-        label_fg = "",
-      },
-      picker = {
-        border = "single",
       },
       mappings = {
+        mark = "''",
+        jump = "'",
+        pick = "'p",
       },
     },
   },
