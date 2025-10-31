@@ -11,6 +11,7 @@ return {
         MatchParen = { fg = "love", bg = "love", blend = 25 },
         StatuslineTextMain = { fg = "text", bg = "none" },
         StatuslineTextAccent = { fg = "muted", bg = "none" },
+        StatusLineTerm = { link = "StatuslineTextMain" },
         StatuslineModeCommand = { fg = "love", bg = "none", bold = true },
         StatuslineModeInsert = { fg = "foam", bg = "none", bold = true },
         StatuslineModeNormal = { fg = "pine", bg = "none", bold = true },
