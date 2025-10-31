@@ -9,7 +9,7 @@ g.maplocalleader = ","
 -- ─[ options ]────────────────────────────────────────────────────────
 opt.clipboard = "unnamedplus"
 opt.cursorline = true
-opt.laststatus = 3
+opt.laststatus = 2
 opt.showmode = false
 o.winborder = "single"
 require("vim._extui").enable {}
