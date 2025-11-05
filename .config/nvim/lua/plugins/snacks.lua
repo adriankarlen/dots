@@ -4,8 +4,8 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      bigfile = { enabled = true},
-      bufdelete = {enabled = true},
+      bigfile = { enabled = true },
+      bufdelete = { enabled = true },
       dashboard = {
         formats = {
           key = function(item)
@@ -66,7 +66,7 @@ return {
           --stylua: ignore end
         },
       },
-      git = {enabled = true},
+      git = { enabled = true },
       indent = {
         indent = {
           enabled = false,
@@ -87,8 +87,8 @@ return {
           max_width = 24,
         },
       },
-      statuscolumn = {enabled = true},
-      rename = {enabled = true},
+      statuscolumn = { enabled = true },
+      rename = { enabled = true },
       terminal = {
         win = {
           size = { width = 0.8, height = 0.8 },
@@ -143,6 +143,12 @@ return {
         },
       },
       input = { enabled = true },
+      zen = {
+        show = {
+          statusline = true,
+          tabline = true,
+        },
+      },
       styles = {
         input = {
           relative = "cursor",
@@ -199,6 +205,7 @@ return {
           Snacks.toggle.inlay_hints():map "<leader>th"
           Snacks.toggle.indent():map "<leader>tg"
           Snacks.toggle.dim():map "<leader>tD"
+          Snacks.toggle.zen():map "<leader>tz"
         end,
       })
     end,
