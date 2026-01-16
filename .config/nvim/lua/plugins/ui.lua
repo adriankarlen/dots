@@ -1,6 +1,7 @@
 return {
   {
     "stevearc/oil.nvim",
+    dependencies = { "benomahony/oil-git.nvim" },
     opts = function()
       -- helper function to parse output
       local function parse_output(proc)
@@ -50,8 +51,8 @@ return {
       end
       return {
         float = {
-          max_width = 0.4,
-          max_height = 0.25,
+          max_height = 0.35,
+          max_width = 0.5,
         },
         view_options = {
           is_hidden_file = function(name, bufnr)
@@ -87,7 +88,6 @@ return {
         },
       }
     end,
-    dependencies = { { "echasnovski/mini.icons", opts = {} } },
     keys = {
       -- stylua: ignore start
       { "<leader>e", function() require("oil").toggle_float() end, desc = "toggle oil" },

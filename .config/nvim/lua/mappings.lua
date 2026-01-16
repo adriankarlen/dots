@@ -41,18 +41,15 @@ map.set(
 
 -- buffer management
 map.set("n", "<leader>bn", "<cmd> enew <cr>", { desc = "new buffer" })
-map.set("n", "<leader>bd", "<cmd> bd <cr>", { desc = "delete current buffer" })
-map.set("n", "<leader>bD", "<cmd> %bd|e#|bd#|'\" <cr>", { desc = "delete all buffers except current one" })
 
 -- paste without copying
 map.set("x", "p", 'p:let @+=@0<cr>:let @"=@0<cr>', { desc = "paste without copying" })
 
 -- simpler movement on nordic keyboards
-map.set( "n" , "å", "\\", { desc = "replace å with backslash", remap = true })
-map.set( "n" , "ö", "[", { desc = "replace ö with left bracket", remap = true })
-map.set( "n" , "ä", "]", { desc = "replace ä with right bracket", remap = true })
+map.set("n", "å", "\\", { desc = "replace å with backslash", remap = true })
+map.set("n", "ö", "[", { desc = "replace ö with left bracket", remap = true })
+map.set("n", "ä", "]", { desc = "replace ä with right bracket", remap = true })
 map.set({ "n", "x" }, "Ö", "{", { desc = "replace Ö with left curly brace", remap = true })
 map.set({ "n", "x" }, "Ä", "}", { desc = "replace Ä with right curly brace", remap = true })
 map.set({ "n", "s", "x" }, "&", "^", { desc = "replace & with caret", remap = true })
 map.set({ "n", "s", "x" }, "€", "$", { desc = "replace € with dollar sign", remap = true })
-

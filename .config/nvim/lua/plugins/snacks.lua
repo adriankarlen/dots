@@ -50,7 +50,6 @@ return {
             { icon = "  ", key = "f", desc = "find file", action = ":lua Snacks.dashboard.pick('files', { hidden = true })" },
             { icon = "  ", key = "w", desc = "find text", action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })" },
             { icon = "  ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
-            { icon = "  ", key = "p", desc = "packages", action = ":lua require('plugin-view').open()" },
             { icon = " 󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
             { icon = " 󰭿 ", key = "q", desc = "quit", action = ":qa" },
             -- stylua: ignore end
@@ -92,6 +91,7 @@ return {
       terminal = {
         win = {
           size = { width = 0.8, height = 0.8 },
+          border = "single",
         },
       },
       picker = {
@@ -103,8 +103,8 @@ return {
             preview = false,
             layout = {
               backdrop = false,
-              height = 0.25,
-              width = 0.4,
+              height = 0.35,
+              width = 0.5,
               box = "horizontal",
               {
                 border = "single",
@@ -170,6 +170,7 @@ return {
     keys = {
       -- stylua: ignore start
       { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
+      { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "delete other buffers" },
       { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
       { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
       { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
@@ -202,7 +203,7 @@ return {
           Snacks.toggle
             .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
             :map "<leader>tC"
-          Snacks.toggle.inlay_hints():map "<leader>th"
+          Snacks.toggle.inlay_hints():map "<leader>tI"
           Snacks.toggle.indent():map "<leader>tg"
           Snacks.toggle.dim():map "<leader>tD"
           Snacks.toggle.zen():map "<leader>tz"

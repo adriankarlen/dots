@@ -42,6 +42,11 @@ return {
         DartMarkedLabel = { fg = "gold", bg = "surface", bold = true },
         DartMarkedLabelModified = { fg = "gold", bg = "text", bold = true },
         DartPickLabel = { fg = "gold", bg = "none", bold = true },
+        OilGitAdded = { fg = "foam" },
+        OilGitModified = { fg = "rose" },
+        OilGitRenamed = { fg = "pine" },
+        OilGitUntracked = { fg = "subtle" },
+        OilGitIgnored = { fg = "muted" },
       },
     }
     vim.cmd "colorscheme rose-pine"

@@ -14,26 +14,23 @@ return {
     end,
   },
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
-    opts = {
-      file_types = { "markdown", "copilot-chat", "codecompanion" },
-      code = {
-        sign = false,
-        width = "block",
-        right_pad = 1,
-      },
-      heading = {
-        sign = false,
-        icons = { " " }, -- stylua: ignore
-        position = "inline",
-      },
-      pipe_table = { alignment_indicator = "┅" },
-    },
-    ft = { "markdown", "copilot-chat", "codecompanion" },
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    opts = function()
+      local presets = require "markview.presets"
+      return {
+        markdown = {
+          heading = presets.headings.marker,
+          horizonatal_rules = presets.horizontal_rules.dashed,
+        },
+        preview = {
+          icon_provider = "mini",
+        },
+      }
+    end,
     keys = {
       -- stylua: ignore start
-      { "<leader>tm", function() require('render-markdown').toggle() end, ft = { "markdown", "copilot-chat" }, desc = "toggle markdown rendering" },
+      { "<leader>tm", "<cmd>Markview toggle<cr>", desc = "toggle markview" },
       -- stylua: ignore end
     },
   },

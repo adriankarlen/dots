@@ -9,6 +9,7 @@ return {
   },
   config = function()
     local servers = {
+      bashls = {},
       cssls = {
         settings = {
           css = { validate = true, lint = {
@@ -73,7 +74,7 @@ return {
       "stylua", -- lua formatter
       "rustywind", -- tailwindcss formatter
       "xmlformatter", -- xml formatter
-      "csharpier", -- csharp formatter
+      "shfmt", -- shell script formatter
     })
 
     require("mason-tool-installer").setup { ensure_installed = ensure_installed }

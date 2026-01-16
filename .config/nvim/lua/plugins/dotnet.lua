@@ -3,10 +3,12 @@ return {
     "GustavEikaas/easy-dotnet.nvim",
     enabled = vim.fn.executable "dotnet" == 1,
     dependencies = { "nvim-lua/plenary.nvim" },
-    ft = { "cs", "vb", "csproj", "sln", "slnx", "props", "csx", "targets" },
-    cmd = "Dotnet",
     event = "VeryLazy",
     opts = {
+      lsp = {
+        enabled = false,
+        roslynator_enabled = false,
+      },
       terminal = function(path, action, args)
         args = args or ""
         local cmds = {
@@ -47,5 +49,11 @@ return {
       { "<leader>nt", function() require("easy-dotnet").testrunner() end, desc = "open test runner" },
       -- stylua: ignore end
     },
+  },
+  {
+    "seblyng/roslyn.nvim",
+    enabled = vim.fn.executable "dotnet" == 1,
+    lazy = false,
+    opts = {},
   },
 }

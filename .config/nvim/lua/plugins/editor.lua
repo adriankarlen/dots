@@ -21,36 +21,16 @@ return {
     },
   },
   {
-    "eero-lehtinen/oklch-color-picker.nvim",
+    "catgoose/nvim-colorizer.lua",
     event = "BufReadPre",
-    version = "*",
-    opts = {
-      highlight = {
-        style = "virtual_left",
-        virtual_text = " ",
+    opts = { -- set to setup table
+      user_default_options = {
+        tailwind = true,
+        mode = "virtualtext",
+        virtualtext = " ",
+        virtualtext_inline = "before",
       },
     },
-    keys = {
-      {
-        "<leader>v",
-        function()
-          require("oklch-color-picker").pick_under_cursor()
-        end,
-        desc = "color pick",
-      },
-    },
-  },
-  {
-    "mvllow/modes.nvim",
-    event = "BufReadPre",
-    opts = function()
-      local palette = require "rose-pine.palette"
-      return {
-        colors = {
-          bg = palette.base,
-        },
-      }
-    end,
   },
   {
     "folke/todo-comments.nvim",
@@ -147,21 +127,6 @@ return {
         info = { text = "", hl = "DiagnosticSignInfo" },
         hint = { text = "", hl = "DiagnosticSignHint" },
       },
-    },
-  },
-  {
-    "bassamsdata/namu.nvim",
-    opts = {
-      -- Enable the modules you want
-      namu_symbols = {
-        enable = true,
-        options = { window = { border = "single" } },
-      },
-      ui_select = { enable = false },
-      colorscheme = { enable = false },
-    },
-    keys = {
-      { "<leader>ss", "<cmd>Namu symbols<cr>", silent = true, desc = "jump to lsp symbol" },
     },
   },
 }
