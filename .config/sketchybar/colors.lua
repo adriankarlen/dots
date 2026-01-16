@@ -58,12 +58,12 @@ M.sections = {
   },
   spaces = {
     icon = {
+      theme.iris,
       theme.love,
       theme.gold,
       theme.rose,
       theme.pine,
       theme.foam,
-      theme.iris,
     },
   },
   apps = {

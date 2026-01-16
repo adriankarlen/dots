@@ -18,7 +18,7 @@ inner.horizontal = 5
 inner.vertical = 5
 outer.left = 5
 outer.bottom = 5
-outer.top = [{ monitor."^built-in retina display$" = 4 }, 42]
+outer.top = [{ monitor."^built-in retina display$" = 6 }, 42]
 outer.right = 5
 
 [[on-window-detected]]

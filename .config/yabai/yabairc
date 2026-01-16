@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+yabai -m config external_bar "all:40:0" \
+                split_ratio 0.5 \
+                mouse_action1 move \
+                mouse_action2 resize \
+                mouse_drop_action swap \
+                window_gap 10 \
+                top_padding 5 \
+                bottom_padding 5 \
+                left_padding 5 \
+                right_padding 5
+
+# Exclude problematic apps from being managed:
+yabai -m rule --add app="^(Calculator|Software Update|Dictionary|System Preferences|System Settings|Photo Booth|Archive Utility|Python|App Store|Activity Monitor|BankID Security Application|Raycast)$" manage=off
+yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
+yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
+yabai -m rule --add label="Teams" app="Microsoft Teams" title="^(Meeting|Calling)" manage=off
+yabai -m rule --add label="Browser extensions" app="^(Google Chrome|Microsoft Edge|Firefox|Safari)$" title="^(Bitwarden)" manage=off
+
+yabai -m config layout bsp
+
+

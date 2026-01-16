@@ -9,49 +9,48 @@ sbar.add("item", "q_bracket.padding", {
   },
   width = 12,
 })
-sbar.exec("aerospace list-workspaces --all", function(spaces)
-  for space_name in string.reverse(spaces):gmatch "[^\r\n]+" do
-    local icon_index = math.fmod(tonumber(space_name) or 1, 6)
-    local icon_color = colors.spaces.icon[math.fmod(icon_index, #colors.spaces.icon)]
-    local space = sbar.add("item", "space." .. space_name, {
-      position = "q",
-      icon = {
-        color = icon_color,
-        string = icons.space_indicator.off,
-        padding_left = 5,
-        padding_right = 7,
-      },
-      label = {
-        drawing = false,
-      },
-      background = {
-        color = with_alpha(icon_color, 0.2),
-        corner_radius = 9999,
-      },
-      click_script = "aerospace workspace " .. space_name,
-    })
 
-    space:subscribe("aerospace_workspace_change", function(env)
-      local selected = env.FOCUSED_WORKSPACE == space_name
-      sbar.animate("circ", 15, function()
-        space:set {
-          icon = {
-            string = selected and icons.space_indicator.on or icons.space_indicator.off,
-          },
-        }
-      end)
-    end)
-  end
-
-  sbar.add("bracket", { "/space\\..*/" }, {
+for i = 5, 1, -1 do
+  local color_index = (math.fmod(i or 0, #colors.spaces.icon - 1) + 1) or 1
+  local icon_color = colors.spaces.icon[color_index]
+  local space = sbar.add("space", "space." .. i, {
+    space = i,
+    position = "q",
+    icon = {
+      color = icon_color,
+      string = icons.space_indicator.off,
+      padding_left = 5,
+      padding_right = 7,
+    },
+    label = {
+      drawing = false,
+    },
     background = {
-      height = 34,
-      color = colors.bracket.bg,
-      border_color = colors.bracket.border,
+      color = with_alpha(icon_color, 0.2),
       corner_radius = 9999,
     },
   })
-end)
+
+  space:subscribe("space_change", function(env)
+    local selected = env.SELECTED == "true"
+    sbar.animate("circ", 15, function()
+      space:set {
+        icon = {
+          string = selected and icons.space_indicator.on or icons.space_indicator.off,
+        },
+      }
+    end)
+  end)
+end
+
+sbar.add("bracket", { "/space\\..*/" }, {
+  background = {
+    height = 34,
+    color = colors.bracket.bg,
+    border_color = colors.bracket.border,
+    corner_radius = 9999,
+  },
+})
 
 local spaces_indicator = sbar.add("item", "system.spaces_indicator", {
   icon = {

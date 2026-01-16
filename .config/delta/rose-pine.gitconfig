@@ -1,55 +1,3 @@
-[delta "rose-pine-dawn"]
-	blame-palette = "#faf4ed #fffaf3 #f2e9e1 #9893a5 #797593"
-	commit-decoration-style = "#9893a5" bold box ul
-	light = true
-	file-decoration-style = "#9893a5"
-	file-style = "#464261"
-	hunk-header-decoration-style = "#9893a5" box ul
-	hunk-header-file-style = bold
-	hunk-header-line-number-style = bold "#797593"
-	hunk-header-style = file line-number syntax
-	line-numbers-left-style = "#9893a5"
-	line-numbers-minus-style = bold "#b4637a"
-	line-numbers-plus-style = bold "#286983"
-	line-numbers-right-style = "#9893a5"
-	line-numbers-zero-style = "#9893a5"
-	minus-emph-style = bold syntax "#d7827e"
-	minus-style = syntax "#f2e9e1"
-	plus-emph-style = bold syntax "#56949f"
-	plus-style = syntax "#fffaf3"
-	map-styles = \
-		bold purple => syntax "#907aa9", \
-		bold blue => syntax "#286983", \
-		bold cyan => syntax "#56949f", \
-		bold yellow => syntax "#ea9d34"
-	syntax-theme = rose-pine
-
-[delta "rose-pine-moon"]
-	blame-palette = "#232136 #2a273f #393552 #6e6a86 #908caa"
-	commit-decoration-style = "#6e6a86" bold box ul
-	dark = true
-	file-decoration-style = "#6e6a86"
-	file-style = "#e0def4"
-	hunk-header-decoration-style = "#6e6a86" box ul
-	hunk-header-file-style = bold
-	hunk-header-line-number-style = bold "#908caa"
-	hunk-header-style = file line-number syntax
-	line-numbers-left-style = "#6e6a86"
-	line-numbers-minus-style = bold "#eb6f92"
-	line-numbers-plus-style = bold "#3e8fb0"
-	line-numbers-right-style = "#6e6a86"
-	line-numbers-zero-style = "#6e6a86"
-	minus-emph-style = bold syntax "#ea9a97"
-	minus-style = syntax "#393552"
-	plus-emph-style = bold syntax "#9ccfd8"
-	plus-style = syntax "#2a273f"
-	map-styles = \
-		bold purple => syntax "#c4a7e7", \
-		bold blue => syntax "#3e8fb0", \
-		bold cyan => syntax "#9ccfd8", \
-		bold yellow => syntax "#f6c177"
-	syntax-theme = rose-pine-moon
-
 [delta "rose-pine"]
 	blame-palette = "#191724 #1f1d2e #26233a #6e6a86 #908caa"
 	commit-decoration-style = "#6e6a86" bold box ul
@@ -62,13 +10,13 @@
 	hunk-header-style = file line-number syntax
 	line-numbers-left-style = "#6e6a86"
 	line-numbers-minus-style = bold "#eb6f92"
-	line-numbers-plus-style = bold "#31748f"
+	line-numbers-plus-style = bold "#9ccfd8"
 	line-numbers-right-style = "#6e6a86"
 	line-numbers-zero-style = "#6e6a86"
-	minus-emph-style = bold syntax "#ebbcba"
-	minus-style = syntax "#26233a"
-	plus-emph-style = bold syntax "#9ccfd8"
-	plus-style = syntax "#1f1d2e"
+	minus-emph-style = bold syntax "#69394e"
+	minus-style = syntax "#412839"
+	plus-emph-style = bold syntax "#71929c"
+	plus-style = syntax "#323b47"
 	map-styles = \
 		bold purple => syntax "#c4a7e7", \
 		bold blue => syntax "#31748f", \

@@ -1,6 +1,7 @@
 local colors = require("colors").sections
 local icons = require "icons"
 
+sbar.exec "sh ~/.config/sketchybar/helpers/media-stream.sh"
 local media = sbar.add("item", "widgets.media", {
   position = "right",
   icon = {

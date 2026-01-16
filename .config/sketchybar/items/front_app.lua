@@ -19,7 +19,7 @@ local front_app = sbar.add("item", "front_app", {
     color = colors.front_app.icon,
   },
   label = {
-    pading_left = 4,
+    padding_left = 4,
     padding_right = 8,
     color = colors.front_app.label,
   },
@@ -49,3 +49,10 @@ front_app:subscribe("front_app_switched", function(env)
     },
   }
 end)
+
+function update_apps()
+  sbar.exec("yabai -m query --windows --space | jq '.[] | {app, \"has-focus\"}'", function(output)
+    apps = output
+  end)
+  return apps
+end

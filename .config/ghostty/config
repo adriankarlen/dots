@@ -18,7 +18,6 @@ macos-option-as-alt = false
 macos-titlebar-style = hidden
 window-padding-balance = true
 
-# cursor-invert-fg-bg = true
 cursor-color=cell-foreground
 cursor-text=cell-background
 cursor-style = block
@@ -27,6 +26,5 @@ shell-integration-features = no-cursor
 
 window-padding-x = 6
 window-padding-y = 6
-
 
 title = " "

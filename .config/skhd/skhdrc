@@ -1,49 +1,42 @@
 #!/bin/bash
-
-# focus workspace
-lalt - 1 : aerospace workspace 1
-lalt - 2 : aerospace workspace 2
-lalt - 3 : aerospace workspace 3
-lalt - 4 : aerospace workspace 4
-lalt - 5 : aerospace workspace 5
-
-# cycle workspace
-lalt - tab : aerospace workspace-back-and-forth
-
-# move workspace to monitor
-lalt + ctrl - 1 : aerospace move-workspace-to-monitor 1
-lalt + ctrl - 2 : aerospace move-workspace-to-monitor 2
-lalt + ctrl - 3 : aerospace move-workspace-to-monitor 3
-
-# move window to workspace
-lalt + shift - 1 : aerospace move-node-to-workspace 1
-lalt + shift - 2 : aerospace move-node-to-workspace 2
-lalt + shift - 3 : aerospace move-node-to-workspace 3
-lalt + shift - 4 : aerospace move-node-to-workspace 4
-lalt + shift - 5 : aerospace move-node-to-workspace 5
-
 # focus window
-lalt - h : aerospace focus left
-lalt - j : aerospace focus down
-lalt - k : aerospace focus up
-lalt - l : aerospace focus right
+cmd - h : yabai -m window --focus west
+cmd - j : yabai -m window --focus south
+cmd - k : yabai -m window --focus north
+cmd - l : yabai -m window --focus east
 
 # move window
-lalt + shift - h : aerospace move left
-lalt + shift - j : aerospace move down
-lalt + shift - k : aerospace move up
-lalt + shift - l : aerospace move right
+shift + cmd - h : yabai -m window --swap west
+shift + cmd - j : yabai -m window --swap south
+shift + cmd - k : yabai -m window --swap north
+shift + cmd - l : yabai -m window --swap east
+
+# warp window
+shift + lalt + cmd - h : yabai -m window --warp west
+shift + lalt + cmd - j : yabai -m window --warp south
+shift + lalt + cmd - k : yabai -m window --warp north
+shift + lalt + cmd - l : yabai -m window --warp east
 
 # resize window
-lalt + ctrl - n : aerospace resize smart -50
-lalt + ctrl - p : aerospace resize smart +50
+ctrl + cmd - h : yabai -m window --resize right:-100:0
+ctrl + cmd - j : yabai -m window --resize bottom:0:100
+ctrl + cmd - k : yabai -m window --resize bottom:0:-100
+ctrl + cmd - l : yabai -m window --resize right:100:0
 
 # toggle floating
-lalt + shift - space : aerospace layout floating tiling
+cmd + shift - space : yabai -m window --toggle float \
+                      yabai -m window --grid 10:10:1:1:8:8
 
-# change binding mode
-lalt - e : aerospace join-with right
-lalt - v : aerospace join-with up
+# Make window zoom to fullscreen
+shift + cmd - f : yabai -m window --toggle zoom-fullscreen
 
-# # reload aerospace config
-lalt + shift - r : aerospace reload-config
+# Equalize size of windows
+ctrl + cmd - e : yabai -m space --balance
+
+# Toggle sketchybar
+shift + cmd - m : sketchybar --bar hidden=toggle
+
+# Reload skhd config
+ctrl + lalt + cmd - r : skhd --restart-service
+# Reload yabai config
+ctrl + cmd - r : yabai --restart-service

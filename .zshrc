@@ -5,8 +5,8 @@ fi
 # zinit setup
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
-   mkdir -p "$(dirname $ZINIT_HOME)"
-   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+      mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
@@ -99,17 +99,12 @@ alias .4="cd ../../../.."
 alias .5="cd ../../../../.."
 alias x="exit"
 alias g="git"
-alias howdy="sh $HOME/.config/fetch.sh"
+alias fetch="sh $HOME/.config/fetch.sh"
 alias pray="bun install"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# tmux
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ] && [ -z "$WEZTERM_EXECUTABLE" ]; then
-  exec tmux
-fi
 
 # shell integrations
 eval "$(zoxide init zsh)"
@@ -119,4 +114,8 @@ eval "$(zoxide init --cmd cd zsh)"
 # bun completions
 [ -s "/Users/adriankarlen/.bun/_bun" ] && source "/Users/adriankarlen/.bun/_bun"
 
-export PATH=$PATH:/Users/adriankarlen/.spicetify
+export PATH="$PATH:/Users/adriankarlen/.spicetify"
+export PATH="$PATH:/Users/adriankarlen/.dotnet/tools"
+export DOTNET_ENVIRONMENT=Development
+export ASPNETCORE_ENVIRONMENT=Development
+fetch
