@@ -25,7 +25,7 @@ return {
     event = "BufReadPre",
     opts = { -- set to setup table
       user_default_options = {
-        tailwind = true,
+        names = false,
         mode = "virtualtext",
         virtualtext = " ",
         virtualtext_inline = "before",
@@ -51,7 +51,7 @@ return {
           preview = {
             type = "float",
             relative = "editor",
-            border = "single",
+            border = "solid",
             title = "Preview",
             title_pos = "center",
             position = { 0, -2 },
@@ -80,8 +80,7 @@ return {
     end,
     event = "VeryLazy",
     opts = {
-      preset = "helix",
-      win = { border = "single" },
+      win = { border = "solid" },
       spec = {
         -- groups
         { "<leader>a", group = "ai", icon = { icon = "", color = "orange" } },

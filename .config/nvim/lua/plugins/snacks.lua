@@ -91,7 +91,7 @@ return {
       terminal = {
         win = {
           size = { width = 0.8, height = 0.8 },
-          border = "single",
+          border = "solid",
         },
       },
       picker = {
@@ -107,14 +107,14 @@ return {
               width = 0.5,
               box = "horizontal",
               {
-                border = "single",
+                border = "solid",
                 box = "vertical",
                 title = "{title}",
                 title_pos = "left",
                 { win = "input", height = 1, border = "bottom" },
                 { win = "list", border = "none" },
               },
-              { win = "preview", title = "{preview}", title_pos = "left", border = "single" },
+              { win = "preview", title = "{preview}", title_pos = "left", border = "solid" },
             },
           },
         },

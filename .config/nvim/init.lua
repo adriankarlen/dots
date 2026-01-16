@@ -22,7 +22,7 @@ require("lazy").setup {
     { import = "plugins" },
   },
   ui = {
-    border = "single",
+    border = "solid",
   },
   defaults = { lazy = true },
 }

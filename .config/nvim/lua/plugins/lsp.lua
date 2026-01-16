@@ -56,7 +56,7 @@ return {
           package_pending = "➜",
           package_uninstalled = "",
         },
-        border = "single",
+        border = "solid",
       },
       registries = {
         "github:mason-org/mason-registry",

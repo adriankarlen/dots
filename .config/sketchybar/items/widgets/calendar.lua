@@ -1,10 +1,12 @@
 local settings = require "settings"
+local colors = require("colors").sections
 
 local minute = sbar.add("item", "widgets.calendar", {
   icon = {
     font = {
       size = 6.0,
     },
+    color = colors.calendar.label,
     string = "􀀁",
     padding_left = 6,
     padding_right = 6,
@@ -13,6 +15,7 @@ local minute = sbar.add("item", "widgets.calendar", {
     font = {
       family = settings.font.numbers,
     },
+    color = colors.calendar.label,
     padding_left = 0,
     padding_right = 0,
   },

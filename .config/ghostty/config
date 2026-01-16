@@ -1,13 +1,10 @@
 #!/bin/bash
 
-theme = light:Rose Pine Dawn,dark:Rose Pine
+theme = nordic
 
 adjust-cell-height = 45%
 font-family = Berkeley Mono
 font-size = 15
-
-background-opacity = 0.95
-background-blur = true
 
 confirm-close-surface = false
 
@@ -16,15 +13,10 @@ mouse-hide-while-typing = true
 
 macos-option-as-alt = false
 macos-titlebar-style = hidden
-window-padding-balance = true
+# window-padding-balance = true
 
 cursor-color=cell-foreground
 cursor-text=cell-background
 cursor-style = block
 mouse-hide-while-typing = true
 shell-integration-features = no-cursor
-
-window-padding-x = 6
-window-padding-y = 6
-
-title = " "

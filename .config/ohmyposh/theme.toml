@@ -4,87 +4,87 @@ version = 3
 terminal_background = "transparent"
 
 [[blocks]]
-  type = "prompt"
-  alignment = "left"
+type = "prompt"
+alignment = "left"
 
-  [[blocks.segments]]
-    type = "text"
-    style = "plain"
-    background = "transparent"
-    foreground = "blue"
-    template = "➜ "
+[[blocks.segments]]
+type = "text"
+style = "plain"
+background = "transparent"
+foreground = "yellow"
+template = "➜ "
 
-  [[blocks.segments]]
-    type = "path"
-    style = "plain"
-    foreground = "magenta"
-    template = "<b>{{ .Path }}</b> <yellow> </>"
+[[blocks.segments]]
+type = "path"
+style = "plain"
+foreground = "white"
+template = "<b>{{ .Path }}</b> <yellow> </>"
 
-    [blocks.segments.properties]
-      style = "folder"
+[blocks.segments.properties]
+style = "folder"
 
-  [[blocks.segments]]
-    type = "git"
-    style = "plain"
-    foreground = "cyan"
-    foreground_templates = [
-      "{{ if or (.Working.Changed) (.Staging.Changed) }}red{{ end }}",
-      "{{ if and (gt .Ahead 0) (gt .Behind 0)}}cyan {{ end }}",
-      "{{ if gt .Ahead 0 }}blue{{ end }}",
-      "{{ if gt .Behind 0 }}blue{{ end }}"
-    ]
-    template = "({{ .HEAD}})"
+[[blocks.segments]]
+type = "git"
+style = "plain"
+foreground = "cyan"
+foreground_templates = [
+  "{{ if or (.Working.Changed) (.Staging.Changed) }}red{{ end }}",
+  "{{ if and (gt .Ahead 0) (gt .Behind 0)}}cyan {{ end }}",
+  "{{ if gt .Ahead 0 }}green{{ end }}",
+  "{{ if gt .Behind 0 }}green{{ end }}",
+]
+template = "({{ .HEAD}})"
 
-    [blocks.segments.properties]
-      fetch_status = true
-      branch_icon = "\ue725 "
+[blocks.segments.properties]
+fetch_status = true
+branch_icon = "\ue725 "
 
-  [[blocks.segments]]
-    type = "status"
-    style = "plain"
-    foreground = "red"
-    template = " \uf00d"
-
-[[blocks]]
-  type = "prompt"
-  alignment = "right"
-  overflow = "hide"
-
-  [[blocks.segments]]
-    type = "node"
-    style = "plain"
-    foreground = "green"
-    template = " {{ .Full }} "
-
-  [[blocks.segments]]
-    type = "go"
-    style = "plain"
-    foreground = "blue"
-    template = "\uFCD1 {{ .Full}}"
-
-  [[blocks.segments]]
-    type = "bun"
-    style = "plain"
-    foreground = "blue"
-    template = " {{ .Full }} "
+[[blocks.segments]]
+type = "status"
+style = "plain"
+foreground = "red"
+template = " \uf00d"
 
 [[blocks]]
-  type = "prompt"
-  alignment = "left"
-  newline = true
+type = "prompt"
+alignment = "right"
+overflow = "hide"
 
-  [[blocks.segments]]
-    type = "text"
-    style = "plain"
-    foreground = "green"
-    template = "▶"
+[[blocks.segments]]
+type = "node"
+style = "plain"
+foreground = "green"
+template = " {{ .Full }} "
+
+[[blocks.segments]]
+type = "go"
+style = "plain"
+foreground = "yellow"
+template = "\uFCD1 {{ .Full}}"
+
+[[blocks.segments]]
+type = "bun"
+style = "plain"
+foreground = "yellow"
+template = " {{ .Full }} "
+
+[[blocks]]
+type = "prompt"
+alignment = "left"
+newline = true
+
+[[blocks.segments]]
+type = "text"
+style = "plain"
+foreground = "red"
+template = "▶"
 
 [secondary_prompt]
-  background = "transparent"
-  foreground = "blue"
-  template = "➜➜ "
+background = "transparent"
+foreground = "yellow"
+template = "➜➜ "
 
 [transient_prompt]
-  background = "transparent"
-  foreground = "blue"
-  template = "➜ "
+background = "transparent"
+foreground = "yellow"
+template = "➜ "

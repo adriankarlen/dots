@@ -27,95 +27,160 @@ local rp = {
   highlight_high = 0xff524f67,
 }
 
-local theme = rp
+local nordic = {
+  black0 = 0xff191D24,
+  black1 = 0xff1E222A,
+  black2 = 0xff222630,
+  gray0 = 0xff242933,
+  gray1 = 0xff2E3440,
+  gray2 = 0xff3B4252,
+  gray3 = 0xff434C5E,
+  gray4 = 0xff4C566A,
+  gray5 = 0xff60728A,
+  white0_normal = 0xffBBC3D4,
+  white0_reduce_blue = 0xffC0C8D8,
+  white1 = 0xffD8DEE9,
+  white2 = 0xffE5E9F0,
+  white3 = 0xffECEFF4,
+  blue0 = 0xff5E81AC,
+  blue1 = 0xff81A1C1,
+  blue2 = 0xff88C0D0,
+  cyan = {
+    base = 0xff8FBCBB,
+    bright = 0xff9FC6C5,
+    dim = 0xff80B3B2,
+  },
+  red = {
+    base = 0xffBF616A,
+    bright = 0xffC5727A,
+    dim = 0xffB74E58,
+  },
+  orange = {
+    base = 0xffD08770,
+    bright = 0xffD79784,
+    dim = 0xffCB775D,
+  },
+  yellow = {
+    base = 0xffEBCB8B,
+    bright = 0xffEFD49F,
+    dim = 0xffE7C173,
+  },
+  green = {
+    base = 0xffA3BE8C,
+    bright = 0xffB1C89D,
+    dim = 0xff97B67C,
+  },
+  magenta = {
+    base = 0xffB48EAD,
+    bright = 0xffBE9DB8,
+    dim = 0xffA97EA1,
+  },
+}
+
+local theme = {
+  background = nordic.black1,
+  item = transparent,
+  border = nordic.black1,
+  text = nordic.white0_reduce_blue,
+  subtext = nordic.gray4,
+  red = nordic.red.base,
+  green = nordic.green.base,
+  yellow = nordic.yellow.base,
+  blue = nordic.blue0,
+  magenta = nordic.magenta.base,
+  cyan = nordic.cyan.base,
+  highlight_low = nordic.gray1,
+  highlight_med = nordic.gray2,
+  highlight_high = nordic.gray3,
+}
 
 M.sections = {
   bar = {
-    bg = transparent,
+    bg = theme.background,
     border = transparent,
   },
   item = {
-    bg = transparent,
-    popup = M.with_alpha(theme.base, 0.8),
-    border = theme.base,
+    bg = theme.item,
+    popup = theme.background,
+    border = theme.border,
     text = theme.text,
   },
   bracket = {
-    bg = M.with_alpha(theme.base, 0.7),
+    bg = theme.item,
     border = transparent,
   },
   popup = {
-    bg = M.with_alpha(theme.base, 0.7),
+    bg = theme.background,
     border = transparent,
   },
   apple = {
-    bg = M.with_alpha(theme.love, 0.2),
-    icon = theme.love,
+    icon = theme.red,
+    bg = transparent,
   },
   menu = {
     fg = theme.text,
-    bg = M.with_alpha(theme.text, 0.2),
+    bg = transparent,
   },
   spaces = {
     icon = {
-      theme.iris,
-      theme.love,
-      theme.gold,
-      theme.rose,
-      theme.pine,
-      theme.foam,
+      theme.magenta,
+      theme.red,
+      theme.yellow,
+      theme.cyan,
+      theme.green,
+      theme.blue,
     },
   },
   apps = {
     focused = theme.text,
-    unfocused = theme.subtle,
+    unfocused = theme.subtext,
   },
   front_app = {
-    icon = theme.iris,
-    label = theme.subtle,
+    icon = theme.red,
+    label = theme.subtext,
   },
   media = {
-    label = theme.subtle,
+    label = theme.subtext,
   },
   widgets = {
     battery = {
       low = {
-        icon = theme.love,
-        bg = M.with_alpha(theme.love, 0.2),
+        icon = theme.red,
+        bg = M.with_alpha(theme.red, 0.2),
       },
       mid = {
-        icon = theme.gold,
-        bg = M.with_alpha(theme.gold, 0.2),
+        icon = theme.yellow,
+        bg = M.with_alpha(theme.yellow, 0.2),
       },
       high = {
-        icon = theme.pine,
-        bg = M.with_alpha(theme.pine, 0.2),
+        icon = theme.green,
+        bg = M.with_alpha(theme.green, 0.2),
       },
     },
     wifi = {
-      icon = theme.foam,
-      bg = M.with_alpha(theme.foam, 0.2),
+      icon = theme.blue,
+      bg = M.with_alpha(theme.blue, 0.2),
     },
     volume = {
-      icon = theme.rose,
-      bg = M.with_alpha(theme.rose, 0.2),
+      icon = theme.magenta,
+      bg = M.with_alpha(theme.magenta, 0.2),
       popup = {
-        item = theme.subtle,
+        item = theme.subtext,
         highlight = theme.text,
       },
       slider = {
         highlight = theme.text,
-        bg = theme.muted,
-        border = theme.highlight_med,
+        bg = theme.highlight_low,
+        border = theme.border,
       },
     },
     messages = {
-      icon = theme.love,
-      bg = M.with_alpha(theme.love, 0.2),
+      icon = theme.red,
+      bg = M.with_alpha(theme.red, 0.2),
     },
   },
   calendar = {
-    label = theme.subtle,
+    label = theme.subtext,
   },
 }
 

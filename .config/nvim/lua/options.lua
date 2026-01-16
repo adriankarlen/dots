@@ -11,7 +11,7 @@ opt.clipboard = "unnamedplus"
 opt.cursorline = true
 opt.laststatus = 2
 opt.showmode = false
-o.winborder = "single"
+o.winborder = "solid"
 require("vim._extui").enable {}
 o.cmdheight = 0
 

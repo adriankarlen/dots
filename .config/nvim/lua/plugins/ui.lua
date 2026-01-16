@@ -80,11 +80,10 @@ return {
           ["g'"] = { "actions.toggle_trash", mode = "n" },
         },
         ssh = {
-          border = "single",
+          border = "solid",
         },
-
         keymaps_help = {
-          border = "single",
+          border = "solid",
         },
       }
     end,
