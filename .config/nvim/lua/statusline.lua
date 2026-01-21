@@ -47,22 +47,22 @@ local CTRL_S = vim.api.nvim_replace_termcodes("<C-S>", true, true, true)
 local CTRL_V = vim.api.nvim_replace_termcodes("<C-V>", true, true, true)
 
 local modes = setmetatable({
-  ["n"] = { long = "NORMAL", short = "N", hl = "StatuslineModeNormal" },
-  ["v"] = { long = "VISUAL", short = "V", hl = "StatuslineModeVisual" },
-  ["V"] = { long = "V-LINE", short = "V-L", hl = "StatuslineModeVisual" },
-  [CTRL_V] = { long = "V-BLOCK", short = "V-B", hl = "StatuslineModeVisual" },
-  ["s"] = { long = "SELECT", short = "S", hl = "StatuslineModeVisual" },
-  ["S"] = { long = "S-LINE", short = "S-L", hl = "StatuslineModeVisual" },
-  [CTRL_S] = { long = "S-BLOCK", short = "S-B", hl = "StatuslineModeVisual" },
-  ["i"] = { long = "INSERT", short = "I", hl = "StatuslineModeInsert" },
-  ["R"] = { long = "REPLACE", short = "R", hl = "StatuslineModeReplace" },
-  ["c"] = { long = "COMMAND", short = "C", hl = "StatuslineModeCommand" },
-  ["r"] = { long = "PROMPT", short = "P", hl = "StatuslineModeOther" },
-  ["!"] = { long = "SHELL", short = "Sh", hl = "StatuslineModeOther" },
-  ["t"] = { long = "TERMINAL", short = "T", hl = "StatuslineModeOther" },
+  ["n"] = { long = "NORMAL", short = "N", hl = "MiniStatuslineModeNormal" },
+  ["v"] = { long = "VISUAL", short = "V", hl = "MiniStatuslineModeVisual" },
+  ["V"] = { long = "V-LINE", short = "V-L", hl = "MiniStatuslineModeVisual" },
+  [CTRL_V] = { long = "V-BLOCK", short = "V-B", hl = "MiniStatuslineModeVisual" },
+  ["s"] = { long = "SELECT", short = "S", hl = "MiniStatuslineModeVisual" },
+  ["S"] = { long = "S-LINE", short = "S-L", hl = "MiniStatuslineModeVisual" },
+  [CTRL_S] = { long = "S-BLOCK", short = "S-B", hl = "MiniStatuslineModeVisual" },
+  ["i"] = { long = "INSERT", short = "I", hl = "MiniStatuslineModeInsert" },
+  ["R"] = { long = "REPLACE", short = "R", hl = "MiniStatuslineModeReplace" },
+  ["c"] = { long = "COMMAND", short = "C", hl = "MiniStatuslineModeCommand" },
+  ["r"] = { long = "PROMPT", short = "P", hl = "MiniStatuslineModeOther" },
+  ["!"] = { long = "SHELL", short = "Sh", hl = "MiniStatuslineModeOther" },
+  ["t"] = { long = "TERMINAL", short = "T", hl = "MiniStatuslineModeOther" },
 }, {
   __index = function()
-    return { long = "Unknown", short = "U", hl = "StatuslineModeOther" }
+    return { long = "Unknown", short = "U", hl = "MiniStatuslineModeOther" }
   end,
 })
 
@@ -82,11 +82,11 @@ local function get_path()
   local path = vim.fn.expand "%:~:.:h"
   local max_width = 30
   if path == "." or path == "" then
-    return ""
+    return _spacer(1)
   elseif #path > max_width then
     path = "…" .. string.sub(path, -max_width + 2)
   end
-  return tools.hl_str("StatuslineFilepath", path .. _spacer(1))
+  return tools.hl_str("Statusline", _spacer(1) .. path .. _spacer(1))
 end
 
 local function get_filename()
@@ -103,7 +103,7 @@ local function get_filename()
     [vim.diagnostic.severity.HINT] = "DiagnosticHint",
   }
   local diagnostics = vim.diagnostic.get(buf)
-  local hl = #diagnostics > 0 and diagnostic_map[diagnostics[1].severity] or "StatuslineTextMain"
+  local hl = #diagnostics > 0 and diagnostic_map[diagnostics[1].severity] or "MiniStatuslineFilename"
 
   if filename == "" then
     return tools.hl_str(hl, "[No Name]")
@@ -158,7 +158,7 @@ local function get_copilot_status()
   if not status then
     return ""
   end
-  local hl = status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "Define"
+  local hl = status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "DiagnosticHint"
   return tools.hl_str(hl, " " .. _spacer(1))
 end
 
@@ -199,7 +199,7 @@ local function get_dotnet_solution()
   end
   solution = solution:gsub("%.[^%.]+$", "")
   local icon, hl, _ = require("mini.icons").get("filetype", "solution")
-  return tools.hl_str(hl, icon .. " ") .. tools.hl_str("StatuslineTextMain", solution .. _spacer(2))
+  return tools.hl_str(hl, icon .. " ") .. tools.hl_str("Statusline", solution .. _spacer(2))
 end
 
 local function get_recording()
@@ -207,7 +207,7 @@ local function get_recording()
   if recording == "" then
     return ""
   end
-  return tools.hl_str("StatuslineTextAccent", "󰑋 ")
+  return tools.hl_str("MiniStatuslineFilename", "󰑋 ")
     .. tools.hl_str("DiagnosticError", recording .. " recording" .. _spacer(2))
 end
 
@@ -219,7 +219,7 @@ local function get_branch()
   if branch == "" then
     return ""
   end
-  return tools.hl_str("StatuslineTextAccent", " ") .. tools.hl_str("StatuslineTextMain", branch .. _spacer(2))
+  return tools.hl_str("MiniStatuslineFilename", " ") .. tools.hl_str("Statusline", branch .. _spacer(2))
 end
 
 local function get_scrollbar()
@@ -235,7 +235,7 @@ local function get_scrollbar()
   local i = math.floor((cur_line - 1) / lines * #sbar_chars) + 1
   local sbar = string.rep(sbar_chars[i], 2)
 
-  return tools.hl_str("DiagnosticError", sbar .. _spacer(1))
+  return tools.hl_str("DiagnosticWarn", sbar .. _spacer(1))
 end
 
 M.setup = function()

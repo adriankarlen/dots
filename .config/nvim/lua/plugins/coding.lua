@@ -32,7 +32,7 @@ return {
       {
         "<leader>cr",
         function()
-          return ":IncRename " .. vim.fn.expand "<cword>"
+          return ":IncRename "
         end,
         expr = true,
         desc = "rename",

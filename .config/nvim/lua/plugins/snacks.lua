@@ -142,7 +142,10 @@ return {
           },
         },
       },
-      input = { enabled = true },
+      input = {
+        enabled = true,
+        backdrop = true,
+      },
       zen = {
         show = {
           statusline = true,
