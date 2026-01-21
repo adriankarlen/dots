@@ -68,11 +68,11 @@ setopt auto_cd
 
 #fzf
 export FZF_DEFAULT_OPTS="
-	--color=fg:#908caa,bg:-1,hl:#ebbcba
-	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
-	--color=border:#403d52,header:#31748f,gutter:#191724
-	--color=spinner:#f6c177,info:#9ccfd8
-	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
+	--color=fg:#C0C8D8,bg:-1,hl:#88C0D0
+	--color=fg+:#D8DEE9,bg+:#2E3440,hl+:#88C0D0
+	--color=border:#3B4252,header:#5E81AC,gutter:#242933
+	--color=spinner:#EBCB8B,info:#88C0D0
+	--color=pointer:#D08770,marker:#BF616A,prompt:#C0C8D8"
 
 #gum
 function fs() {
