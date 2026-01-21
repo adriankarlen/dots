@@ -115,11 +115,11 @@ M.sections = {
   },
   apple = {
     icon = theme.red,
-    bg = transparent,
+    bg = M.with_alpha(theme.red, 0.2),
   },
   menu = {
     fg = theme.text,
-    bg = transparent,
+    bg = M.with_alpha(theme.text, 0.2),
   },
   spaces = {
     icon = {

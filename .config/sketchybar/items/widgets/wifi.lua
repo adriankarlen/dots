@@ -21,7 +21,6 @@ local wifi = sbar.add("item", "widgets.wifi", {
   },
   background = {
     color = colors.bg,
-    corner_radius = 9999,
   },
   popup = {
     align = "center",
@@ -78,32 +77,35 @@ local router = sbar.add("item", {
 })
 
 wifi:subscribe({ "wifi_change", "system_woke" }, function(_)
-  sbar.exec("networksetup -listpreferredwirelessnetworks en0 | sed -n '2p' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'", function(wifi_name)
-    local connected = not (wifi_name == "")
-    wifi:set {
-      icon = {
-        string = connected and icons.wifi.connected or icons.wifi.disconnected,
-      },
-      label = {
-        string = connected and wifi_name or "not connected",
-      },
-    }
-
-    -- VPN icon
-    sbar.exec([[sleep 2; scutil --nwi | grep -m1 'utun' | awk '{ print $1 }']], function(vpn)
-      local vpnconnected = not (vpn == "")
-
-      if vpnconnected then
-        Wifi_icon = icons.wifi.vpn
-      end
-
+  sbar.exec(
+    "networksetup -listpreferredwirelessnetworks en0 | sed -n '2p' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'",
+    function(wifi_name)
+      local connected = not (wifi_name == "")
       wifi:set {
         icon = {
-          string = Wifi_icon,
+          string = connected and icons.wifi.connected or icons.wifi.disconnected,
+        },
+        label = {
+          string = connected and wifi_name or "not connected",
         },
       }
-    end)
-  end)
+
+      -- VPN icon
+      sbar.exec([[sleep 2; scutil --nwi | grep -m1 'utun' | awk '{ print $1 }']], function(vpn)
+        local vpnconnected = not (vpn == "")
+
+        if vpnconnected then
+          Wifi_icon = icons.wifi.vpn
+        end
+
+        wifi:set {
+          icon = {
+            string = Wifi_icon,
+          },
+        }
+      end)
+    end
+  )
 end)
 
 local function hide_details()

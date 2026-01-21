@@ -17,7 +17,6 @@ local volume_icon = sbar.add("item", "widgets.volume", {
   },
   background = {
     color = colors.bg,
-    corner_radius = 9999,
   },
   popup = {
     align = "bottom",

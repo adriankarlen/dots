@@ -11,9 +11,6 @@ local battery = sbar.add("item", "widgets.battery", {
     padding_left = 3,
     padding_right = 6,
   },
-  background = {
-    corner_radius = 9999,
-  },
   padding_left = 4,
   padding_right = 4,
   update_freq = 180,

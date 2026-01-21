@@ -12,7 +12,6 @@ sbar.add("item", "system.apple", {
   },
   background = {
     color = colors.apple.bg,
-    corner_radius = 9999,
   },
   label = { drawing = false },
   click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0",

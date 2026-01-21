@@ -27,7 +27,6 @@ for i = 5, 1, -1 do
     },
     background = {
       color = with_alpha(icon_color, 0.2),
-      corner_radius = 9999,
     },
   })
 
@@ -48,7 +47,6 @@ sbar.add("bracket", { "/space\\..*/" }, {
     height = 34,
     color = colors.bracket.bg,
     border_color = colors.bracket.border,
-    corner_radius = 9999,
   },
 })
 
@@ -56,15 +54,14 @@ local spaces_indicator = sbar.add("item", "system.spaces_indicator", {
   icon = {
     string = icons.switch.on,
     color = colors.menu.fg,
-    padding_left = 8,
-    padding_right = 8,
+    padding_left = 7,
+    padding_right = 9,
   },
   label = {
     drawing = false,
   },
   background = {
     color = colors.menu.bg,
-    corner_radius = 9999,
   },
   padding_left = 4,
 })
