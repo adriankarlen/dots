@@ -1,0 +1,269 @@
+:root {
+  /* Palette */
+  --vimium-base: #1e222a;
+  --vimium-text: #c0c8d8;
+  --vimium-subtext: #c0c8d8;
+  --vimium-accent: #d08770;
+  --vimium-highlight: #242933;
+
+  --vimium-font-size: 16px;
+  --vimium-font-size-hints: 14px;
+  --vimium-font-size-url: 14px;
+
+  --vimium-font-weight: normal;
+  --vimium-font-weight-medium: 500;
+  --vimium-font-weight-bold: 600;
+
+  --vimium-font: "SF Pro"; /* Font used in the UI */
+
+  --vimium-padding: 2px;
+  --vimium-padding-vomnibar: 6px;
+
+  /* -------- VOMNIBAR & HUD -------- */
+  --vimium-fg: var(--vimium-text);
+  --vimium-fg-dark: var(--vimium-subtext);
+  --vimium-fg-url: var(--vimium-accent);
+  --vimium-fg-match: var(--vimium-text);
+
+  --vimium-bg: var(--vimium-base);
+  --vimium-bg-searcharea: var(--vimium-base);
+  --vimium-bg-selected: var(--vimium-accent);
+  --vimium-fg-selected: var(--vimium-base);
+
+  --vimium-border: var(--vimium-highlight);
+  --vimium-border-accent: var(--vimium-accent);
+  --vimium-border-radius: 8px;
+
+  --vimium-width: 580px; /* Max width of the Vomnibar and HUD */
+  --vimium-margin-centralize: calc(var(--vimium-width) / -2);
+
+  /* -------- HINTS -------- */
+  --vimium-bg-hints: var(--vimium-accent); /* Background color of link hints */
+  --vimium-border-hints: var(--vimium-accent); /* Border color of link hints */
+  --vimium-fg-hints: var(
+    --vimium-base
+  ); /* Text color of link hints, (don't forget to change `#vimiumHintMarkerContainer div > .matchingCharacter ~ span`) */
+}
+
+/* --------------------------------- CSS --------------------------------- */
+
+/* -------- HINTS -------- */
+#vimium-hint-marker-container div.internal-vimium-hint-marker,
+#vimium-hint-marker-container div.vimiumHintMarker {
+  background: var(--vimium-bg-hints);
+  border: 1px solid var(--vimium-border-hints);
+  border-radius: var(--vimium-border-radius);
+  padding: 2px 3px;
+}
+
+#vimium-hint-marker-container div span {
+  color: var(--vimium-fg-hints);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size-hints);
+  font-weight: var(--vimium-font-weight-bold);
+  text-shadow: none;
+  text-transform: lowercase;
+}
+
+#vimium-hint-marker-container div > .matchingCharacter {
+  opacity: 0.3;
+}
+
+#vimium-hint-marker-container div > .matchingCharacter ~ span {
+  color: var(--vimium-fg-hints);
+}
+
+/* -------- VOMNIBAR -------- */
+#vomnibar {
+  animation: show 200ms cubic-bezier(0, 0, 0.2, 1) forwards;
+  background: var(--vimium-bg);
+  border: 2px solid var(--vimium-border-accent);
+  border-radius: var(--vimium-border-radius);
+  left: 50%;
+  width: var(--vimium-width);
+  margin-left: calc(
+    var(--vimium-margin-centralize) - 6px
+  ); /* Adjust for margin */
+  max-height: calc(100vh - 70px);
+  overflow: hidden;
+  box-shadow: none;
+}
+
+/* Animate Slide in */
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#vomnibar .vomnibarSearchArea,
+#vomnibar input {
+  /* ALTERNATE BACKGROUND COLOR:
+    background: transparent; */
+  background: var(--vimium-bg-searcharea);
+  border: none;
+  box-shadow: none;
+  color: var(--vimium-fg);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size);
+  font-weight: var(--vimium-font-weight);
+}
+
+#vomnibar .vomnibarSearchArea {
+  padding: 8px 30px;
+  border-radius: var(--vimium-border-radius);
+}
+
+#vomnibar input {
+  border: none;
+  padding: var(--vimium-padding);
+}
+
+#vomnibar ul {
+  background: var(--vimium-bg);
+  border-top: 1px solid var(--vimium-border);
+  margin: 0;
+  padding: var(--vimium-padding-vomnibar);
+}
+
+#vomnibar li {
+  border-bottom: none;
+  padding-top: 8px;
+  padding-left: var(--vimium-padding-vomnibar);
+  padding-right: var(--vimium-padding-vomnibar);
+  padding-bottom: 8px;
+}
+
+#vomnibar li .vomnibarTopHalf {
+  padding: var(--vimium-padding);
+}
+
+#vomnibar li .vomnibarBottomHalf {
+  padding-top: 0px;
+  padding-bottom: 1px;
+}
+
+#vomnibar li .vomnibarSource {
+  color: var(--vimium-fg-dark);
+  font-family: var(--vimium-font);
+  font-size: 12;
+  font-weight: var(--vimium-font-weight-bold);
+  text-transform: uppercase; /* `.vomnibarSource` will be in all uppercase letters. Delete to revert to original */
+}
+
+#vomnibar li em,
+#vomnibar li .vomnibarTitle {
+  color: var(--vimium-fg);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size);
+  font-weight: var(--vimium-font-weight-medium);
+}
+
+#vomnibar li .vomnibarUrl {
+  color: var(--vimium-fg-url);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size-url);
+  font-weight: var(--vimium-font-weight-medium);
+}
+
+#vomnibar li .vomnibarMatch {
+  color: var(--vimium-fg-match);
+  font-weight: normal;
+}
+
+#vomnibar li .vomnibarTitle .vomnibarMatch {
+  color: var(--vimium-fg);
+  font-weight: var(--vimium-font-weight-bold);
+}
+
+#vomnibar li.vomnibarSelected {
+  background-color: var(--vimium-bg-selected);
+  border-radius: var(--vimium-border-radius);
+
+  & .vomnibarSource,
+  & .vomnibarTitle,
+  & .vomnibarUrl,
+  & .vomnibarMatch {
+    color: var(--vimium-fg-selected);
+  }
+
+  & .vomnibarMatch {
+    font-weight: var(font-weight-bold);
+  }
+}
+
+/* -------- HUD -------- */
+div.vimiumHUD {
+  background: var(--vimium-bg);
+  border: 1px solid var(--vimium-border);
+  border-radius: var(--vimium-border-radius);
+  max-width: var(--vimium-max-width);
+}
+
+div.vimiumHUD span#hud-find-input,
+div.vimiumHUD .vimiumHUDSearchAreaInner {
+  color: var(--vimium-fg);
+  font-family: var(--vimium-font);
+  font-size: 13;
+  font-weight: var(--vimium-font-weight-medium);
+}
+
+div.vimiumHUD .hud-find {
+  background-color: transparent;
+  border: none;
+}
+
+div.vimiumHUD .vimiumHUDSearchArea {
+  background-color: transparent;
+  padding: 6px;
+}
+
+/* -------- HELP DIALOG -------- */
+div#vimiumHelpDialog {
+  border: 1px solid var(--vimium-border);
+  border-radius: var(--vimium-border-radius);
+  background: var(--vimium-bg-searcharea);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size);
+}
+
+span#vimiumTitle {
+  color: var(--vimium-fg);
+}
+
+a:link.vimiumHelDialogLink,
+a:visited.vimiumHelDialogLink,
+a:hover.vimiumHelDialogLink,
+a:active.vimiumHelDialogLink,
+a#toggleAdvancedCommands {
+  color: var(--vimium-fg-url);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size);
+}
+
+span.vimiumHelpDialogKey {
+  background-color: var(--vimium-bg-hints);
+  border: 1px solid var(--vimium-border-hints);
+  padding: 2px 3px;
+  color: var(--vimium-fg-hints);
+  font-family: var(--vimium-font);
+  font-size: var(--vimium-font-size-hints);
+  font-weight: var(--vimium-font-weight-medium);
+  text-shadow: none;
+}
+
+td.vimiumHelpSectionTitle,
+td.vimiumHelpDescription {
+  color: var(--vimium-fg);
+  font-family: var(--vimium-font);
+}
+
+div.vimiumColumn {
+  color: var(--vimium-fg);
+  font-family: var(--vimium-font);
+}
