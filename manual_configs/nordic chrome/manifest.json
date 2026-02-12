@@ -1,0 +1,80 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "name": "nordic",
+  "theme": {
+    "images": {
+      "theme_tab_background": "theme_tab_background.png",
+      "theme_ntp_background": "theme_ntp_background.png"
+    },
+    "colors": {
+      "frame": [
+        30,
+        34,
+        42
+      ],
+      "ntp_background": [
+        46,
+        52,
+        64
+      ],
+      "tab_text": [
+        186,
+        195,
+        212
+      ],
+      "tab_background_text": [
+        67,
+        76,
+        93
+      ],
+      "bookmark_text": [
+        186,
+        195,
+        212
+      ],
+      "ntp_text": [
+        67,
+        76,
+        93
+      ],
+      "ntp_link": [
+        209,
+        135,
+        112
+      ],
+      "ntp_header": [
+        209,
+        135,
+        112
+      ],
+      "toolbar": [
+        46,
+        52,
+        64
+      ],
+      "toolbar_text": [
+        67,
+        76,
+        93
+      ],
+      "button_background": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "omnibox_text": [
+        255,
+        255,
+        255
+      ]
+    },
+    "tints": {},
+    "properties": {
+      "ntp_background_alignment": "center",
+      "ntp_background_repeat": "no-repeat"
+    }
+  },
+  "description": "nordic.nvim chrome port"
+}

@@ -4,23 +4,8 @@ return {
   name = "rose-pine",
   config = function()
     require("rose-pine").setup {
-      styles = {
-        transparency = true,
-      },
       highlight_groups = {
         MatchParen = { fg = "love", bg = "love", blend = 25 },
-        StatuslineTextMain = { fg = "text", bg = "none" },
-        StatuslineTextAccent = { fg = "muted", bg = "none" },
-        StatusLineTerm = { link = "StatuslineTextMain" },
-        StatuslineModeCommand = { fg = "love", bg = "none", bold = true },
-        StatuslineModeInsert = { fg = "foam", bg = "none", bold = true },
-        StatuslineModeNormal = { fg = "pine", bg = "none", bold = true },
-        StatuslineModeOther = { fg = "pine", bg = "none", bold = true },
-        StatuslineModeReplace = { fg = "rose", bg = "none", bold = true },
-        StatuslineModeVisual = { fg = "iris", bg = "none", bold = true },
-        StatuslineFilepath = { fg = "muted", bg = "none", italic = true },
-        QuickFixFilename = { fg = "text" },
-        IndentLineCurrent = { fg = "muted" },
         EasyDotnetTestRunnerSolution = { fg = "pine" },
         EasyDotnetTestRunnerProject = { fg = "rose" },
         EasyDotnetTestRunnerTest = { fg = "iris" },
@@ -31,17 +16,6 @@ return {
         SnacksDashboardDir = { fg = "muted", italic = true },
         SnacksDashboardFile = { fg = "text" },
         SnacksDashboardFooter = { fg = "text" },
-        DartCurrentLabel = { fg = "gold", bg = "overlay", bold = true },
-        DartCurrentModified = { fg = "text", bg = "overlay", bold = true },
-        DartCurrentLabelModified = { fg = "gold", bg = "overlay", bold = true },
-        DartVisibleLabel = { fg = "gold", bg = "surface", bold = true },
-        DartVisibleLabelModified = { fg = "gold", bg = "text", bold = true },
-        DartMarkedCurrentLabel = { fg = "gold", bg = "overlay", bold = true },
-        DartMarkedCurrentModified = { fg = "text", bg = "overlay", bold = true },
-        DartMarkedCurrentLabelModified = { fg = "gold", bg = "overlay", bold = true },
-        DartMarkedLabel = { fg = "gold", bg = "surface", bold = true },
-        DartMarkedLabelModified = { fg = "gold", bg = "text", bold = true },
-        DartPickLabel = { fg = "gold", bg = "none", bold = true },
         OilGitAdded = { fg = "foam" },
         OilGitModified = { fg = "rose" },
         OilGitRenamed = { fg = "pine" },
@@ -49,6 +23,6 @@ return {
         OilGitIgnored = { fg = "muted" },
       },
     }
-    -- vim.cmd "colorscheme rose-pine"
+    vim.cmd "colorscheme rose-pine"
   end,
 }

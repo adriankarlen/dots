@@ -12,7 +12,7 @@ opt.cursorline = true
 opt.laststatus = 2
 opt.showmode = false
 o.winborder = "solid"
-require("vim._extui").enable {}
+require("vim._core.ui2").enable {}
 o.cmdheight = 0
 
 -- split

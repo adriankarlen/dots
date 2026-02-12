@@ -155,30 +155,15 @@ return {
   {
     "nvim-zh/colorful-winsep.nvim",
     event = { "BufReadPre" },
-    opts = function(_, opts)
-      local palette = require "rose-pine.palette"
-      opts = {
-        hi = {
-          fg = palette.gold,
-        },
-        smooth = false,
-      }
-      return opts
-    end,
+    opts = {
+      animate = { enabled = false },
+    },
   },
   {
-    "iofq/dart.nvim",
+    "serhez/bento.nvim",
     event = "BufReadPre",
     opts = {
-      buflist = {},
-      tabline = {
-        always_show = false,
-      },
-      mappings = {
-        mark = "''",
-        jump = "'",
-        pick = "'p",
-      },
+      main_keymap = "'",
     },
   },
   {

@@ -17,7 +17,7 @@ template = "➜ "
 [[blocks.segments]]
 type = "path"
 style = "plain"
-foreground = "white"
+foreground = "blue"
 template = "<b>{{ .Path }}</b> <yellow> </>"
 
 [blocks.segments.properties]

@@ -1,8 +1,5 @@
 git:
   overrideGpg: true
-  # pagers:
-  #   - colorArg: always
-  #     pager: delta --dark --paging=never
 gui:
   authorColors:
     "*": magenta
@@ -11,13 +8,13 @@ gui:
   tabWidth: 2
   theme:
     activeBorderColor:
-      - "#D08770"
+      - yellow
       - bold
     searchingActiveBorderColor:
-      - "#D08770"
+      - yellow
       - bold
     inactiveBorderColor:
-      - "#4C566A"
+      - "#6e6a86"
       - bold
     selectedLineBgColor:
       - black

@@ -18,7 +18,7 @@ local messages = sbar.add("item", "widgets.messages", {
   },
   background = {
     color = colors.bg,
-    corner_radius = 9999,
+    corner_radius = 4,
   },
   update_freq = 30,
   padding_left = 4,

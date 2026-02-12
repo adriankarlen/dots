@@ -118,7 +118,7 @@ local function get_modification_status()
   if buf_modified then
     return tools.hl_str("DiagnosticWarn", "●" .. _spacer(2))
   elseif buf_modifiable == false or buf_readonly == true then
-    return tools.hl_str("DiagnosticError", "󰑇" .. _spacer(2))
+    return tools.hl_str("DiagnosticError", _spacer(1) .. "󰑇" .. _spacer(2))
   else
     return _spacer(2) -- No modification status
   end
@@ -144,7 +144,7 @@ local function get_formatter_status()
 
   local formatters = conform.list_formatters(0)
   if #formatters > 0 then
-    return tools.hl_str("Special", " " .. _spacer(1))
+    return tools.hl_str("DiagnosticHint", " " .. _spacer(1))
   else
     return ""
   end
@@ -158,7 +158,7 @@ local function get_copilot_status()
   if not status then
     return ""
   end
-  local hl = status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "DiagnosticHint"
+  local hl = status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or "DiagnosticInfo"
   return tools.hl_str(hl, " " .. _spacer(1))
 end
 

@@ -4,7 +4,6 @@ return {
   { "nvim-mini/mini.bracketed", version = false, event = "VeryLazy", opts = {} },
   { "nvim-mini/mini-git", version = false, main = "mini.git", event = "VeryLazy", opts = {} },
   { "nvim-mini/mini.operators", version = false, event = "BufReadPre", opts = {} },
-  { "nvim-mini/mini.comment", version = false, opts = {} },
   { "nvim-mini/mini.surround", event = "BufReadPre", version = false, opts = {} },
   { "nvim-mini/mini.doc", version = false, opts = {}, ft = "lua" },
   {
@@ -73,7 +72,7 @@ return {
       {
         "<leader>gd",
         function()
-          MiniDiff.toggle_overlay(0)
+          require("mini.diff").toggle_overlay(0)
         end,
         desc = "toggle diff overlay",
       },

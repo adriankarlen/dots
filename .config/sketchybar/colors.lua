@@ -77,21 +77,47 @@ local nordic = {
   },
 }
 
+local ctp_mocha = {
+  rosewater = 0xfff5e0dc,
+  flamingo = 0xfff2cdcd,
+  pink = 0xfff5c2e7,
+  mauve = 0xffcba6f7,
+  red = 0xfff38ba8,
+  maroon = 0xffeba0ac,
+  peach = 0xfffab387,
+  yellow = 0xfff9e2af,
+  green = 0xffa6e3a1,
+  teal = 0xff94e2d5,
+  sky = 0xff89dceb,
+  sapphire = 0xff74c7ec,
+  blue = 0xff89b4fa,
+  lavender = 0xffb4befe,
+  text = 0xffcdd6f4,
+  subtext1 = 0xffbac2de,
+  subtext0 = 0xffa6adc8,
+  overlay2 = 0xff9399b2,
+  overlay1 = 0xff7f849c,
+  overlay0 = 0xff6c7086,
+  surface2 = 0xff585b70,
+  surface1 = 0xff45475a,
+  surface0 = 0xff313244,
+  base = 0xff1e1e2e,
+  mantle = 0xff181825,
+  crust = 0xff11111b,
+}
+
 local theme = {
-  background = nordic.black1,
+  background = rp.base,
   item = transparent,
-  border = nordic.black1,
-  text = nordic.white0_reduce_blue,
-  subtext = nordic.gray4,
-  red = nordic.red.base,
-  green = nordic.green.base,
-  yellow = nordic.yellow.base,
-  blue = nordic.blue0,
-  magenta = nordic.magenta.base,
-  cyan = nordic.cyan.base,
-  highlight_low = nordic.gray1,
-  highlight_med = nordic.gray2,
-  highlight_high = nordic.gray3,
+  border = transparent,
+  text = rp.text,
+  subtext = rp.muted,
+  red = rp.love,
+  green = rp.pine,
+  yellow = rp.gold,
+  blue = rp.foam,
+  orange = rp.iris,
+  cyan = rp.rose,
 }
 
 M.sections = {
@@ -123,7 +149,7 @@ M.sections = {
   },
   spaces = {
     icon = {
-      theme.magenta,
+      theme.orange,
       theme.red,
       theme.yellow,
       theme.cyan,
@@ -136,7 +162,7 @@ M.sections = {
     unfocused = theme.subtext,
   },
   front_app = {
-    icon = theme.red,
+    icon = theme.cyan,
     label = theme.subtext,
   },
   media = {
@@ -162,15 +188,15 @@ M.sections = {
       bg = M.with_alpha(theme.blue, 0.2),
     },
     volume = {
-      icon = theme.magenta,
-      bg = M.with_alpha(theme.magenta, 0.2),
+      icon = theme.orange,
+      bg = M.with_alpha(theme.orange, 0.2),
       popup = {
         item = theme.subtext,
         highlight = theme.text,
       },
       slider = {
         highlight = theme.text,
-        bg = theme.highlight_low,
+        bg = theme.subtext,
         border = theme.border,
       },
     },
