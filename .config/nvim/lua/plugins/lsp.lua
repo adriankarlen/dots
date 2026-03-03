@@ -12,21 +12,30 @@ return {
       bashls = {},
       cssls = {
         settings = {
-          css = { validate = true, lint = {
-            unknownAtRules = "ignore",
-          } },
-          scss = { validate = true, lint = {
-            unknownAtRules = "ignore",
-          } },
-          less = { validate = true, lint = {
-            unknownAtRules = "ignore",
-          } },
+          css = {
+            validate = true,
+            lint = {
+              unknownAtRules = "ignore",
+            },
+          },
+          scss = {
+            validate = true,
+            lint = {
+              unknownAtRules = "ignore",
+            },
+          },
+          less = {
+            validate = true,
+            lint = {
+              unknownAtRules = "ignore",
+            },
+          },
         },
       },
       eslint = {},
+      biome = {},
       gopls = {},
       html = {},
-      jsonls = {},
       emmylua_ls = {},
       marksman = {},
       roslyn = {
@@ -70,7 +79,6 @@ return {
 
     local ensure_installed = vim.tbl_keys(servers)
     vim.list_extend(ensure_installed, {
-      "prettier", -- prettier formatter
       "stylua", -- lua formatter
       "rustywind", -- tailwindcss formatter
       "xmlformatter", -- xml formatter
@@ -87,10 +95,10 @@ return {
   end,
   keys = {
     -- stylua: ignore start
-    { "gD", "<cmd>Trouble lsp_declarations<cr>", desc = "lsp declaration" },
-    { "gd", "<cmd>Trouble lsp_definitions<cr>", desc = "lsp definition" },
-    { "gi", "<cmd>Trouble lsp_implementations<cr>", desc = "lsp implementation" },
-    { "gr", "<cmd>Trouble lsp_references<cr>", desc = "lsp references" },
+    { "gD", "<cmd>Trouble lsp_declarations<cr>",     desc = "lsp declaration" },
+    { "gd", "<cmd>Trouble lsp_definitions<cr>",      desc = "lsp definition" },
+    { "gi", "<cmd>Trouble lsp_implementations<cr>",  desc = "lsp implementation" },
+    { "gr", "<cmd>Trouble lsp_references<cr>",       desc = "lsp references" },
     { "gy", "<cmd>Trouble lsp_type_definitions<cr>", desc = "lsp type definition" },
     -- stylua: ignore start
   },
