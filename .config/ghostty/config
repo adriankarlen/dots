@@ -4,7 +4,7 @@ theme = Rose Pine
 
 adjust-cell-height = 45%
 font-family = Berkeley Mono
-font-size = 15
+font-size = 16
 
 confirm-close-surface = false
 
