@@ -80,6 +80,7 @@ return {
     end,
     event = "VeryLazy",
     opts = {
+      preset = "helix",
       win = { border = "solid" },
       spec = {
         -- groups
