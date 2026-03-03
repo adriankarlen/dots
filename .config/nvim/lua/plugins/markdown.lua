@@ -15,7 +15,7 @@ return {
   },
   {
     "OXY2DEV/markview.nvim",
-    lazy = false,
+    event = "BufReadPre",
     opts = function()
       local presets = require "markview.presets"
       return {
