@@ -1,57 +1,59 @@
 return {
   "stevearc/conform.nvim",
-  cond = not vim.g.vscode,
-
   event = { "BufWritePre" },
-  opts = {
-    quiet = true,
-    lsp_format = "fallback",
-    formatters_by_ft = {
-      sh = { "shfmt" },
-      zsh = { "shfmt" },
-      lua = { "stylua" },
-      javascript = { "prettier", "eslint", stop_after_first = true },
-      typescript = { "prettier", "eslint", stop_after_first = true },
-      javascriptreact = { "prettier", "rustywind" },
-      typescriptreact = { "prettier", "rustywind" },
-      svelte = { "prettier", "rustywind" },
-      html = { "prettier", "rustywind" },
-      css = { "prettier" },
-      scss = { "prettier" },
-      less = { "prettier" },
-      json = { "prettier" },
-      jsonc = { "prettier" },
-      yaml = { "prettier" },
-      markdown = { "prettier" },
-      mdx = { "prettier" },
-      go = { "gofmt" },
-      cs = { "roslyn" },
-      xml = { "xmlformatter" },
-      svg = { "xmlformatter" },
-    },
-    formatters = {
-      xmlformatter = {
-        cmd = { "xmlformatter" },
-        args = { "--selfclose", "-" },
-      },
-      shfmt = {
-        -- prepend_args = { "-i", "2", "-ci", "-bn" },
-      },
-      injected = { options = { ignore_errors = false } },
-    },
-    format_on_save = {
-      timeout_ms = 500,
-      lsp_fallback = true,
-    },
-  },
+  cmd = { "ConformInfo" },
+  init = function()
+    vim.api.nvim_create_user_command("FormatDisable", function(args)
+      if args.bang then
+        -- FormatDisable! will disable formatting just for this buffer
+        vim.b.disable_autoformat = true
+      else
+        vim.g.disable_autoformat = true
+      end
+    end, {
+      desc = "Disable autoformat-on-save",
+      bang = true,
+    })
+    vim.api.nvim_create_user_command("FormatEnable", function()
+      vim.b.disable_autoformat = false
+      vim.g.disable_autoformat = false
+    end, {
+      desc = "Re-enable autoformat-on-save",
+    })
+  end,
   keys = {
     {
       "<leader>cf",
       function()
-        require("conform").format {}
+        require("conform").format { async = true, lsp_format = "first" }
       end,
+      mode = "",
       desc = "format",
-      silent = true,
+    },
+  },
+  opts = {
+    notify_on_error = false,
+    format_on_save = function(bufnr)
+      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+        return
+      end
+      return {
+        timeout_ms = 500,
+        lsp_format = "first",
+      }
+    end,
+    formatters_by_ft = {
+      sh = { "shfmt" },
+      zsh = { "shfmt" },
+      lua = { "stylua" },
+      javascript = { "biome-organize-imports" },
+      javascriptreact = { "biome-organize-imports" },
+      typescript = { "biome-organize-imports" },
+      typescriptreact = { "biome-organize-imports" },
+      svelte = { "biome-organize-imports", "rustywind" },
+      go = { "gofmt" },
+      xml = { "xmlformatter" },
+      svg = { "xmlformatter" },
     },
   },
 }
