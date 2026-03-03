@@ -2,7 +2,7 @@ return {
   "AlexvZyl/nordic.nvim",
   lazy = false,
   priority = 1000,
-  envbled = false,
+  enabled = false,
   config = function()
     require("nordic").setup {
       after_palette = function(c)
@@ -20,6 +20,6 @@ return {
         vim.api.nvim_set_hl(0, "SnacksDashboardFile", { fg = c.white0 })
       end,
     }
-    -- require("nordic").load()
+    require("nordic").load()
   end,
 }
