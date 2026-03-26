@@ -27,11 +27,11 @@ return {
         mode = { "n", "v" },
       },
       {
-        "<leader>ao",
+        "<leader>ac",
         function()
-          require("sidekick.cli").toggle { name = "opencode", focus = true }
+          require("sidekick.cli").toggle { name = "claude", focus = true }
         end,
-        desc = "toggle opencode",
+        desc = "toggle claude",
         mode = { "n", "v" },
       },
       {

@@ -25,7 +25,7 @@ return {
     {
       "<leader>cf",
       function()
-        require("conform").format { async = true, lsp_format = "first" }
+        require("conform").format { async = true, lsp_format = "fallback" }
       end,
       mode = "",
       desc = "format",
@@ -46,11 +46,12 @@ return {
       sh = { "shfmt" },
       zsh = { "shfmt" },
       lua = { "stylua" },
-      javascript = { "biome-organize-imports" },
-      javascriptreact = { "biome-organize-imports" },
-      typescript = { "biome-organize-imports" },
-      typescriptreact = { "biome-organize-imports" },
-      svelte = { "biome-organize-imports", "rustywind" },
+      javascript = { "biome-check" },
+      javascriptreact = { "biome-check" },
+      typescript = { "biome-check" },
+      typescriptreact = { "biome-check" },
+      svelte = { "biome-check", "rustywind" },
+      json = { "biome" },
       go = { "gofmt" },
       xml = { "xmlformatter" },
       svg = { "xmlformatter" },

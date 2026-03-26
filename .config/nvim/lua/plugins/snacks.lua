@@ -11,7 +11,7 @@ return {
           key = function(item)
             return { { "[", hl = "NonText" }, { item.key, hl = "Normal" }, { "]", hl = "NonText" } }
           end,
-          header = { "%s", align = "center", hl = "Normal" },
+          header = { "%s", align = "center", hl = "DiagnosticHint" },
           icon = function(item)
             if item.file and item.icon == "file" or item.icon == "directory" then
               return { "" }
@@ -57,7 +57,7 @@ return {
         },
         sections = {
           --stylua: ignore start
-          { title = {{ "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" }}, padding = 1, align = "center" },
+          { title = { { "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" } }, padding = 1, align = "center" },
           { section = "keys", padding = 1 },
           { title = " mru ", file = vim.fn.fnamemodify(".", ":~") },
           { section = "recent_files", cwd = true, limit = 6, padding = 1 },
@@ -172,18 +172,18 @@ return {
     },
     keys = {
       -- stylua: ignore start
-      { "<leader>bd", function() Snacks.bufdelete() end, desc = "delete buffer" },
-      { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "delete other buffers" },
-      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "blame line" },
-      { "<leader>cR", function() Snacks.rename() end, desc = "rename file" },
-      { "<leader><leader>", function() Snacks.terminal() end, desc = "terminal" },
-      { "<leader><tab>", function() Snacks.picker.buffers() end, desc = "buffers" },
-      { "<leader>fs", function() Snacks.picker.smart() end, desc = "smart files" },
-      { "<leader>ff", function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
-      { "<leader>fw", function() Snacks.picker.grep({ hidden = true }) end, desc = "live grep" },
-      { "<leader>fw", function() Snacks.picker.grep_word() end, mode = "x", desc = "grep selection" },
-      { "<leader>fi", function() Snacks.picker.icons() end, desc = "icons" },
-      { "<leader>ti", function() Snacks.image.hover() end, desc = "image hover" },
+      { "<leader>bd",       function() Snacks.bufdelete() end,                     desc = "delete buffer" },
+      { "<leader>bD",       function() Snacks.bufdelete.other() end,               desc = "delete other buffers" },
+      { "<leader>gb",       function() Snacks.git.blame_line() end,                desc = "blame line" },
+      { "<leader>cR",       function() Snacks.rename() end,                        desc = "rename file" },
+      { "<leader><leader>", function() Snacks.terminal() end,                      desc = "terminal" },
+      { "<leader><tab>",    function() Snacks.picker.buffers() end,                desc = "buffers" },
+      { "<leader>fs",       function() Snacks.picker.smart() end,                  desc = "smart files" },
+      { "<leader>ff",       function() Snacks.picker.files({ hidden = true }) end, desc = "find files" },
+      { "<leader>fw",       function() Snacks.picker.grep({ hidden = true }) end,  desc = "live grep" },
+      { "<leader>fw",       function() Snacks.picker.grep_word() end,              mode = "x",                   desc = "grep selection" },
+      { "<leader>fi",       function() Snacks.picker.icons() end,                  desc = "icons" },
+      { "<leader>ti",       function() Snacks.image.hover() end,                   desc = "image hover" },
       -- stylua: ignore end
     },
 
