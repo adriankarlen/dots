@@ -1,53 +1,42 @@
--- Settings
+-- ┌─────────────────────────┐
+-- │ Filetype config example │
+-- └─────────────────────────┘
+--
+-- This is an example of a configuration that will apply only to a particular
+-- filetype, which is the same as file's basename ('markdown' in this example;
+-- which is for '*.md' files).
+--
+-- It can contain any code which will be usually executed when the file is opened
+-- (strictly speaking, on every 'filetype' option value change to target value).
+-- Usually it needs to define buffer/window local options and variables.
+-- So instead of `vim.o` to set options, use `vim.bo` for buffer-local options and
+-- `vim.cmd('setlocal ...')` for window-local options (currently more robust).
+--
+-- This is also a good place to set buffer-local 'mini.nvim' variables.
+-- See `:h mini.nvim-buffer-local-config` and `:h mini.nvim-disabling-recipes`.
 
-vim.opt_local.spell = true
+-- Enable spelling and wrap for window
+vim.cmd "setlocal spell wrap"
 
-vim.opt_local.wrap = true
-vim.opt_local.textwidth = 80
+-- Fold with tree-sitter
+vim.cmd "setlocal foldmethod=expr foldexpr=v:lua.vim.treesitter.foldexpr()"
 
--- Disable some weird autoindenting
--- https://github.com/plasticboy/vim-markdown/issues/126
-vim.opt_local.indentexpr = ''
+-- Disable built-in `gO` mapping in favor of 'mini.basics'
+vim.keymap.del("n", "gO", { buffer = 0 })
 
--- Mappings
-
-local function is_in_list()
-  return vim.fn.match(vim.fn.getline '.', '\\s*[*\\-+]\\s') ~= -1
-end
-
-vim.keymap.set('i', '<cr>', function()
-  if is_in_list() then
-    return '<cr>- '
-  else
-    return '<cr>'
-  end
-end, { buffer = true, expr = true })
-vim.keymap.set('n', 'o', function()
-  if is_in_list() then
-    return 'o- '
-  else
-    return 'o'
-  end
-end, { buffer = true, expr = true })
-vim.keymap.set('n', 'O', function()
-  if is_in_list() then
-    return 'O- '
-  else
-    return 'O'
-  end
-end, { buffer = true, expr = true })
-
-vim.keymap.set('i', '<tab>', function()
-  if is_in_list() then
-    return '<esc>>>A'
-  else
-    return '<tab>'
-  end
-end, { buffer = true, expr = true })
-vim.keymap.set('i', '<s-tab>', function()
-  if is_in_list() then
-    return '<esc><<A'
-  else
-    return '<tab>'
-  end
-end, { buffer = true, expr = true })
+-- Set markdown-specific surrounding in 'mini.surround'
+vim.b.minisurround_config = {
+  custom_surroundings = {
+    -- Markdown link. Common usage:
+    -- `saiwL` + [type/paste link] + <CR> - add link
+    -- `sdL` - delete link
+    -- `srLL` + [type/paste link] + <CR> - replace link
+    L = {
+      input = { "%[().-()%]%(.-%)" },
+      output = function()
+        local link = require("mini.surround").user_input "Link: "
+        return { left = "[", right = "](" .. link .. ")" }
+      end,
+    },
+  },
+}
