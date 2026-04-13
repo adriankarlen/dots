@@ -1,11 +1,11 @@
-if [[ -f "/opt/homebrew/bin/brew" ]] then
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # zinit setup
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [ ! -d "$ZINIT_HOME" ]; then
-      mkdir -p "$(dirname $ZINIT_HOME)"
+  mkdir -p "$(dirname $ZINIT_HOME)"
   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 source "${ZINIT_HOME}/zinit.zsh"
@@ -55,7 +55,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons -a --group-directories-first --git --color=always $realpath' 
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --icons -a --group-directories-first --git --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --icons -a --group-directories-first --git --color=always $realpath'
 
 # env vars
@@ -87,13 +87,12 @@ source $HOME/dots/manual_configs/gum-ctp.sh mocha
 alias v="nvim"
 alias vim="nvim"
 alias lkjh="nvim"
-alias vpack="NVIM_APPNAME=vimpack nvim"
 alias c="clear"
-alias l="eza -lh --icons=auto --color=always" # long list
-alias ls="eza --icons=auto --color=always" # short list
+alias l="eza -lh --icons=auto --color=always"                                         # long list
+alias ls="eza --icons=auto --color=always"                                            # short list
 alias ll="eza -lha --icons=auto --sort=name --group-directories-first --color=always" # long list all
-alias ld="eza -lhD --icons=auto --color=always" # long list dirs
-alias lt="eza --icons=auto --tree --color=always" # list folder as tree
+alias ld="eza -lhD --icons=auto --color=always"                                       # long list dirs
+alias lt="eza --icons=auto --tree --color=always"                                     # list folder as tree
 alias ...="cd ../.."
 alias .3="cd ../../.."
 alias .4="cd ../../../.."
@@ -111,12 +110,23 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 eval "$(zoxide init zsh)"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(fnm env --use-on-cd --shell zsh)"
 
 # bun completions
 [ -s "/Users/adriankarlen/.bun/_bun" ] && source "/Users/adriankarlen/.bun/_bun"
 
+#spicetify
 export PATH="$PATH:/Users/adriankarlen/.spicetify"
+
+#dotnet
 export PATH="$PATH:/Users/adriankarlen/.dotnet/tools"
 export DOTNET_ENVIRONMENT=Development
 export ASPNETCORE_ENVIRONMENT=Development
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/adriankarlen/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/adriankarlen/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/adriankarlen/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/adriankarlen/google-cloud-sdk/completion.zsh.inc'; fi
+
 fetch
