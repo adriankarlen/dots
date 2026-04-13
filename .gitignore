@@ -1,7 +1,6 @@
 .DS_Store
 .config/gh/
 .config/github-copilot/
-.config/vimpack/
 .config/raycast/
 .config/sesh/spp.toml
 .config/karabiner/
