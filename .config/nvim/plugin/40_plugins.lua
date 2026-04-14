@@ -222,40 +222,6 @@ now(function()
 end)
 
 -- ─[ load if opened with file ]───────────────────────────────────────────
-
--- ─[ load lazily ]────────────────────────────────────────────────────────
-later(function()
-  add { "https://github.com/stevearc/conform.nvim" }
-
-  require("conform").setup {
-    default_format_opts = {
-      lsp_format = "fallback",
-      format_on_save = function(bufnr)
-        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-          return
-        end
-        return {
-          timeout_ms = 500,
-        }
-      end,
-      formatters_by_ft = {
-        sh = { "shfmt" },
-        zsh = { "shfmt" },
-        lua = { "stylua" },
-        javascript = { "biome-check" },
-        javascriptreact = { "biome-check" },
-        typescript = { "biome-check" },
-        typescriptreact = { "biome-check" },
-        svelte = { "biome-check", "rustywind" },
-        json = { "biome" },
-        go = { "gofmt" },
-        xml = { "xmlformatter" },
-        svg = { "xmlformatter" },
-      },
-    },
-  }
-end)
-
 now_if_args(function()
   add { "https://github.com/rafamadriz/friendly-snippets" }
 end)
@@ -267,18 +233,6 @@ now_if_args(function()
       { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       { path = "snacks.nvim",        words = { "Snacks" } },
       { path = "mini" },
-    },
-  }
-end)
-
-now_if_args(function()
-  add { "https://github.com/catgoose/nvim-colorizer.lua" }
-  require("colorizer").setup {
-    user_default_options = {
-      names = false,
-      mode = "virtualtext",
-      virtualtext = " ",
-      virtualtext_inline = "before",
     },
   }
 end)
@@ -343,6 +297,38 @@ now_if_args(function()
 end)
 
 -- ─[ lazy load ]────────────────────────────────────────────────────
+later(function()
+  add { "https://github.com/stevearc/conform.nvim" }
+
+  require("conform").setup {
+    default_format_opts = {
+      lsp_format = "fallback",
+      format_on_save = function(bufnr)
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+          return
+        end
+        return {
+          timeout_ms = 500,
+        }
+      end,
+      formatters_by_ft = {
+        sh = { "shfmt" },
+        zsh = { "shfmt" },
+        lua = { "stylua" },
+        javascript = { "biome-check" },
+        javascriptreact = { "biome-check" },
+        typescript = { "biome-check" },
+        typescriptreact = { "biome-check" },
+        svelte = { "biome-check", "rustywind" },
+        json = { "biome" },
+        go = { "gofmt" },
+        xml = { "xmlformatter" },
+        svg = { "xmlformatter" },
+      },
+    },
+  }
+end)
+
 later(function()
   add { "https://github.com/folke/sidekick.nvim" }
   require("sidekick").setup()
@@ -448,7 +434,7 @@ later(function()
       { "<leader>b", group = "buffer", icon = "" },
       { "<leader>e", group = "explore", icon = "󰙅" },
       { "<leader>f", mode = { "n", "x" }, group = "find", icon = "󰍉" },
-      { "<leader>g", mode = { "n", "x" }, group = "git", icon = { icon = "", color = "green" } },
+      { "<leader>g", mode = { "n", "x" }, group = "git", icon = { icon = "", color = "blue" } },
       { "<leader>l", mode = { "n", "x" }, group = "language", icon = "" },
       { "<leader>m", group = "map", icon = "" },
       { "<leader>o", group = "other", icon = "" },
