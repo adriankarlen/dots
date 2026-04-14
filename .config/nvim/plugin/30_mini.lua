@@ -45,9 +45,77 @@ now(function()
   require("mini.sessions").setup()
 end)
 
-now(function() require('mini.tabline').setup() end)
+now(function()
+  local starter = require "mini.starter"
+  local fortune = function()
+    local ok, quote = pcall(function()
+      local f = io.popen("fortune -s", "r")
+      local s = assert(f:read "*a")
+      f:close()
+      return s
+    end)
+    return ok and quote or nil
+  end
+  starter.setup {
+    evaluate_single = true,
+    items = {
+      starter.sections.recent_files(10, true),
+      starter.sections.sessions(5, true),
+      {
+        { name = "Find", action = "lua require('snacks').picker.files { hidden = true }", section = "Actions" },
+        { name = "Grep", action = "lua require('snacks').picker.grep { hidden  = true }", section = "Actions" },
+        {
+          name = "OpenCode",
+          action = "lua require('sidekick.cli').toggle { name = 'opencode', focus = true }",
+          section = "Actions",
+        },
+        { name = "Quit", action = "qall", section = "Actions" },
+      },
+    },
+    footer = fortune()
+  }
+end)
 
-now(function() require('mini.statusline').setup() end)
+now(function()
+  require("mini.tabline").setup()
+end)
+
+now(function()
+  local function get_macro_status()
+    local recording_register = vim.fn.reg_recording()
+    if recording_register == "" then
+      return ""
+    end
+    return "󰑊 Recording @" .. recording_register
+  end
+  require("mini.statusline").setup {
+    content = {
+      active = function()
+        local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
+        local git = MiniStatusline.section_git { trunc_width = 40 }
+        local diff = MiniStatusline.section_diff { trunc_width = 75 }
+        local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
+        local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
+        local filename = MiniStatusline.section_filename { trunc_width = 140 }
+        local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+        local location = MiniStatusline.section_location { trunc_width = 75 }
+        local search = MiniStatusline.section_searchcount { trunc_width = 75 }
+        local macro = get_macro_status()
+
+        return MiniStatusline.combine_groups {
+          { hl = mode_hl,                     strings = { mode } },
+          { hl = "MiniStatuslineDevinfo",     strings = { git, diff, diagnostics, lsp } },
+          { hl = "MiniStatuslineModeCommand", strings = { macro } },
+          "%<", -- Mark general truncate point
+          { hl = "MiniStatuslineFilename", strings = { filename } },
+          "%=", -- End left alignment
+          { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+          { hl = mode_hl,                  strings = { search, location } },
+        }
+      end,
+    },
+  }
+end)
 
 now_if_args(function()
   require("mini.misc").setup()
@@ -95,7 +163,9 @@ later(function()
   require("mini.cursorword").setup()
 
   local disabled_filetypes = { "dashboard", "help", "mason", "notify" }
-  local disable_cursorword = function(args) vim.b[args.buf].minicursorword_disable = true end
+  local disable_cursorword = function(args)
+    vim.b[args.buf].minicursorword_disable = true
+  end
   Config.new_autocmd("FileType", disabled_filetypes, disable_cursorword, "disable cursorword for some filetypes")
 end)
 
@@ -208,6 +278,11 @@ later(function()
     b.miniindentscope_disable = true
     b.minicursorword_disable = true
   end
-  Config.new_autocmd("FileType", disabled_filetypes, disable_indent_cursorword, "disable indentscope for some filetypes")
+  Config.new_autocmd(
+    "FileType",
+    disabled_filetypes,
+    disable_indent_cursorword,
+    "disable indentscope for some filetypes"
+  )
   Config.new_autocmd("TermOpen", "*", disable_indent_cursorword, "disable indentscope for terminal buffers")
 end)

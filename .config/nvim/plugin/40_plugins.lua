@@ -21,91 +21,6 @@ now(function()
   add { "https://github.com/folke/snacks.nvim" }
   require("snacks").setup {
     bigfile = { enabled = true },
-    dashboard = {
-      formats = {
-        key = function(item)
-          return { { "[", hl = "NonText" }, { item.key, hl = "Normal" }, { "]", hl = "NonText" } }
-        end,
-        header = { "%s", align = "center", hl = "DiagnosticHint" },
-        icon = function(item)
-          if item.file and item.icon == "file" or item.icon == "directory" then
-            return { "" }
-          end
-          return { item.icon, width = 2, hl = "Normal" }
-        end,
-        file = function(item, ctx)
-          local fname = vim.fn.fnamemodify(item.file, ":~")
-          fname = ctx.width and #fname > ctx.width and vim.fn.pathshorten(fname) or fname
-          if #fname > ctx.width then
-            local dir = vim.fn.fnamemodify(fname, ":h")
-            local file = vim.fn.fnamemodify(fname, ":t")
-            if dir and file ~= nil then
-              ---@diagnostic disable-next-line: param-type-not-match
-              file = file:sub(-(ctx.width - #dir - 2))
-              fname = dir .. "/…" .. file
-            end
-          end
-          local dir, file = fname:match "^(.*)/(.+)$"
-          local icon, icon_hl = "", ""
-          if file:match "%." then
-            icon, icon_hl = require("mini.icons").get("file", file)
-          end
-          return dir
-              and {
-                { dir .. " ", hl = "dir" },
-                icon ~= "" and { icon .. " ", hl = icon_hl } or { "" },
-                { file,       hl = "file" },
-              }
-              or { { fname, hl = "file" } }
-        end,
-      },
-      preset = {
-        keys = {
-          {
-            icon = "  ",
-            key = "f",
-            desc = "find file",
-            action = ":lua Snacks.dashboard.pick('files', { hidden = true })",
-          },
-          {
-            icon = "  ",
-            key = "w",
-            desc = "find text",
-            action = ":lua Snacks.dashboard.pick('live_grep', { hidden = true })",
-          },
-          { icon = "  ", key = "e", desc = "explorer", action = ":lua require('oil').toggle_float()" },
-          { icon = " 󰒲 ", key = "l", desc = "lazy", action = ":Lazy" },
-          { icon = " 󰭿 ", key = "q", desc = "quit", action = ":qa" },
-        },
-      },
-      sections = {
-        {
-          title = { { "adriankarlen ", hl = "NonText" }, { "- bugs and typos inc.", hl = "Normal" } },
-          padding = 1,
-          align = "center",
-        },
-        { section = "keys", padding = 1 },
-        {
-          title = " mru ",
-          file = vim.fn.fnamemodify(".", ":~"),
-        },
-        {
-          section = "recent_files",
-          cwd = true,
-          limit = 6,
-          padding = 1,
-        },
-      },
-    },
-    git = { enabled = true },
-    image = {
-      doc = {
-        inline = false,
-        max_height = 12,
-        max_width = 24,
-      },
-    },
-    statuscolumn = { enabled = true },
     rename = { enabled = true },
     terminal = {
       win = {
@@ -165,28 +80,10 @@ now(function()
       enabled = true,
       backdrop = true,
     },
-    styles = {
-      input = {
-        relative = "cursor",
-        title = "",
-      },
-      snacks_image = {
-        relative = "editor",
-        border = "none",
-        focusable = false,
-        backdrop = false,
-        row = 1,
-        col = -1,
-      },
-      blame_line = {
-        title = "git blame",
-      },
-    },
   }
 end)
 
 now(function()
-  -- ─[ load if opened with file ]───────────────────────────────────────────
   local ts_update = function()
     vim.cmd "TSUpdate"
   end
@@ -254,7 +151,7 @@ now(function()
   Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
-now_if_args(function()
+now(function()
   add {
     "https://github.com/neovim/nvim-lspconfig",
     "https://github.com/mason-org/mason.nvim",
@@ -324,6 +221,9 @@ now_if_args(function()
   vim.lsp.inline_completion.enable()
 end)
 
+-- ─[ load if opened with file ]───────────────────────────────────────────
+
+-- ─[ load lazily ]────────────────────────────────────────────────────────
 later(function()
   add { "https://github.com/stevearc/conform.nvim" }
 

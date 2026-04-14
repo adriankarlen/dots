@@ -1,15 +1,12 @@
-local nmap = function(lhs, rhs, desc, remap)
-  vim.keymap.set("n", lhs, rhs, { desc = desc, remap = remap or false })
+local nmap = function(lhs, rhs, desc, remap, expr)
+  vim.keymap.set("n", lhs, rhs, { desc = desc, remap = remap or false, expr = expr or false })
 end
 local xmap = function(lhs, rhs, desc, remap)
   vim.keymap.set("x", lhs, rhs, { desc = desc, remap = remap or false })
 end
-local imap = function(lhs, rhs, desc, expr)
-  vim.keymap.set("i", lhs, rhs, { desc = desc, expr = expr or false })
-end
 
 -- Sidekick: NES jump/apply -> inline completion -> fallback <Tab>
-imap("<Tab>", function()
+nmap("<Tab>", function()
   if require("sidekick").nes_jump_or_apply() then
     return
   end
@@ -17,7 +14,7 @@ imap("<Tab>", function()
     return
   end
   return "<Tab>"
-end, "Goto/Apply Next Edit Suggestion", true)
+end, "Goto/Apply Next Edit Suggestion", false, true)
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
@@ -96,10 +93,11 @@ nmap_leader("eQ", explore_locations, "Location list")
 
 -- f is for 'Find'
 nmap_leader("fb", "<Cmd>lua Snacks.picker.buffers()<CR>", "buffers")
-nmap_leader("fs", "<Cmd>lua Snacks.picker.smart()<CR>", "smart files")
-nmap_leader("ff", "<Cmd>lua Snacks.picker.files({ hidden = true })<CR>", "files")
-nmap_leader("fw", "<Cmd>lua Snacks.picker.grep({ hidden = true })<CR>", "live grep")
+nmap_leader("ff", "<Cmd>lua Snacks.picker.files { hidden = true }<CR>", "files")
+nmap_leader("fF", "<Cmd>lua Snacks.picker.files { hidden = true, ignored = true }<CR>", "files (including ignored)")
+nmap_leader("fw", "<Cmd>lua Snacks.picker.grep { hidden = true }<CR>", "live grep")
 nmap_leader("fi", "<Cmd>lua Snacks.picker.icons()<CR>", "icons")
+nmap_leader("fc", "<Cmd>lua Snacks.picker.grep { pattern = vim.fn.expand('<cword>') }<CR>", "grep word under cursor")
 
 xmap_leader("fw", "<Cmd>lua Snacks.picker.grep_word()<CR>", "grep selection")
 
