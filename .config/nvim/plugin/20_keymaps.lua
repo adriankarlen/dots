@@ -14,22 +14,22 @@ nmap("<Tab>", function()
     return
   end
   return "<Tab>"
-end, "Goto/Apply Next Edit Suggestion", false, true)
+end, "goto/apply next edit suggestion", false, true)
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
-nmap("[p", '<Cmd>exe "iput! " . v:register<CR>', "Paste Above")
-nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "Paste Below")
+nmap("[p", '<Cmd>exe "iput! " . v:register<CR>', "paste above")
+nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "paste below")
 
 -- Clear search highlight
-nmap("<Esc>", "<Cmd>noh<CR>", "Clear search highlight")
+nmap("<Esc>", "<Cmd>noh<CR>", "clear search highlight")
 
 -- Tmux navigation
-nmap("<C-h>", "<Cmd>TmuxNavigateLeft<CR>", "Navigate left")
-nmap("<C-j>", "<Cmd>TmuxNavigateDown<CR>", "Navigate down")
-nmap("<C-k>", "<Cmd>TmuxNavigateUp<CR>", "Navigate up")
-nmap("<C-l>", "<Cmd>TmuxNavigateRight<CR>", "Navigate right")
-nmap("<C-\\>", "<Cmd>TmuxNavigatePrevious<CR>", "Navigate previous")
+nmap("<C-h>", "<Cmd>TmuxNavigateLeft<CR>", "navigate left")
+nmap("<C-j>", "<Cmd>TmuxNavigateDown<CR>", "navigate down")
+nmap("<C-k>", "<Cmd>TmuxNavigateUp<CR>", "navigate up")
+nmap("<C-l>", "<Cmd>TmuxNavigateRight<CR>", "navigate right")
+nmap("<C-\\>", "<Cmd>TmuxNavigatePrevious<CR>", "navigate previous")
 
 -- Nordic keyboard remaps
 -- å -> \ : leader for marks, e.g. åma to set mark a
@@ -71,12 +71,20 @@ local new_scratch_buffer = function()
   vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true))
 end
 
-nmap_leader("ba", "<Cmd>b#<CR>", "Alternate")
-nmap_leader("bd", "<Cmd>lua MiniBufremove.delete()<CR>", "Delete")
-nmap_leader("bD", "<Cmd>lua MiniBufremove.delete(0, true)<CR>", "Delete!")
-nmap_leader("bs", new_scratch_buffer, "Scratch")
-nmap_leader("bw", "<Cmd>lua MiniBufremove.wipeout()<CR>", "Wipeout")
-nmap_leader("bW", "<Cmd>lua MiniBufremove.wipeout(0, true)<CR>", "Wipeout!")
+nmap_leader("ba", "<Cmd>b#<CR>", "alternate")
+nmap_leader("bd", "<Cmd>lua MiniBufremove.delete()<CR>", "delete")
+nmap_leader("bD", "<Cmd>lua MiniBufremove.delete(0, true)<CR>", "delete!")
+nmap_leader("bs", new_scratch_buffer, "scratch")
+nmap_leader("bw", "<Cmd>lua MiniBufremove.wipeout()<CR>", "wipeout")
+nmap_leader("bW", "<Cmd>lua MiniBufremove.wipeout(0, true)<CR>", "wipeout!")
+nmap_leader("bq", function()
+  local current = vim.api.nvim_get_current_buf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= current then
+      MiniBufremove.delete(buf)
+    end
+  end
+end, "delete others")
 
 -- e is for 'Explore'
 local explore_quickfix = function()
@@ -86,10 +94,10 @@ local explore_locations = function()
   vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and "lclose" or "lopen")
 end
 
-nmap_leader("ef", '<Cmd>lua require("oil").toggle_float()<CR>', "File explorer")
-nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "Notifications")
-nmap_leader("eq", explore_quickfix, "Quickfix list")
-nmap_leader("eQ", explore_locations, "Location list")
+nmap_leader("ef", '<Cmd>lua require("oil").toggle_float()<CR>', "file explorer")
+nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "notifications")
+nmap_leader("eq", explore_quickfix, "quickfix list")
+nmap_leader("eQ", explore_locations, "location list")
 
 -- f is for 'Find'
 nmap_leader("fb", "<Cmd>lua Snacks.picker.buffers()<CR>", "buffers")
@@ -103,44 +111,44 @@ xmap_leader("fw", "<Cmd>lua Snacks.picker.grep_word()<CR>", "grep selection")
 
 -- g is for 'Git'
 nmap_leader("gd", "<Cmd>lua MiniDiff.toggle_overlay()<CR>", "toggle overlay")
-nmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at cursor")
+nmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "show at cursor")
 
-xmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "Show at selection")
+xmap_leader("gs", "<Cmd>lua MiniGit.show_at_cursor()<CR>", "show at selection")
 
 -- l is for 'Language'
-nmap_leader("la", "<Cmd>lua vim.lsp.buf.code_action()<CR>", "Actions")
-nmap_leader("ld", "<Cmd>lua vim.diagnostic.open_float()<CR>", "Diagnostic popup")
+nmap_leader("la", "<Cmd>lua vim.lsp.buf.code_action()<CR>", "actions")
+nmap_leader("ld", "<Cmd>lua vim.diagnostic.open_float()<CR>", "diagnostic popup")
 nmap_leader("lf", "<Cmd>lua require('conform').format()<CR>", "format")
-nmap_leader("li", "<Cmd>lua vim.lsp.buf.implementation()<CR>", "Implementation")
-nmap_leader("lh", "<Cmd>lua vim.lsp.buf.hover()<CR>", "Hover")
-nmap_leader("ll", "<Cmd>lua vim.lsp.codelens.run()<CR>", "Lens")
-nmap_leader("lr", "<Cmd>lua vim.lsp.buf.rename()<CR>", "Rename")
-nmap_leader("lR", "<Cmd>lua vim.lsp.buf.references()<CR>", "References")
-nmap_leader("ls", "<Cmd>lua vim.lsp.buf.definition()<CR>", "Source definition")
-nmap_leader("lt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition")
-nmap_leader("lc", "<Cmd>TSC<CR>", "Typecheck project")
+nmap_leader("li", "<Cmd>lua vim.lsp.buf.implementation()<CR>", "implementation")
+nmap_leader("lh", "<Cmd>lua vim.lsp.buf.hover()<CR>", "hover")
+nmap_leader("ll", "<Cmd>lua vim.lsp.codelens.run()<CR>", "lens")
+nmap_leader("lr", "<Cmd>lua vim.lsp.buf.rename()<CR>", "rename")
+nmap_leader("lR", "<Cmd>lua vim.lsp.buf.references()<CR>", "references")
+nmap_leader("ls", "<Cmd>lua vim.lsp.buf.definition()<CR>", "source definition")
+nmap_leader("lt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "type definition")
+nmap_leader("lc", "<Cmd>TSC<CR>", "typecheck project")
 
-xmap_leader("lf", '<Cmd>lua require("conform").format()<CR>', "Format selection")
+xmap_leader("lf", '<Cmd>lua require("conform").format()<CR>', "format selection")
 
 -- m is for 'Map'
-nmap_leader("mf", "<Cmd>lua MiniMap.toggle_focus()<CR>", "Focus (toggle)")
-nmap_leader("mr", "<Cmd>lua MiniMap.refresh()<CR>", "Refresh")
-nmap_leader("mt", "<Cmd>lua MiniMap.toggle()<CR>", "Toggle")
+nmap_leader("mf", "<Cmd>lua MiniMap.toggle_focus()<CR>", "focus (toggle)")
+nmap_leader("mr", "<Cmd>lua MiniMap.refresh()<CR>", "refresh")
+nmap_leader("mt", "<Cmd>lua MiniMap.toggle()<CR>", "toggle")
 
 -- o is for 'Other'
-nmap_leader("or", "<Cmd>lua MiniMisc.resize_window()<CR>", "Resize to default width")
-nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "Trim trailspace")
-nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "Zoom toggle")
-nmap_leader("op", '"+p<CR>', "Paste from system clipboard")
-nmap_leader("oy", '"+y<CR>', "Yank to system clipboard")
+nmap_leader("or", "<Cmd>lua MiniMisc.resize_window()<CR>", "resize to default width")
+nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "trim trailspace")
+nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "zoom toggle")
+nmap_leader("op", '"+p<CR>', "paste from system clipboard")
+nmap_leader("oy", '"+y<CR>', "yank to system clipboard")
 
-xmap_leader("op", '"+p<CR>', "Paste from system clipboard")
-xmap_leader("oy", '"+y<CR>', "Yank to system clipboard")
+xmap_leader("op", '"+p<CR>', "paste from system clipboard")
+xmap_leader("oy", '"+y<CR>', "yank to system clipboard")
 
 -- s is for 'Session'
 local session_new = 'vim.ui.input({ prompt = "Session name: " }, MiniSessions.write)'
-nmap_leader("sd", '<Cmd>lua MiniSessions.select("delete")<CR>', "Delete")
-nmap_leader("sn", "<Cmd>lua " .. session_new .. "<CR>", "New")
-nmap_leader("sr", '<Cmd>lua MiniSessions.select("read")<CR>', "Read")
-nmap_leader("sR", "<Cmd>lua MiniSessions.restart()<CR>", "Restart")
-nmap_leader("sw", "<Cmd>lua MiniSessions.write()<CR>", "Write current")
+nmap_leader("sd", '<Cmd>lua MiniSessions.select("delete")<CR>', "delete")
+nmap_leader("sn", "<Cmd>lua " .. session_new .. "<CR>", "new")
+nmap_leader("sr", '<Cmd>lua MiniSessions.select("read")<CR>', "read")
+nmap_leader("sR", "<Cmd>lua MiniSessions.restart()<CR>", "restart")
+nmap_leader("sw", "<Cmd>lua MiniSessions.write()<CR>", "write current")

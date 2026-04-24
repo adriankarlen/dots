@@ -30,11 +30,11 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "c67822c53e8e282fe863343e88aa0a8ca3534059",
+      "rev": "418ef4930ddabe80f449c6f1323f8b6abb172d1c",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nvim-lspconfig": {
-      "rev": "8a9378a822719346a0288fa004dab302ca3c0a8f",
+      "rev": "e05fb8c3bd61d909dacff24f77f23beb644daf54",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
@@ -52,6 +52,10 @@
     "rose-pine": {
       "rev": "9504524e5ed0e326534698f637f9d038ba4cd0ee",
       "src": "https://github.com/rose-pine/neovim"
+    },
+    "roslyn.nvim": {
+      "rev": "42d1196b4b06411504f897caeee0a3d4940e2654",
+      "src": "https://github.com/seblyng/roslyn.nvim"
     },
     "sidekick.nvim": {
       "rev": "17447a05f9385e5f8372b61530f6f9329cb82421",

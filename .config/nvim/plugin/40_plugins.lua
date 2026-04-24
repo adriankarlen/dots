@@ -212,7 +212,7 @@ now(function()
       "github:Crashdummyy/mason-registry",
     },
   }
-  require("mason-lspconfig").setup {}
+  require("mason-lspconfig").setup()
 
   for server_name, config in pairs(servers) do
     vim.lsp.config(server_name, config)
@@ -296,6 +296,11 @@ now_if_args(function()
   }
 end)
 
+now_if_args(function()
+  add { "https://github.com/seblyng/roslyn.nvim" }
+  require("roslyn").setup()
+end)
+
 -- ─[ lazy load ]────────────────────────────────────────────────────
 later(function()
   add { "https://github.com/stevearc/conform.nvim" }
@@ -311,14 +316,19 @@ later(function()
           timeout_ms = 500,
         }
       end,
+      formatters = {
+        biome = {
+          require_cwd = true,
+        },
+      },
       formatters_by_ft = {
         sh = { "shfmt" },
         zsh = { "shfmt" },
         lua = { "stylua" },
-        javascript = { "biome-check" },
-        javascriptreact = { "biome-check" },
-        typescript = { "biome-check" },
-        typescriptreact = { "biome-check" },
+        javascript = { "biome-check", "prettier", stop_after_first = true },
+        javascriptreact = { "biome-check", "prettier", stop_after_first = true },
+        typescript = { "biome-check", "prettier", stop_after_first = true },
+        typescriptreact = { "biome-check", "prettier", stop_after_first = true },
         svelte = { "biome-check", "rustywind" },
         json = { "biome" },
         go = { "gofmt" },
@@ -472,3 +482,4 @@ end)
 later(function()
   add { "https://github.com/christoomey/vim-tmux-navigator" }
 end)
+
