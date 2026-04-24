@@ -86,7 +86,6 @@ source $HOME/dots/manual_configs/gum-ctp.sh mocha
 # aliases
 alias v="nvim"
 alias vim="nvim"
-alias lkjh="nvim"
 alias c="clear"
 alias l="eza -lh --icons=auto --color=always"                                         # long list
 alias ls="eza --icons=auto --color=always"                                            # short list
@@ -99,8 +98,6 @@ alias .4="cd ../../../.."
 alias .5="cd ../../../../.."
 alias x="exit"
 alias g="git"
-alias fetch="sh $HOME/.config/fetch.sh"
-alias pray="bun install"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -128,5 +125,3 @@ if [ -f '/Users/adriankarlen/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ad
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/adriankarlen/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/adriankarlen/google-cloud-sdk/completion.zsh.inc'; fi
-
-fetch
