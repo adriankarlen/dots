@@ -483,3 +483,7 @@ later(function()
   add { "https://github.com/christoomey/vim-tmux-navigator" }
 end)
 
+later(function()
+  add { "https://github.com/windwp/nvim-ts-autotag" }
+  require("nvim-ts-autotag").setup()
+end)
