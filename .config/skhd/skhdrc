@@ -1,42 +1,50 @@
 #!/bin/bash
-# focus window
-cmd - h : yabai -m window --focus west
-cmd - j : yabai -m window --focus south
-cmd - k : yabai -m window --focus north
-cmd - l : yabai -m window --focus east
+# lalt - z : rift-cli execute toggle-space-activated
+#
+# # focus window
+# lalt - h : rift-cli execute window focus left
+# lalt - j : rift-cli execute window focus down
+# lalt - k : rift-cli execute window focus up
+# lalt - l : rift-cli execute window focus right
+#
+# # move window
+# shift + lalt - h : rift-cli execute layout move-node left
+# shift + lalt - j : rift-cli execute layout move-node down
+# shift + lalt - k : rift-cli execute layout move-node up
+# shift + lalt - l : rift-cli execute layout move-node right
+#
+# # # focus space
+# lalt - 1 : rift-cli execute workspace switch 0
+# lalt - 2 : rift-cli execute workspace switch 1
+# lalt - 3 : rift-cli execute workspace switch 2
+# lalt - 4 : rift-cli execute workspace switch 3
+# lalt - 5 : rift-cli execute workspace switch 4
+# # lalt - "tab" : rift-cli execute workspace last
+#
+# # # move window to space
+# shift + lalt - 1 : rift-cli execute workspace move-window 0
+# shift + lalt - 2 : rift-cli execute workspace move-window 1
+# shift + lalt - 3 : rift-cli execute workspace move-window 2
+# shift + lalt - 4 : rift-cli execute workspace move-window 3
+# shift + lalt - 5 : rift-cli execute workspace move-window 4
 
-# move window
-shift + cmd - h : yabai -m window --swap west
-shift + cmd - j : yabai -m window --swap south
-shift + cmd - k : yabai -m window --swap north
-shift + cmd - l : yabai -m window --swap east
+# # layout changes
+# shift + lalt - "left" : rift-cli execute layout join-window left
+# shift + lalt - "down" : rift-cli execute layout join-window down
+# shift + lalt - "up" : rift-cli execute layout join-window up
+# shift + lalt - "right" : rift-cli execute layout join-window right
+# lalt - , : rift-cli execute layout toggle-stack
+# lalt - / : rift-cli execute layout toggle-orientation
+# lalt + ctrl - e : rift-cli execute layout unjoin
 
-# warp window
-shift + lalt + cmd - h : yabai -m window --warp west
-shift + lalt + cmd - j : yabai -m window --warp south
-shift + lalt + cmd - k : yabai -m window --warp north
-shift + lalt + cmd - l : yabai -m window --warp east
+# # focus window
+# shift + lalt - space : rift-cli execute window toggle-float
+# lalt - f: rift-cli execute window toggle-fullscreen
+# lalt + shift - f : rift-cli execute window toggle-fullscreen-with-gaps
 
-# resize window
-ctrl + cmd - h : yabai -m window --resize right:-100:0
-ctrl + cmd - j : yabai -m window --resize bottom:0:100
-ctrl + cmd - k : yabai -m window --resize bottom:0:-100
-ctrl + cmd - l : yabai -m window --resize right:100:0
+# # resize window
+# lalt + shift - 0 : rift-cli execute window resize-grow
+# lalt + shift - "-" : rift-cli execute window resize-shrink
 
-# toggle floating
-cmd + shift - space : yabai -m window --toggle float \
-                      yabai -m window --grid 10:10:1:1:8:8
-
-# Make window zoom to fullscreen
-shift + cmd - f : yabai -m window --toggle zoom-fullscreen
-
-# Equalize size of windows
-ctrl + cmd - e : yabai -m space --balance
-
-# Toggle sketchybar
-shift + cmd - m : sketchybar --bar hidden=toggle
-
-# Reload skhd config
-ctrl + lalt + cmd - r : skhd --restart-service
-# Reload yabai config
-ctrl + cmd - r : yabai --restart-service
+# # Toggle sketchybar
+# shift + lalt  - m : sketchybar --bar hidden=toggle

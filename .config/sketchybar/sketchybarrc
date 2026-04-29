@@ -1,5 +1,323 @@
-#!/opt/homebrew/bin/lua
+#!/usr/bin/env bash
 
--- Load the sketchybar-package and prepare the helper binaries
-require("helpers")
-require("init")
+CONFIG_DIR="${CONFIG_DIR:-$HOME/.config/sketchybar}"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Base colors (Rosé Pine)
+BG_BASE="0x191724"        # Base
+BG_SURFACE="0x1f1d2e"     # Surface
+BG_OVERLAY="0x26233a"     # Overlay
+
+# Accent colors
+IRIS="0xc4a7e7"           # Iris (magenta)
+LOVE="0xeb6f92"           # Love (red)
+FOAM="0x9ccfd8"           # Foam (blue)
+PINE="0x31748f"           # Pine (green)
+GOLD="0xf6c177"           # Gold (yellow)
+ROSE="0xebbcba"           # Rose (pink)
+
+# Text colors
+FG_PRIMARY="0xe0def4"     # Main text
+FG_SECONDARY="0x908caa"   # Surface text
+FG_DIM="0x6e6a86"         # Muted text
+
+##############################
+#  Bar – Transparent         #
+##############################
+
+sketchybar --bar position=top \
+                height=40 \
+                color=0x00000000 \
+                shadow=off \
+                sticky=on \
+                padding_left=10 \
+                padding_right=10 \
+                corner_radius=0 \
+                border_width=0 \
+                blur_radius=0 \
+                y_offset=2
+
+################################
+#  Global defaults             #
+################################
+
+MODULE_BG_ALPHA="d0"       # More opaque for visibility
+MODULE_BORDER_ALPHA="40"   # Subtle borders
+
+default=(
+  padding_left=8
+  padding_right=8
+
+  icon.font="Berkeley Mono:Bold:16.0"
+  label.font="Berkeley Mono:Medium:13.0"
+
+  icon.font.size=16.0
+  label.font.size=13.0
+
+  icon.color=0xff${LOVE:2}
+  label.color=0xff${FG_PRIMARY:2}
+
+  icon.padding_left=8
+  icon.padding_right=6
+  label.padding_left=6
+  label.padding_right=8
+
+  background.color=0x${MODULE_BG_ALPHA}${BG_SURFACE:2}
+  background.corner_radius=10
+  background.height=28
+  background.border_width=1
+  background.border_color=0x${MODULE_BORDER_ALPHA}${LOVE:2}
+  background.shadow.drawing=off
+)
+
+sketchybar --default "${default[@]}"
+
+################################
+#  LEFT: Portal + Spaces       #
+################################
+
+sketchybar --add item portal left \
+           --set portal icon=󰀘 \
+                        icon.font="Symbols Nerd Font:Regular:18.0" \
+                        icon.color=0xff${ROSE:2} \
+                        background.color=0x00000000 \
+                        background.corner_radius=0 \
+                        background.border_width=0 \
+                        background.shadow.drawing=off \
+                        label.drawing=off \
+                        icon.padding_left=10 \
+                        icon.padding_right=10 \
+                        padding_left=4
+
+sketchybar --add item cosmic_sep left \
+           --set cosmic_sep icon=│ \
+                           icon.color=0x40${FG_DIM:2} \
+                           background.drawing=off \
+                           label.drawing=off \
+                           icon.padding_left=4 \
+                           icon.padding_right=4
+
+############################
+#  Workspaces              #
+############################
+
+SPACE_ICONS=("一" "二" "三" "四" "五" "六" "七" "八" "九" "十")
+SPACE_COLORS=(
+  "${LOVE:2}"   "${IRIS:2}"  "${ROSE:2}"  "${FOAM:2}"   "${PINE:2}"
+  "${GOLD:2}"    "${LOVE:2}"  "${LOVE:2}"  "${IRIS:2}"  "${ROSE:2}"
+)
+
+RIFT_DATA="$(rift-cli query workspaces 2>/dev/null || echo '[]')"
+workspace_count=$(printf '%s\n' "$RIFT_DATA" | jq 'length')
+max_spaces=${#SPACE_ICONS[@]}
+(( workspace_count > max_spaces )) && workspace_count=$max_spaces
+
+for (( i=0; i<workspace_count; i++ )); do
+  sid=$((i + 1))
+  color_index=$((i % ${#SPACE_COLORS[@]}))
+  space_color="${SPACE_COLORS[color_index]}"
+
+  space=(
+    icon="${SPACE_ICONS[i]}"
+    icon.color=0xb0$space_color
+    icon.highlight_color=0xff${FG_PRIMARY:2}
+    icon.font.size=15.0
+    background.color=0x00000000
+    background.corner_radius=8
+    background.border_width=0
+    background.height=24
+    background.shadow.drawing=off
+    label.drawing=off
+    label.color=0xff${FG_SECONDARY:2}
+    label.font="Symbols Nerd Font:Regular:14.0"
+    label.padding_left=4
+    label.padding_right=4
+  )
+
+  sketchybar --add item "rift_space.$sid" left \
+             --set "rift_space.$sid" "${space[@]}"
+done
+
+# Run once at startup, then rely on rift events
+"$PLUGIN_DIR/rift_workspaces.sh"
+
+# Subscribe to rift events for instant workspace updates
+rift-cli subscribe cli --event workspace_changed --command "$PLUGIN_DIR/rift_workspaces.sh"
+rift-cli subscribe cli --event windows_changed --command "$PLUGIN_DIR/rift_workspaces.sh"
+
+################################
+#  LEFT: Apps & Controls       #
+################################
+
+sketchybar --add item front_app left \
+           --set front_app icon.drawing=off \
+                          background.color=0x00000000 \
+                          background.corner_radius=0 \
+                          background.border_width=0 \
+                          background.shadow.drawing=off \
+                          label.color=0xff${FG_PRIMARY:2} \
+                          label.font="Berkeley Mono:SemiBold:13.0" \
+                          label.padding_left=12 \
+                          label.padding_right=12 \
+                          script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+sketchybar --add item launcher left \
+           --set launcher icon=󱓞 \
+                         icon.font.size=17.0 \
+                         icon.color=0xff${GOLD:2} \
+                         label.drawing=off \
+                         background.color=0x00000000 \
+                         background.corner_radius=0 \
+                         background.border_width=0 \
+                         background.shadow.drawing=off \
+                         click_script='sketchybar --set $NAME popup.drawing=toggle' \
+                         popup.horizontal=on \
+                         popup.align=center \
+                         popup.background.color=0xf0${BG_SURFACE:2} \
+                         popup.background.corner_radius=12 \
+                         popup.background.border_width=0 \
+                         popup.background.shadow.drawing=off
+
+launch_apps=("finder:" "ghostty:󱙝" "firefox:" "spotify:" "discord:")
+app_names=("Finder" "Ghostty" "Firefox" "Spotify" "Discord")
+app_colors=("${FOAM:2}" "${PINE:2}" "${GOLD:2}" "${PINE:2}" "${IRIS:2}")
+
+for i in "${!launch_apps[@]}"; do
+  IFS=':' read -r app icon <<< "${launch_apps[i]}"
+  name="${app_names[i]}"
+  color="${app_colors[i]}"
+
+  sketchybar --add item "launch.$app" popup.launcher \
+             --set "launch.$app" icon="$icon" \
+                                 label="$name" \
+                                 label.drawing=off \
+                                 icon.font="Symbols Nerd Font:Regular:17.0" \
+                                 icon.color=0xff$color \
+                                 background.color=0x00${BG_OVERLAY:2} \
+                                 background.corner_radius=8 \
+                                 background.border_width=1 \
+                                 background.border_color=0x30$color \
+                                 background.shadow.drawing=off \
+                                 click_script="open -a \"$name\""
+done
+
+sketchybar --add item bluetooth left \
+           --set bluetooth icon=󰂯 \
+                          icon.font.size=16.0 \
+                          icon.color=0xff${IRIS:2} \
+                          background.color=0x00000000 \
+                          background.corner_radius=0 \
+                          background.border_width=0 \
+                          background.shadow.drawing=off \
+                          label.drawing=off \
+                          update_freq=5 \
+                          script="$PLUGIN_DIR/bluetooth.sh" \
+           --subscribe bluetooth mouse.clicked
+
+################################
+#  RIGHT: System Monitors      #
+################################
+
+sketchybar --add item clock right \
+           --set clock icon=󰥔 \
+                      icon.font.size=16.0 \
+                      icon.color=0xff${LOVE:2} \
+                      label.color=0xff${FG_PRIMARY:2} \
+                      label.font="Berkeley Mono:SemiBold:13.0" \
+                      background.color=0x00000000 \
+                      background.corner_radius=0 \
+		      background.padding_left=10 \
+		      background.padding_right=10 \
+                      background.border_width=0 \
+                      background.shadow.drawing=off \
+                      label.padding_left=8 \
+                      label.padding_right=12 \
+                      update_freq=1 \
+                      script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --add item battery right \
+           --set battery icon=󰁹 \
+                        icon.font="Symbols Nerd Font:Regular:16.0" \
+                        icon.color=0xff${PINE:2} \
+                        label.color=0xff${FG_SECONDARY:2} \
+                        background.color=0x00000000 \
+                        background.corner_radius=0 \
+		        background.padding_left=10 \
+		        background.padding_right=10 \
+                        background.border_width=0 \
+                        background.shadow.drawing=off \
+                        update_freq=60 \
+                        script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change
+
+sketchybar --add item volume right \
+           --set volume icon=󰕾 \
+                       icon.font.size=16.0 \
+                       icon.color=0xff${ROSE:2} \
+                       label.color=0xff${FG_SECONDARY:2} \
+                       background.color=0x00000000 \
+                       background.corner_radius=0 \
+                       background.border_width=0 \
+		       background.padding_left=10 \
+		       background.padding_right=10 \
+                       background.shadow.drawing=off \
+                       script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change
+
+#######################################
+#  Spotify Player                     #
+#######################################
+
+SPOTIFY_EVENT="com.spotify.client.PlaybackStateChanged"
+POPUP_SCRIPT="sketchybar -m --set \$NAME popup.drawing=toggle"
+
+sketchybar --add event spotify_change $SPOTIFY_EVENT \
+           --add item spotify.name right \
+           --set spotify.name icon=󰓇 \
+                             icon.font.size=17.0 \
+                             label="Not Playing" \
+                             label.color=0xff${FG_PRIMARY:2} \
+                             label.font="Berkeley Mono:SemiBold:13.0" \
+                             icon.color=0xff${PINE:2} \
+                             background.color=0x00000000 \
+                             background.corner_radius=0 \
+                             background.border_width=0 \
+                             background.shadow.drawing=off \
+                             padding_left=12 \
+                             padding_right=12 \
+                             click_script="$POPUP_SCRIPT" \
+                             popup.horizontal=on \
+                             popup.align=center \
+                             popup.background.color=0xf0${BG_SURFACE:2} \
+                             popup.background.corner_radius=12 \
+                             popup.background.border_width=1 \
+                             popup.background.border_color=0x60${IRIS:2} \
+                             popup.background.shadow.drawing=off
+
+controls=("back:󰒮:${FOAM:2}" "play:󰐊:${PINE:2}" "next:󰒭:${FOAM:2}" "shuffle:󰒝:${IRIS:2}" "repeat:󰑖:${GOLD:2}")
+
+for ctrl in "${controls[@]}"; do
+  IFS=':' read -r name icon color <<< "$ctrl"
+
+  sketchybar --add item "spotify.$name" popup.spotify.name \
+             --set "spotify.$name" icon="$icon" \
+                                   icon.font.size=17.0 \
+                                   icon.color=0xff$color \
+                                   icon.highlight_color=0xff${PINE:2} \
+                                   background.color=0x50${BG_OVERLAY:2} \
+                                   background.corner_radius=8 \
+                                   background.border_width=1 \
+                                   background.border_color=0x30$color \
+                                   background.shadow.drawing=off \
+                                   label.drawing=off \
+                                   updates=on \
+                                   script="$PLUGIN_DIR/spotify.sh" \
+             --subscribe "spotify.$name" mouse.clicked spotify_change
+done
+
+#################
+#  Final launch #
+#################
+
+sketchybar --update
