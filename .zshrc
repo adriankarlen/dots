@@ -120,6 +120,9 @@ export PATH="$PATH:/Users/adriankarlen/.dotnet/tools"
 export DOTNET_ENVIRONMENT=Development
 export ASPNETCORE_ENVIRONMENT=Development
 
+#opencode
+export OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT=1
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/adriankarlen/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/adriankarlen/google-cloud-sdk/path.zsh.inc'; fi
 
