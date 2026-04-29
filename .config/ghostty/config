@@ -18,3 +18,5 @@ cursor-color=cell-foreground
 cursor-text=cell-background
 cursor-style = block
 shell-integration-features = no-cursor
+
+app-notifications = no-clipboard-copy
