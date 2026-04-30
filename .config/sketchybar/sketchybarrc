@@ -171,16 +171,17 @@ sketchybar --add item launcher left \
                          background.corner_radius=0 \
                          background.border_width=0 \
                          background.shadow.drawing=off \
-                         click_script='sketchybar --set $NAME popup.drawing=toggle' \
-                         popup.horizontal=on \
+                          click_script='sketchybar --set $NAME popup.drawing=toggle' \
+                          script='sketchybar --set $NAME popup.drawing=off' \
+                          popup.horizontal=on \
                          popup.align=center \
                          popup.background.color=0xf0${BG_SURFACE:2} \
                          popup.background.corner_radius=12 \
                          popup.background.border_width=0 \
                          popup.background.shadow.drawing=off
 
-launch_apps=("finder:" "ghostty:󱙝" "firefox:" "spotify:" "discord:")
-app_names=("Finder" "Ghostty" "Firefox" "Spotify" "Discord")
+launch_apps=("finder:" "ghostty:󱙝" "chrome:" "spotify:" "teams:󰊻")
+app_names=("Finder" "Ghostty" "Chrome" "Spotify" "Microsoft Teams")
 app_colors=("${FOAM:2}" "${PINE:2}" "${GOLD:2}" "${PINE:2}" "${IRIS:2}")
 
 for i in "${!launch_apps[@]}"; do
@@ -293,7 +294,8 @@ sketchybar --add event spotify_change $SPOTIFY_EVENT \
                              popup.background.corner_radius=12 \
                              popup.background.border_width=1 \
                              popup.background.border_color=0x60${IRIS:2} \
-                             popup.background.shadow.drawing=off
+                             popup.background.shadow.drawing=off \
+           --subscribe launcher mouse.exited.global
 
 controls=("back:󰒮:${FOAM:2}" "play:󰐊:${PINE:2}" "next:󰒭:${FOAM:2}" "shuffle:󰒝:${IRIS:2}" "repeat:󰑖:${GOLD:2}")
 
