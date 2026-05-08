@@ -62,8 +62,8 @@ now(function()
       starter.sections.recent_files(10, true),
       starter.sections.sessions(5, true),
       {
-        { name = "Find", action = "lua require('snacks').picker.files { hidden = true }", section = "Actions" },
-        { name = "Grep", action = "lua require('snacks').picker.grep { hidden  = true }", section = "Actions" },
+        { name = "Find", action = "Pick git_files",     section = "Actions" },
+        { name = "Grep", action = "Pick grep_live", section = "Actions" },
         {
           name = "OpenCode",
           action = "lua require('sidekick.cli').toggle { name = 'opencode', focus = true }",
@@ -72,7 +72,7 @@ now(function()
         { name = "Quit", action = "qall", section = "Actions" },
       },
     },
-    footer = fortune()
+    footer = fortune(),
   }
 end)
 
@@ -92,7 +92,6 @@ now(function()
     content = {
       active = function()
         local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
-        local git = MiniStatusline.section_git { trunc_width = 40 }
         local diff = MiniStatusline.section_diff { trunc_width = 75 }
         local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
         local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
@@ -115,6 +114,33 @@ now(function()
       end,
     },
   }
+end)
+
+now_if_args(function()
+  local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
+  local process_items = function(items, base)
+    return MiniCompletion.default_process_items(items, base, process_items_opts)
+  end
+  require("mini.completion").setup {
+    lsp_completion = {
+      source_func = "omnifunc",
+      auto_setup = false,
+      process_items = process_items,
+    },
+  }
+
+  -- Set 'omnifunc' for LSP completion only when needed.
+  local on_attach = function(ev)
+    vim.bo[ev.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+  end
+  Config.new_autocmd("LspAttach", nil, on_attach, "Set 'omnifunc'")
+
+  vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
+
+  local f = function(args)
+    vim.b[args.buf].minicompletion_disable = true
+  end
+  Config.new_autocmd("FileType", "snacks_picker_input", f, "disable completion in snacks picker")
 end)
 
 now_if_args(function()
@@ -148,11 +174,7 @@ later(function()
 end)
 
 later(function()
-  require("mini.cmdline").setup {
-    autocomplete = {
-      enable = false,
-    },
-  }
+  require("mini.cmdline").setup()
 end)
 
 later(function()
@@ -161,12 +183,11 @@ end)
 
 later(function()
   require("mini.cursorword").setup()
-
-  local disabled_filetypes = { "dashboard", "help", "mason", "notify" }
-  local disable_cursorword = function(args)
+  local ft = { "snacks_dashboard", "help", "mason", "notify", "term" }
+  local f = function(args)
     vim.b[args.buf].minicursorword_disable = true
   end
-  Config.new_autocmd("FileType", disabled_filetypes, disable_cursorword, "disable cursorword for some filetypes")
+  Config.new_autocmd("FileType", ft, f, "disable cursorword for some filetypes")
 end)
 
 later(function()
@@ -205,6 +226,13 @@ later(function()
     options = { try_as_border = true },
     symbol = "│",
   }
+
+  local ft = { "snacks_dashboard", "help", "mason", "notify", "term" }
+  local f = function(args)
+    vim.b[args.buf].miniindentscope_disable = true
+  end
+  Config.new_autocmd("FileType", ft, f, "disable indentscope for some filetypes")
+  Config.new_autocmd("TermOpen", "*", f, "disable indentscope for terminal buffers")
 end)
 
 later(function()
@@ -213,6 +241,12 @@ end)
 
 later(function()
   require("mini.jump2d").setup()
+end)
+
+later(function()
+  require("mini.keymap").setup()
+  MiniKeymap.map_multistep("i", "<CR>", { "minipairs_cr" })
+  MiniKeymap.map_multistep("i", "<BS>", { "minipairs_bs" })
 end)
 
 later(function()
@@ -259,7 +293,28 @@ later(function()
 end)
 
 later(function()
+  require("mini.pick").setup()
+end)
+
+later(function()
   require("mini.splitjoin").setup()
+end)
+
+later(function()
+  local lang_patterns = {
+    markdown_inline = { "markdown.json" },
+  }
+
+  local snippets = require "mini.snippets"
+  local config_path = vim.fn.stdpath "config"
+  snippets.setup {
+    snippets = {
+      snippets.gen_loader.from_file(config_path .. "/snippets/global.json"),
+      snippets.gen_loader.from_lang { lang_patterns = lang_patterns },
+    },
+  }
+
+  MiniSnippets.start_lsp_server()
 end)
 
 later(function()
@@ -271,18 +326,55 @@ later(function()
 end)
 
 later(function()
-  -- Disable indent scope and cursorword in some modes and filetypes
-  local disabled_filetypes = { "snacks_dashboard", "help", "mason", "notify", "term" }
-  local disable_indent_cursorword = function(args)
-    local b = vim.b[args.buf]
-    b.miniindentscope_disable = true
-    b.minicursorword_disable = true
-  end
-  Config.new_autocmd(
-    "FileType",
-    disabled_filetypes,
-    disable_indent_cursorword,
-    "disable indentscope for some filetypes"
-  )
-  Config.new_autocmd("TermOpen", "*", disable_indent_cursorword, "disable indentscope for terminal buffers")
+  local miniclue = require "mini.clue"
+
+  -- Leader group clues for mini.clue (migrated from which-key spec)
+  local leader_group_clues = {
+    { mode = "n", keys = "<Leader>a", desc = "+ai" },
+    { mode = "x", keys = "<Leader>a", desc = "+ai" },
+    { mode = "n", keys = "<Leader>b", desc = "+buffer" },
+    { mode = "n", keys = "<Leader>e", desc = "+explore" },
+    { mode = "n", keys = "<Leader>f", desc = "+find" },
+    { mode = "x", keys = "<Leader>f", desc = "+find" },
+    { mode = "n", keys = "<Leader>g", desc = "+git" },
+    { mode = "x", keys = "<Leader>g", desc = "+git" },
+    { mode = "n", keys = "<Leader>l", desc = "+language" },
+    { mode = "x", keys = "<Leader>l", desc = "+language" },
+    { mode = "n", keys = "<Leader>m", desc = "+map" },
+    { mode = "n", keys = "<Leader>o", desc = "+other" },
+    { mode = "n", keys = "<Leader>s", desc = "+session" },
+  }
+
+  miniclue.setup {
+    clues = {
+      leader_group_clues,
+      miniclue.gen_clues.builtin_completion(),
+      miniclue.gen_clues.g(),
+      miniclue.gen_clues.marks(),
+      miniclue.gen_clues.registers(),
+      miniclue.gen_clues.square_brackets(),
+      miniclue.gen_clues.windows { submode_resize = true },
+      miniclue.gen_clues.z(),
+    },
+    -- stylua: ignore start
+    triggers = {
+      { mode = { 'n', 'x' }, keys = '<Leader>' }, -- Leader triggers
+      { mode = 'n',          keys = '\\' },       -- mini.basics
+      { mode = { 'n', 'x' }, keys = '[' },        -- mini.bracketed
+      { mode = { 'n', 'x' }, keys = ']' },
+      { mode = 'i',          keys = '<C-x>' },    -- Built-in completion
+      { mode = { 'n', 'x' }, keys = 'g' },        -- `g` key
+      { mode = { 'n', 'x' }, keys = "'" },        -- Marks
+      { mode = { 'n', 'x' }, keys = '`' },
+      { mode = { 'n', 'x' }, keys = '"' },        -- Registers
+      { mode = { 'i', 'c' }, keys = '<C-r>' },
+      { mode = 'n',          keys = '<C-w>' },    -- Window commands
+      { mode = { 'n', 'x' }, keys = 's' },        -- `s` key (mini.surround, etc.)
+      { mode = { 'n', 'x' }, keys = 'z' },        -- `z` key
+      -- stylua: ignore end
+    },
+    window = {
+      delay = 300,
+    },
+  }
 end)

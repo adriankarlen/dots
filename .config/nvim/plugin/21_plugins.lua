@@ -8,79 +8,10 @@ now(function()
   require("rose-pine").setup {
     highlight_groups = {
       MatchParen = { fg = "love", bg = "love", blend = 25 },
-      SnacksDashboardFile = { fg = "text" },
-      SnacksDashboardDesc = { link = "NonText" },
-      SnacksDashboardTitle = { fg = "iris", bold = true },
     },
   }
 
   vim.cmd.colorscheme "rose-pine"
-end)
-
-now(function()
-  add { "https://github.com/folke/snacks.nvim" }
-  require("snacks").setup {
-    bigfile = { enabled = true },
-    rename = { enabled = true },
-    terminal = {
-      win = {
-        size = { width = 0.8, height = 0.8 },
-        border = "solid",
-      },
-    },
-    picker = {
-      layout = {
-        preset = "minimal",
-      },
-      layouts = {
-        minimal = {
-          preview = false,
-          layout = {
-            backdrop = false,
-            height = 0.35,
-            width = 0.5,
-            box = "horizontal",
-            {
-              border = "solid",
-              box = "vertical",
-              title = "{title}",
-              title_pos = "left",
-              { win = "input", height = 1,     border = "bottom" },
-              { win = "list",  border = "none" },
-            },
-            { win = "preview", title = "{preview}", title_pos = "left", border = "solid" },
-          },
-        },
-      },
-      previewers = {
-        diff = {
-          builtin = false,
-          cmd = { "delta" },
-        },
-      },
-      sources = {
-        grep = {
-          layout = {
-            preview = true,
-          },
-        },
-        icons = {
-          layout = {
-            preset = "minimal",
-          },
-        },
-        select = {
-          layout = {
-            preset = "minimal",
-          },
-        },
-      },
-    },
-    input = {
-      enabled = true,
-      backdrop = true,
-    },
-  }
 end)
 
 now(function()
@@ -184,6 +115,7 @@ now(function()
     },
     eslint = {},
     biome = {},
+    gopls = {},
     html = {},
     emmylua_ls = {},
     marksman = {},
@@ -238,65 +170,6 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-  add { { src = "https://github.com/saghen/blink.cmp", version = vim.version.range "*" } }
-  require("blink.cmp").setup {
-    completion = {
-      menu = {
-        draw = {
-          components = {
-            kind_icon = {
-              text = function(ctx)
-                local kind_icon, _, _ = require("mini.icons").get("lsp", ctx.kind)
-                return kind_icon
-              end,
-              highlight = function(ctx)
-                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                return hl
-              end,
-            },
-            kind = {
-              highlight = function(ctx)
-                local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
-                return hl
-              end,
-            },
-          },
-        },
-      },
-    },
-    cmdline = {
-      completion = {
-        menu = {
-          auto_show = true,
-        },
-      },
-    },
-    keymap = {
-      ["<Tab>"] = {
-        "snippet_forward",
-        function()
-          return require("sidekick").nes_jump_or_apply()
-        end,
-        function()
-          return vim.lsp.inline_completion.get()
-        end,
-        "fallback",
-      },
-    },
-    sources = {
-      default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-      providers = {
-        lazydev = {
-          name = "LazyDev",
-          module = "lazydev.integrations.blink",
-          score_offset = 100,
-        },
-      },
-    },
-  }
-end)
-
-now_if_args(function()
   add { "https://github.com/seblyng/roslyn.nvim" }
   require("roslyn").setup()
 end)
@@ -341,7 +214,9 @@ end)
 
 later(function()
   add { "https://github.com/folke/sidekick.nvim" }
-  require("sidekick").setup()
+  require("sidekick").setup {
+    nes = { enabled = false },
+  }
 end)
 
 later(function()
@@ -429,35 +304,6 @@ later(function()
     },
     keymaps_help = {
       border = "solid",
-    },
-  }
-end)
-
-later(function()
-  add { "https://github.com/folke/which-key.nvim" }
-  require("which-key").setup {
-    preset = "helix",
-    win = { border = "solid" },
-    spec = {
-      -- groups
-      { "<leader>a", mode = { "n", "x" }, group = "ai", icon = { icon = "󱙺" } },
-      { "<leader>b", group = "buffer", icon = "" },
-      { "<leader>e", group = "explore", icon = "󰙅" },
-      { "<leader>f", mode = { "n", "x" }, group = "find", icon = "󰍉" },
-      { "<leader>g", mode = { "n", "x" }, group = "git", icon = { icon = "", color = "blue" } },
-      { "<leader>l", mode = { "n", "x" }, group = "language", icon = "" },
-      { "<leader>m", group = "map", icon = "" },
-      { "<leader>o", group = "other", icon = "" },
-      { "<leader>s", group = "session" },
-      -- commands
-      { "<leader>ap", icon = "󰻞" },
-      { "<leader>bd", icon = "󰯈" },
-      { "<leader>bD", icon = "󰯈" },
-      { "<leader>bw", icon = "󰯈" },
-      { "<leader>bW", icon = "󰯈" },
-      { "<leader>ef", icon = "󰈤" },
-      { "<leader>la", icon = "󱐌" },
-      { "<leader>lf", icon = "" },
     },
   }
 end)

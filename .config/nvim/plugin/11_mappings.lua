@@ -1,3 +1,6 @@
+local imap = function(lhs, rhs, desc, expr)
+  vim.keymap.set("i", lhs, rhs, { desc = desc, expr = expr or false })
+end
 local nmap = function(lhs, rhs, desc, remap, expr)
   vim.keymap.set("n", lhs, rhs, { desc = desc, remap = remap or false, expr = expr or false })
 end
@@ -5,16 +8,12 @@ local xmap = function(lhs, rhs, desc, remap)
   vim.keymap.set("x", lhs, rhs, { desc = desc, remap = remap or false })
 end
 
--- Sidekick: NES jump/apply -> inline completion -> fallback <Tab>
-nmap("<Tab>", function()
-  if require("sidekick").nes_jump_or_apply() then
-    return
-  end
+imap("<Tab>", function()
   if vim.lsp.inline_completion.get() then
     return
   end
   return "<Tab>"
-end, "goto/apply next edit suggestion", false, true)
+end, "goto/apply next edit suggestion", true)
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
@@ -100,14 +99,15 @@ nmap_leader("eq", explore_quickfix, "quickfix list")
 nmap_leader("eQ", explore_locations, "location list")
 
 -- f is for 'Find'
-nmap_leader("fb", "<Cmd>lua Snacks.picker.buffers()<CR>", "buffers")
-nmap_leader("ff", "<Cmd>lua Snacks.picker.files { hidden = true }<CR>", "files")
-nmap_leader("fF", "<Cmd>lua Snacks.picker.files { hidden = true, ignored = true }<CR>", "files (including ignored)")
-nmap_leader("fw", "<Cmd>lua Snacks.picker.grep { hidden = true }<CR>", "live grep")
-nmap_leader("fi", "<Cmd>lua Snacks.picker.icons()<CR>", "icons")
-nmap_leader("fc", "<Cmd>lua Snacks.picker.grep { pattern = vim.fn.expand('<cword>') }<CR>", "grep word under cursor")
-
-xmap_leader("fw", "<Cmd>lua Snacks.picker.grep_word()<CR>", "grep selection")
+nmap_leader("fb", "<Cmd>Pick buffers<CR>", "buffers")
+nmap_leader("fc", "<Cmd>Pick git_commits<CR>", "commits (all)")
+nmap_leader("fC", '<Cmd>Pick git_commits path="%"<CR>', "commits (buf)")
+nmap_leader("fd", '<Cmd>Pick diagnostic scope="all"<CR>', "diagnostic workspace")
+nmap_leader("fD", '<Cmd>Pick diagnostic scope="current"<CR>', "diagnostic buffer")
+nmap_leader("ff", "<Cmd>Pick git_files<CR>", "files")
+nmap_leader("fh", "<Cmd>Pick help<CR>", "Help tags")
+nmap_leader("fw", "<Cmd>Pick grep_live<CR>", "grep live")
+nmap_leader("fc", "<Cmd>Pick grep pattern='<cword>'<CR>", "grep current word")
 
 -- g is for 'Git'
 nmap_leader("gd", "<Cmd>lua MiniDiff.toggle_overlay()<CR>", "toggle overlay")
