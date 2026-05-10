@@ -237,6 +237,22 @@ sketchybar --add item clock right \
                       update_freq=1 \
                       script="$PLUGIN_DIR/clock.sh"
 
+sketchybar --add item teams right \
+           --set teams icon=󰊻 \
+                      icon.font="Symbols Nerd Font:Regular:16.0" \
+                      icon.color=0xff${IRIS:2} \
+                      label.color=0xff${FG_SECONDARY:2} \
+                      background.color=0x00000000 \
+                      background.corner_radius=0 \
+		      background.padding_left=10 \
+		      background.padding_right=10 \
+                      background.border_width=0 \
+                      background.shadow.drawing=off \
+                      update_freq=5 \
+                      script="$PLUGIN_DIR/teams.sh" \
+                      click_script="open -a 'Microsoft Teams'" \
+           --subscribe teams mouse.clicked
+
 sketchybar --add item battery right \
            --set battery icon=󰁹 \
                         icon.font="Symbols Nerd Font:Regular:16.0" \
