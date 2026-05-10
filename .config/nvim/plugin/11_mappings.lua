@@ -1,6 +1,3 @@
-local imap = function(lhs, rhs, desc, expr)
-  vim.keymap.set("i", lhs, rhs, { desc = desc, expr = expr or false })
-end
 local nmap = function(lhs, rhs, desc, remap, expr)
   vim.keymap.set("n", lhs, rhs, { desc = desc, remap = remap or false, expr = expr or false })
 end
@@ -8,12 +5,14 @@ local xmap = function(lhs, rhs, desc, remap)
   vim.keymap.set("x", lhs, rhs, { desc = desc, remap = remap or false })
 end
 
-imap("<Tab>", function()
-  if vim.lsp.inline_completion.get() then
-    return
-  end
-  return "<Tab>"
-end, "goto/apply next edit suggestion", true)
+-- Copy selection to system clipboard
+xmap("Y", '"+y', "yank to system clipboard")
+-- Copy entire file contents to system clipboard
+nmap("yY", function()
+  local winview = vim.fn.winsaveview()
+  vim.cmd('keepjumps keepmarks normal! ggVG"+y')
+  vim.fn.winrestview(winview)
+end, "yank entire file to system clipboard")
 
 -- Paste linewise before/after current line
 -- Usage: `yiw` to yank a word and `]p` to put it on the next line.
@@ -140,10 +139,8 @@ nmap_leader("or", "<Cmd>lua MiniMisc.resize_window()<CR>", "resize to default wi
 nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "trim trailspace")
 nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "zoom toggle")
 nmap_leader("op", '"+p<CR>', "paste from system clipboard")
-nmap_leader("oy", '"+y<CR>', "yank to system clipboard")
 
 xmap_leader("op", '"+p<CR>', "paste from system clipboard")
-xmap_leader("oy", '"+y<CR>', "yank to system clipboard")
 
 -- s is for 'Session'
 local session_new = 'vim.ui.input({ prompt = "Session name: " }, MiniSessions.write)'

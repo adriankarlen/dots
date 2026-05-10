@@ -245,6 +245,12 @@ end)
 
 later(function()
   require("mini.keymap").setup()
+  MiniKeymap.map_multistep("i", "<Tab>", {
+    {
+      condition = function() return vim.lsp.inline_completion.get() ~= nil end,
+      action = function() return "<Tab>" end,
+    },
+  })
   MiniKeymap.map_multistep("i", "<CR>", { "minipairs_cr" })
   MiniKeymap.map_multistep("i", "<BS>", { "minipairs_bs" })
 end)
