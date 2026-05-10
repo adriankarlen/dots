@@ -144,6 +144,10 @@ now_if_args(function()
 end)
 
 now_if_args(function()
+  require('mini.files').setup({ windows = { preview = true } })
+end)
+
+now_if_args(function()
   require("mini.misc").setup()
   MiniMisc.setup_auto_root()
   MiniMisc.setup_restore_cursor()

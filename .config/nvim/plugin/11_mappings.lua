@@ -92,7 +92,7 @@ local explore_locations = function()
   vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and "lclose" or "lopen")
 end
 
-nmap_leader("ef", '<Cmd>lua require("oil").toggle_float()<CR>', "file explorer")
+nmap_leader("ef", '<Cmd>lua MiniFiles.open()<CR>', "file explorer")
 nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "notifications")
 nmap_leader("eq", explore_quickfix, "quickfix list")
 nmap_leader("eQ", explore_locations, "location list")
