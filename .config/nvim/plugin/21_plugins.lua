@@ -180,33 +180,33 @@ later(function()
   require("conform").setup {
     default_format_opts = {
       lsp_format = "fallback",
-      format_on_save = function(bufnr)
-        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-          return
-        end
-        return {
-          timeout_ms = 500,
-        }
-      end,
-      formatters = {
-        biome = {
-          require_cwd = true,
-        },
+    },
+    format_on_save = function(bufnr)
+      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+        return
+      end
+      return {
+        timeout_ms = 500,
+      }
+    end,
+    formatters = {
+      biome = {
+        require_cwd = true,
       },
-      formatters_by_ft = {
-        sh = { "shfmt" },
-        zsh = { "shfmt" },
-        lua = { "stylua" },
-        javascript = { "biome-check", "prettier", stop_after_first = true },
-        javascriptreact = { "biome-check", "prettier", stop_after_first = true },
-        typescript = { "biome-check", "prettier", stop_after_first = true },
-        typescriptreact = { "biome-check", "prettier", stop_after_first = true },
-        svelte = { "biome-check", "rustywind" },
-        json = { "biome" },
-        go = { "gofmt" },
-        xml = { "xmlformatter" },
-        svg = { "xmlformatter" },
-      },
+    },
+    formatters_by_ft = {
+      sh = { "shfmt" },
+      zsh = { "shfmt" },
+      lua = { "stylua" },
+      javascript = { "biome-check", "prettier", stop_after_first = true },
+      javascriptreact = { "biome-check", "prettier", stop_after_first = true },
+      typescript = { "biome-check", "prettier", stop_after_first = true },
+      typescriptreact = { "biome-check", "prettier", stop_after_first = true },
+      svelte = { "biome-check", "rustywind" },
+      json = { "biome" },
+      go = { "gofmt" },
+      xml = { "xmlformatter" },
+      svg = { "xmlformatter" },
     },
   }
 end)
@@ -215,6 +215,7 @@ later(function()
   add { "https://github.com/folke/sidekick.nvim" }
   require("sidekick").setup {
     nes = { enabled = false },
+    mux = { enabled = true },
   }
 end)
 

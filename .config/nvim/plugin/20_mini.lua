@@ -63,8 +63,8 @@ now(function()
       starter.sections.sessions(5, true),
       {
         { name = "Explore", action = "lua MiniFiles.open()", section = "Actions" },
-        { name = "Find", action = "Pick git_files", section = "Actions" },
-        { name = "Grep", action = "Pick grep_live", section = "Actions" },
+        { name = "Find",    action = "Pick git_files",       section = "Actions" },
+        { name = "Grep",    action = "Pick grep_live",       section = "Actions" },
         {
           name = "OpenCode",
           action = "lua require('sidekick.cli').toggle { name = 'opencode', focus = true }",
@@ -103,14 +103,14 @@ now(function()
         local macro = get_macro_status()
 
         return MiniStatusline.combine_groups {
-          { hl = mode_hl, strings = { mode } },
-          { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+          { hl = mode_hl,                     strings = { mode } },
+          { hl = "MiniStatuslineDevinfo",     strings = { git, diff, diagnostics, lsp } },
           { hl = "MiniStatuslineModeCommand", strings = { macro } },
           "%<", -- Mark general truncate point
           { hl = "MiniStatuslineFilename", strings = { filename } },
           "%=", -- End left alignment
           { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-          { hl = mode_hl, strings = { search, location } },
+          { hl = mode_hl,                  strings = { search, location } },
         }
       end,
     },

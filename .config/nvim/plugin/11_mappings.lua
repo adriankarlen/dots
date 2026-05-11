@@ -10,12 +10,11 @@ xmap("Y", '"+y', "yank to system clipboard")
 -- Copy entire file contents to system clipboard
 nmap("yY", function()
   local winview = vim.fn.winsaveview()
-  vim.cmd('keepjumps keepmarks normal! ggVG"+y')
+  vim.cmd 'keepjumps keepmarks normal! ggVG"+y'
   vim.fn.winrestview(winview)
 end, "yank entire file to system clipboard")
 
 -- Paste linewise before/after current line
--- Usage: `yiw` to yank a word and `]p` to put it on the next line.
 nmap("[p", '<Cmd>exe "iput! " . v:register<CR>', "paste above")
 nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "paste below")
 
@@ -49,22 +48,21 @@ xmap("&", "^", "& -> ^", true)
 nmap("€", "$", "€ -> $", true)
 xmap("€", "$", "€ -> $", true)
 
-
 Config.leader_group_clues = {
-    { mode = "n", keys = "<Leader>a", desc = "+ai" },
-    { mode = "x", keys = "<Leader>a", desc = "+ai" },
-    { mode = "n", keys = "<Leader>b", desc = "+buffer" },
-    { mode = "n", keys = "<Leader>e", desc = "+explore" },
-    { mode = "n", keys = "<Leader>f", desc = "+find" },
-    { mode = "x", keys = "<Leader>f", desc = "+find" },
-    { mode = "n", keys = "<Leader>g", desc = "+git" },
-    { mode = "x", keys = "<Leader>g", desc = "+git" },
-    { mode = "n", keys = "<Leader>l", desc = "+language" },
-    { mode = "x", keys = "<Leader>l", desc = "+language" },
-    { mode = "n", keys = "<Leader>m", desc = "+map" },
-    { mode = "n", keys = "<Leader>o", desc = "+other" },
-    { mode = "n", keys = "<Leader>s", desc = "+session" },
-  }
+  { mode = "n", keys = "<Leader>a", desc = "+ai" },
+  { mode = "n", keys = "<Leader>b", desc = "+buffer" },
+  { mode = "n", keys = "<Leader>e", desc = "+explore" },
+  { mode = "n", keys = "<Leader>f", desc = "+find" },
+  { mode = "n", keys = "<Leader>g", desc = "+git" },
+  { mode = "n", keys = "<Leader>l", desc = "+language" },
+  { mode = "n", keys = "<Leader>m", desc = "+map" },
+  { mode = "n", keys = "<Leader>o", desc = "+other" },
+  { mode = "n", keys = "<Leader>s", desc = "+session" },
+
+  { mode = "x", keys = "<Leader>a", desc = "+ai" },
+  { mode = "x", keys = "<Leader>g", desc = "+git" },
+  { mode = "x", keys = "<Leader>l", desc = "+language" },
+}
 
 -- Helpers for a more concise `<Leader>` mappings
 local nmap_leader = function(suffix, rhs, desc)
@@ -102,6 +100,7 @@ nmap_leader("bq", function()
 end, "delete others")
 
 -- e is for 'Explore'
+local explore_at_file = "<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>"
 local explore_quickfix = function()
   vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and "cclose" or "copen")
 end
@@ -109,7 +108,8 @@ local explore_locations = function()
   vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and "lclose" or "lopen")
 end
 
-nmap_leader("ef", '<Cmd>lua MiniFiles.open()<CR>', "file explorer")
+nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "file explorer")
+nmap_leader("ef", explore_at_file, "file explorer")
 nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "notifications")
 nmap_leader("eq", explore_quickfix, "quickfix list")
 nmap_leader("eQ", explore_locations, "location list")
