@@ -1,7 +1,7 @@
 -- General ====================================================================
 vim.g.mapleader = " " -- Use `<Space>` as <Leader> key
 
-vim.o.mouse = "a" -- Enable mouse
+vim.o.mouse = "" -- Disable mouse
 vim.o.mousescroll = "ver:25,hor:6" -- Customize mouse scroll
 vim.o.switchbuf = "usetab" -- Use already opened buffers when switching
 vim.o.undofile = true -- Enable persistent undo
@@ -111,14 +111,14 @@ local diagnostic_opts = {
 
   virtual_lines = false,
   virtual_text = {
-    severity = { min = "ERROR", max = "ERROR" },
+    severity = { min = "WARN", max = "ERROR" },
   },
 
   update_in_insert = false,
 }
 
----@diagnostic disable-next-line: param-type-mismatch
 Config.later(function()
+  ---@diagnostic disable-next-line: param-type-mismatch
   vim.diagnostic.config(diagnostic_opts)
 end)
 
