@@ -62,7 +62,8 @@ now(function()
       starter.sections.recent_files(10, true),
       starter.sections.sessions(5, true),
       {
-        { name = "Find", action = "Pick git_files",     section = "Actions" },
+        { name = "Explore", action = "lua MiniFiles.open()", section = "Actions" },
+        { name = "Find", action = "Pick git_files", section = "Actions" },
         { name = "Grep", action = "Pick grep_live", section = "Actions" },
         {
           name = "OpenCode",
@@ -102,14 +103,14 @@ now(function()
         local macro = get_macro_status()
 
         return MiniStatusline.combine_groups {
-          { hl = mode_hl,                     strings = { mode } },
-          { hl = "MiniStatuslineDevinfo",     strings = { git, diff, diagnostics, lsp } },
+          { hl = mode_hl, strings = { mode } },
+          { hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
           { hl = "MiniStatuslineModeCommand", strings = { macro } },
           "%<", -- Mark general truncate point
           { hl = "MiniStatuslineFilename", strings = { filename } },
           "%=", -- End left alignment
           { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-          { hl = mode_hl,                  strings = { search, location } },
+          { hl = mode_hl, strings = { search, location } },
         }
       end,
     },
@@ -136,15 +137,19 @@ now_if_args(function()
   Config.new_autocmd("LspAttach", nil, on_attach, "Set 'omnifunc'")
 
   vim.lsp.config("*", { capabilities = MiniCompletion.get_lsp_capabilities() })
-
-  local f = function(args)
-    vim.b[args.buf].minicompletion_disable = true
-  end
-  Config.new_autocmd("FileType", "snacks_picker_input", f, "disable completion in snacks picker")
 end)
 
 now_if_args(function()
-  require('mini.files').setup({ windows = { preview = true } })
+  require("mini.files").setup { windows = { preview = true } }
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesWindowUpdate",
+    callback = function(args)
+      local config = vim.api.nvim_win_get_config(args.data.win_id)
+      config.height = math.floor(0.3 * vim.o.lines)
+      vim.api.nvim_win_set_config(args.data.win_id, config)
+    end,
+  })
 end)
 
 now_if_args(function()
@@ -187,7 +192,7 @@ end)
 
 later(function()
   require("mini.cursorword").setup()
-  local ft = { "snacks_dashboard", "help", "mason", "notify", "term" }
+  local ft = { "help", "mason", "notify", "term" }
   local f = function(args)
     vim.b[args.buf].minicursorword_disable = true
   end
@@ -231,7 +236,7 @@ later(function()
     symbol = "│",
   }
 
-  local ft = { "snacks_dashboard", "help", "mason", "notify", "term" }
+  local ft = { "help", "mason", "notify", "term" }
   local f = function(args)
     vim.b[args.buf].miniindentscope_disable = true
   end
@@ -251,8 +256,12 @@ later(function()
   require("mini.keymap").setup()
   MiniKeymap.map_multistep("i", "<Tab>", {
     {
-      condition = function() return vim.lsp.inline_completion.get() ~= nil end,
-      action = function() return "<Tab>" end,
+      condition = function()
+        return vim.lsp.inline_completion.get() ~= nil
+      end,
+      action = function()
+        return "<Tab>"
+      end,
     },
   })
   MiniKeymap.map_multistep("i", "<CR>", { "minipairs_cr" })
@@ -303,7 +312,21 @@ later(function()
 end)
 
 later(function()
-  require("mini.pick").setup()
+  require("mini.pick").setup {
+    window = {
+      config = function()
+        local height = math.floor(0.3 * vim.o.lines)
+        local width = math.floor(0.45 * vim.o.columns)
+        return {
+          anchor = "NW",
+          height = height,
+          width = width,
+          row = math.floor((vim.o.lines - height) / 2),
+          col = math.floor((vim.o.columns - width) / 2),
+        }
+      end,
+    },
+  }
 end)
 
 later(function()
@@ -338,26 +361,9 @@ end)
 later(function()
   local miniclue = require "mini.clue"
 
-  -- Leader group clues for mini.clue (migrated from which-key spec)
-  local leader_group_clues = {
-    { mode = "n", keys = "<Leader>a", desc = "+ai" },
-    { mode = "x", keys = "<Leader>a", desc = "+ai" },
-    { mode = "n", keys = "<Leader>b", desc = "+buffer" },
-    { mode = "n", keys = "<Leader>e", desc = "+explore" },
-    { mode = "n", keys = "<Leader>f", desc = "+find" },
-    { mode = "x", keys = "<Leader>f", desc = "+find" },
-    { mode = "n", keys = "<Leader>g", desc = "+git" },
-    { mode = "x", keys = "<Leader>g", desc = "+git" },
-    { mode = "n", keys = "<Leader>l", desc = "+language" },
-    { mode = "x", keys = "<Leader>l", desc = "+language" },
-    { mode = "n", keys = "<Leader>m", desc = "+map" },
-    { mode = "n", keys = "<Leader>o", desc = "+other" },
-    { mode = "n", keys = "<Leader>s", desc = "+session" },
-  }
-
   miniclue.setup {
     clues = {
-      leader_group_clues,
+      Config.leader_group_clues,
       miniclue.gen_clues.builtin_completion(),
       miniclue.gen_clues.g(),
       miniclue.gen_clues.marks(),

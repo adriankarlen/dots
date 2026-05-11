@@ -49,6 +49,23 @@ xmap("&", "^", "& -> ^", true)
 nmap("€", "$", "€ -> $", true)
 xmap("€", "$", "€ -> $", true)
 
+
+Config.leader_group_clues = {
+    { mode = "n", keys = "<Leader>a", desc = "+ai" },
+    { mode = "x", keys = "<Leader>a", desc = "+ai" },
+    { mode = "n", keys = "<Leader>b", desc = "+buffer" },
+    { mode = "n", keys = "<Leader>e", desc = "+explore" },
+    { mode = "n", keys = "<Leader>f", desc = "+find" },
+    { mode = "x", keys = "<Leader>f", desc = "+find" },
+    { mode = "n", keys = "<Leader>g", desc = "+git" },
+    { mode = "x", keys = "<Leader>g", desc = "+git" },
+    { mode = "n", keys = "<Leader>l", desc = "+language" },
+    { mode = "x", keys = "<Leader>l", desc = "+language" },
+    { mode = "n", keys = "<Leader>m", desc = "+map" },
+    { mode = "n", keys = "<Leader>o", desc = "+other" },
+    { mode = "n", keys = "<Leader>s", desc = "+session" },
+  }
+
 -- Helpers for a more concise `<Leader>` mappings
 local nmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("n", "<Leader>" .. suffix, rhs, { desc = desc })
