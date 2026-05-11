@@ -145,9 +145,22 @@ now_if_args(function()
   vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesWindowUpdate",
     callback = function(args)
-      local config = vim.api.nvim_win_get_config(args.data.win_id)
+      local win_id = args.data.win_id
+      local config = vim.api.nvim_win_get_config(win_id)
       config.height = math.floor(0.3 * vim.o.lines)
-      vim.api.nvim_win_set_config(args.data.win_id, config)
+
+      local has_border = config.border and config.border ~= "none" and config.border ~= ""
+      local buf_id = vim.api.nvim_win_get_buf(win_id)
+      local line_count = vim.api.nvim_buf_line_count(buf_id)
+      if has_border and line_count > config.height then
+        config.footer = string.format(" %d/%d ", vim.api.nvim_win_get_cursor(win_id)[1], line_count)
+        config.footer_pos = "right"
+      elseif has_border then
+        config.footer = ""
+        config.footer_pos = "right"
+      end
+
+      vim.api.nvim_win_set_config(win_id, config)
     end,
   })
 end)
