@@ -8,3 +8,5 @@
 .config/zed/prompts/
 .config/gcloud/
 .config/configstore/
+
+restart_session_*
