@@ -1,10 +1,10 @@
----@diagnostic disable: param-type-mismatch, missing-fields
 local add = vim.pack.add
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- ─[ load at startup ]────────────────────────────────────────────────────
 now(function()
   add { { src = "https://github.com/rose-pine/neovim", name = "rose-pine" } }
+  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("rose-pine").setup {
     highlight_groups = {
       MatchParen = { fg = "love", bg = "love", blend = 25 },
@@ -138,6 +138,7 @@ now(function()
     copilot = {},
   }
 
+  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("mason").setup {
     registries = {
       "github:mason-org/mason-registry",
@@ -160,6 +161,7 @@ end)
 
 now_if_args(function()
   add { "https://github.com/folke/lazydev.nvim" }
+  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("lazydev").setup {
     library = {
       { path = "${3rd}/luv/library", words = { "vim%.uv" } },
@@ -177,12 +179,16 @@ end)
 later(function()
   add { "https://github.com/stevearc/conform.nvim" }
 
+  ---@diagnostic disable-next-line: param-type-mismatch
   require("conform").setup {
     default_format_opts = {
       lsp_format = "fallback",
     },
     format_on_save = function(bufnr)
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+        return
+      end
+      if vim.bo[bufnr].buftype ~= "" then
         return
       end
       return {
@@ -213,6 +219,7 @@ end)
 
 later(function()
   add { "https://github.com/folke/sidekick.nvim" }
+  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("sidekick").setup {
     nes = { enabled = false },
     mux = { enabled = true },
