@@ -87,7 +87,8 @@ sketchybar --add item portal left \
                         label.drawing=off \
                         icon.padding_left=10 \
                         icon.padding_right=10 \
-                        padding_left=4
+                        padding_left=4 \
+                        click_script="sketchybar --reload"
 
 sketchybar --add item cosmic_sep left \
            --set cosmic_sep icon=│ \
@@ -203,19 +204,6 @@ for i in "${!launch_apps[@]}"; do
                                  click_script="open -a \"$name\""
 done
 
-sketchybar --add item bluetooth left \
-           --set bluetooth icon=󰂯 \
-                          icon.font.size=16.0 \
-                          icon.color=0xff${IRIS:2} \
-                          background.color=0x00000000 \
-                          background.corner_radius=0 \
-                          background.border_width=0 \
-                          background.shadow.drawing=off \
-                          label.drawing=off \
-                          update_freq=5 \
-                          script="$PLUGIN_DIR/bluetooth.sh" \
-           --subscribe bluetooth mouse.clicked
-
 ################################
 #  RIGHT: System Monitors      #
 ################################
@@ -249,9 +237,7 @@ sketchybar --add item teams right \
                       background.border_width=0 \
                       background.shadow.drawing=off \
                       update_freq=5 \
-                      script="$PLUGIN_DIR/teams.sh" \
-                      click_script="open -a 'Microsoft Teams'" \
-           --subscribe teams mouse.clicked
+                      script="$PLUGIN_DIR/teams.sh"
 
 sketchybar --add item battery right \
            --set battery icon=󰁹 \
@@ -279,19 +265,16 @@ sketchybar --add item volume right \
 		       background.padding_left=10 \
 		       background.padding_right=10 \
                        background.shadow.drawing=off \
+                       update_freq=5 \
                        script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change
 
 #######################################
-#  Spotify Player                     #
+#  Media Player                       #
 #######################################
 
-SPOTIFY_EVENT="com.spotify.client.PlaybackStateChanged"
-POPUP_SCRIPT="sketchybar -m --set \$NAME popup.drawing=toggle"
-
-sketchybar --add event spotify_change $SPOTIFY_EVENT \
-           --add item spotify.name right \
-           --set spotify.name icon=󰓇 \
+sketchybar --add item media.name right \
+           --set media.name icon=󰓇 \
                              icon.font.size=17.0 \
                              label="Not Playing" \
                              label.color=0xff${FG_PRIMARY:2} \
@@ -303,36 +286,8 @@ sketchybar --add event spotify_change $SPOTIFY_EVENT \
                              background.shadow.drawing=off \
                              padding_left=12 \
                              padding_right=12 \
-                             click_script="$POPUP_SCRIPT" \
-                             popup.horizontal=on \
-                             popup.align=center \
-                             popup.background.color=0xf0${BG_SURFACE:2} \
-                             popup.background.corner_radius=12 \
-                             popup.background.border_width=1 \
-                             popup.background.border_color=0x60${IRIS:2} \
-                             popup.background.shadow.drawing=off \
-           --subscribe launcher mouse.exited.global
-
-controls=("back:󰒮:${FOAM:2}" "play:󰐊:${PINE:2}" "next:󰒭:${FOAM:2}" "shuffle:󰒝:${IRIS:2}" "repeat:󰑖:${GOLD:2}")
-
-for ctrl in "${controls[@]}"; do
-  IFS=':' read -r name icon color <<< "$ctrl"
-
-  sketchybar --add item "spotify.$name" popup.spotify.name \
-             --set "spotify.$name" icon="$icon" \
-                                   icon.font.size=17.0 \
-                                   icon.color=0xff$color \
-                                   icon.highlight_color=0xff${PINE:2} \
-                                   background.color=0x50${BG_OVERLAY:2} \
-                                   background.corner_radius=8 \
-                                   background.border_width=1 \
-                                   background.border_color=0x30$color \
-                                   background.shadow.drawing=off \
-                                   label.drawing=off \
-                                   updates=on \
-                                   script="$PLUGIN_DIR/spotify.sh" \
-             --subscribe "spotify.$name" mouse.clicked spotify_change
-done
+                             update_freq=3 \
+                             script="$PLUGIN_DIR/media.sh"
 
 #################
 #  Final launch #
