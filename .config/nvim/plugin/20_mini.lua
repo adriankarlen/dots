@@ -140,8 +140,19 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-  require("mini.files").setup { windows = { preview = true } }
+  require("mini.files").setup {
+    mappings = {
+      go_in = "<Tab>",
+      go_in_plus = "<CR>",
+      go_out = "<S-Tab>",
+      go_out_plus = "H",
+    },
+    windows = { preview = true },
+  }
 
+  -- Height is fixed at 30% of the editor.
+  -- When the directory buffer has more lines than the window height,
+  -- a "cursor/total" footer is shown in the bottom-right corner of the border.
   vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesWindowUpdate",
     callback = function(args)
@@ -331,8 +342,11 @@ later(function()
         local height = math.floor(0.3 * vim.o.lines)
         local width = math.floor(0.45 * vim.o.columns)
         return {
+          anchor = "NW",
           height = height,
           width = width,
+          row = math.floor((vim.o.lines - height) / 2),
+          col = math.floor((vim.o.columns - width) / 2),
         }
       end,
     },

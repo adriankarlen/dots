@@ -108,8 +108,8 @@ local explore_locations = function()
   vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and "lclose" or "lopen")
 end
 
-nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "file explorer")
-nmap_leader("ef", explore_at_file, "file explorer")
+nmap_leader("ed", "<Cmd>lua MiniFiles.open()<CR>", "directory")
+nmap_leader("ef", explore_at_file, "file directory")
 nmap_leader("en", "<Cmd>lua MiniNotify.show_history()<CR>", "notifications")
 nmap_leader("eq", explore_quickfix, "quickfix list")
 nmap_leader("eQ", explore_locations, "location list")
