@@ -137,15 +137,12 @@ secondary = "AltLeft + Shift"
 
 # Move mouse cursor to display by index (0-based) or UUID
 # Examples:
-"secondary + A" = { move_mouse_to_display = 0 }
-"secondary + S" = { move_mouse_to_display = 1 }
+"secondary + A" = { focus_display = 0 }
+"secondary + S" = { focus_display = 1 }
 
-# Move a window to a display (by index, UUID, or direction)
-"AltLeft + Ctrl + Up" = { move_window_to_display = { selector = "up" } }
-"AltLeft + Ctrl + Down" = { move_window_to_display = { selector = "down" } }
-"AltLeft + Ctrl + Left" = { move_window_to_display = { selector = "left" } }
-"AltLeft + Ctrl + Right" = { move_window_to_display = { selector = "right" } }
-"AltLeft + Ctrl + A" = { move_window_to_display = { selector = 0 } }
+# Move a window to a display by index (mirrors focus_display bindings with Ctrl)
+"AltLeft + Shift + Ctrl + A" = { move_window_to_display = { selector = 0 } }
+"AltLeft + Shift + Ctrl + S" = { move_window_to_display = { selector = 1 } }
 
 # if mission control is enabled
 # this will show an exploded view of the windows in the active workspace
