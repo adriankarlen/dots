@@ -87,6 +87,7 @@ app_rules = [
 	{ app_id = "com.visualstudio.code", workspace = 1 },
 	{ app_id = "com.microsoft.teams", workspace = 2 },
 	{ app_id = "com.microsoft.teams2", workspace = 2 },
+	{ app_id = "com.tinyspeck.slackmacgap", workspace = 2 },
 	{ app_id = "com.spotify.client", workspace = 3 },
 
 ]
@@ -108,17 +109,7 @@ secondary = "AltLeft + Shift"
 "secondary + K" = { move_node = "up" }
 "secondary + L" = { move_node = "right" }
 
-"main + Q" = { switch_to_workspace = 0 }
-"main + W" = { switch_to_workspace = 1 }
-"main + E" = { switch_to_workspace = 2 }
-"main + R" = { switch_to_workspace = 3 }
-"main + T" = { switch_to_workspace = 4 }
-
-"secondary + Q" = { move_window_to_workspace = 0 }
-"secondary + W" = { move_window_to_workspace = 1 }
-"secondary + E" = { move_window_to_workspace = 2 }
-"secondary + R" = { move_window_to_workspace = 3 }
-"secondary + T" = { move_window_to_workspace = 4 }
+# workspace bindings handled by skhd (lalt + 1-5) for proper left/right alt distinction
 
 "main + Tab" = "switch_to_last_workspace"
 

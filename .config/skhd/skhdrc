@@ -1,50 +1,15 @@
 #!/bin/bash
-# lalt - z : rift-cli execute toggle-space-activated
-#
-# # focus window
-# lalt - h : rift-cli execute window focus left
-# lalt - j : rift-cli execute window focus down
-# lalt - k : rift-cli execute window focus up
-# lalt - l : rift-cli execute window focus right
-#
-# # move window
-# shift + lalt - h : rift-cli execute layout move-node left
-# shift + lalt - j : rift-cli execute layout move-node down
-# shift + lalt - k : rift-cli execute layout move-node up
-# shift + lalt - l : rift-cli execute layout move-node right
-#
-# # # focus space
-# lalt - 1 : rift-cli execute workspace switch 0
-# lalt - 2 : rift-cli execute workspace switch 1
-# lalt - 3 : rift-cli execute workspace switch 2
-# lalt - 4 : rift-cli execute workspace switch 3
-# lalt - 5 : rift-cli execute workspace switch 4
-# # lalt - "tab" : rift-cli execute workspace last
-#
-# # # move window to space
-# shift + lalt - 1 : rift-cli execute workspace move-window 0
-# shift + lalt - 2 : rift-cli execute workspace move-window 1
-# shift + lalt - 3 : rift-cli execute workspace move-window 2
-# shift + lalt - 4 : rift-cli execute workspace move-window 3
-# shift + lalt - 5 : rift-cli execute workspace move-window 4
 
-# # layout changes
-# shift + lalt - "left" : rift-cli execute layout join-window left
-# shift + lalt - "down" : rift-cli execute layout join-window down
-# shift + lalt - "up" : rift-cli execute layout join-window up
-# shift + lalt - "right" : rift-cli execute layout join-window right
-# lalt - , : rift-cli execute layout toggle-stack
-# lalt - / : rift-cli execute layout toggle-orientation
-# lalt + ctrl - e : rift-cli execute layout unjoin
+# focus space
+lalt - 1 : /opt/homebrew/bin/rift-cli execute workspace switch 0
+lalt - 2 : /opt/homebrew/bin/rift-cli execute workspace switch 1
+lalt - 3 : /opt/homebrew/bin/rift-cli execute workspace switch 2
+lalt - 4 : /opt/homebrew/bin/rift-cli execute workspace switch 3
+lalt - 5 : /opt/homebrew/bin/rift-cli execute workspace switch 4
 
-# # focus window
-# shift + lalt - space : rift-cli execute window toggle-float
-# lalt - f: rift-cli execute window toggle-fullscreen
-# lalt + shift - f : rift-cli execute window toggle-fullscreen-with-gaps
-
-# # resize window
-# lalt + shift - 0 : rift-cli execute window resize-grow
-# lalt + shift - "-" : rift-cli execute window resize-shrink
-
-# # Toggle sketchybar
-# shift + lalt  - m : sketchybar --bar hidden=toggle
+# move window to space
+shift + lalt - 1 : /opt/homebrew/bin/rift-cli execute workspace move-window 0
+shift + lalt - 2 : /opt/homebrew/bin/rift-cli execute workspace move-window 1
+shift + lalt - 3 : /opt/homebrew/bin/rift-cli execute workspace move-window 2
+shift + lalt - 4 : /opt/homebrew/bin/rift-cli execute workspace move-window 3
+shift + lalt - 5 : /opt/homebrew/bin/rift-cli execute workspace move-window 4
