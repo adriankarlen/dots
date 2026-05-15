@@ -1,7 +1,7 @@
 -- General ====================================================================
 vim.g.mapleader = " " -- Use `<Space>` as <Leader> key
 
-vim.o.mouse = "" -- Disable mouse
+vim.o.mouse = "a" -- Enable mouse
 vim.o.mousescroll = "ver:25,hor:6" -- Customize mouse scroll
 vim.o.switchbuf = "usetab" -- Use already opened buffers when switching
 vim.o.undofile = true -- Enable persistent undo
