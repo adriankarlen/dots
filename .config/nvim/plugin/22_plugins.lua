@@ -3,18 +3,6 @@ local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- ─[ load at startup ]────────────────────────────────────────────────────
 now(function()
-  add { { src = "https://github.com/rose-pine/neovim", name = "rose-pine" } }
-  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
-  require("rose-pine").setup {
-    highlight_groups = {
-      MatchParen = { fg = "love", bg = "love", blend = 25 },
-    },
-  }
-
-  vim.cmd.colorscheme "rose-pine"
-end)
-
-now(function()
   local ts_update = function()
     vim.cmd "TSUpdate"
   end

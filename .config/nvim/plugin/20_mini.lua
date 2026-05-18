@@ -58,6 +58,7 @@ now(function()
   end
   starter.setup {
     evaluate_single = true,
+    header = "yabba dabba doo",
     items = {
       starter.sections.recent_files(10, true),
       starter.sections.sessions(5, true),
