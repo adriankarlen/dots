@@ -8,5 +8,6 @@
 .config/zed/prompts/
 .config/gcloud/
 .config/configstore/
+.config/openspec/
 
 restart_session_*
