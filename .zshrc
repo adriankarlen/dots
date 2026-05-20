@@ -83,6 +83,22 @@ zle -N fs
 bindkey "^t" fs
 source $HOME/dots/manual_configs/gum-ctp.sh mocha
 
+# nvim nightly
+export PATH="$HOME/.local/nvim-nightly/bin:$PATH"
+
+function update-nvim() {
+  local dir="$HOME/.local/nvim-nightly"
+  local tmp=$(mktemp -d)
+  echo "Downloading nvim nightly..."
+  curl -L --output-dir "$tmp" -O https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz
+  tar xzf "$tmp/nvim-macos-arm64.tar.gz" -C "$tmp"
+  rm -rf "$dir"
+  mv "$tmp/nvim-macos-arm64" "$dir"
+  rm -rf "$tmp"
+  xattr -cr "$dir"
+  echo "nvim updated: $($dir/bin/nvim --version | head -1)"
+}
+
 # aliases
 alias v="nvim"
 alias vim="nvim"
