@@ -6,9 +6,9 @@
 OUTPUT=$(SwitchAudioSource -c 2>/dev/null)
 
 case "$OUTPUT" in
-  *AirPods*)  ICON="󰥰" ;;
-  *Speakers*) ICON="󰓃" ;;
-  *)          ICON="󰕾" ;;
+*AirPods* | *Onyx*) ICON="󰥰" ;;
+*Speakers*) ICON="󰓃" ;;
+*) ICON="󰕾" ;;
 esac
 
 if [ "$SENDER" = "volume_change" ]; then
