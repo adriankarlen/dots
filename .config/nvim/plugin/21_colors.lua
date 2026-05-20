@@ -7,6 +7,7 @@ now(function()
   require("rose-pine").setup {
     highlight_groups = {
       MatchParen = { fg = "love", bg = "love", blend = 25 },
+      MiniStarterHeader = { fg = "love" },
     },
   }
   vim.cmd.colorscheme "rose-pine"
