@@ -79,10 +79,6 @@ now(function()
 end)
 
 now(function()
-  require("mini.tabline").setup()
-end)
-
-now(function()
   local function get_macro_status()
     local recording_register = vim.fn.reg_recording()
     if recording_register == "" then
