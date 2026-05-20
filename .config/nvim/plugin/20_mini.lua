@@ -64,7 +64,7 @@ now(function()
       starter.sections.sessions(5, true),
       {
         { name = "Explore", action = "lua MiniFiles.open()", section = "Actions" },
-        { name = "Find", action = "Pick git_files", section = "Actions" },
+        { name = "Find", action = "Pick files", section = "Actions" },
         { name = "Grep", action = "Pick grep_live", section = "Actions" },
         {
           name = "OpenCode",
