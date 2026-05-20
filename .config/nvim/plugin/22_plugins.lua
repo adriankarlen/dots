@@ -1,6 +1,10 @@
 local add = vim.pack.add
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
+local gh = function(r)
+  return "https://github.com/" .. r
+end
+
 -- ─[ load at startup ]────────────────────────────────────────────────────
 now(function()
   local ts_update = function()
@@ -9,8 +13,8 @@ now(function()
   Config.on_packchanged("nvim-treesitter", { "update" }, ts_update, ":TSUpdate")
 
   add {
-    "https://github.com/nvim-treesitter/nvim-treesitter",
-    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+    gh "nvim-treesitter/nvim-treesitter",
+    gh "nvim-treesitter/nvim-treesitter-textobjects",
   }
 
   local languages = {
@@ -72,9 +76,9 @@ end)
 
 now(function()
   add {
-    "https://github.com/neovim/nvim-lspconfig",
-    "https://github.com/mason-org/mason.nvim",
-    "https://github.com/mason-org/mason-lspconfig.nvim",
+    gh "neovim/nvim-lspconfig",
+    gh "mason-org/mason.nvim",
+    gh "mason-org/mason-lspconfig.nvim",
   }
 
   local servers = {
@@ -144,11 +148,11 @@ end)
 
 -- ─[ load if opened with file ]───────────────────────────────────────────
 now_if_args(function()
-  add { "https://github.com/rafamadriz/friendly-snippets" }
+  add { gh "rafamadriz/friendly-snippets" }
 end)
 
 now_if_args(function()
-  add { "https://github.com/folke/lazydev.nvim" }
+  add { gh "folke/lazydev.nvim" }
   ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("lazydev").setup {
     library = {
@@ -159,13 +163,13 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-  add { "https://github.com/seblyng/roslyn.nvim" }
+  add { gh "seblyng/roslyn.nvim" }
   require("roslyn").setup()
 end)
 
 -- ─[ lazy load ]────────────────────────────────────────────────────
 later(function()
-  add { "https://github.com/stevearc/conform.nvim" }
+  add { gh "stevearc/conform.nvim" }
 
   ---@diagnostic disable-next-line: param-type-mismatch
   require("conform").setup {
@@ -206,7 +210,7 @@ later(function()
 end)
 
 later(function()
-  add { "https://github.com/folke/sidekick.nvim" }
+  add { gh "folke/sidekick.nvim" }
   ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("sidekick").setup {
     nes = { enabled = false },
@@ -215,27 +219,27 @@ later(function()
 end)
 
 later(function()
-  add { "https://github.com/nvim-zh/colorful-winsep.nvim" }
+  add { gh "nvim-zh/colorful-winsep.nvim" }
   require("colorful-winsep").setup {
     animate = { enabled = false },
   }
 end)
 
 later(function()
-  add { "https://github.com/dmmulroy/ts-error-translator.nvim" }
+  add { gh "dmmulroy/ts-error-translator.nvim" }
   require("ts-error-translator").setup()
 end)
 
 later(function()
-  add { "https://github.com/dmmulroy/tsc.nvim" }
+  add { gh "dmmulroy/tsc.nvim" }
   require("tsc").setup()
 end)
 
 later(function()
-  add { "https://github.com/christoomey/vim-tmux-navigator" }
+  add { gh "christoomey/vim-tmux-navigator" }
 end)
 
 later(function()
-  add { "https://github.com/windwp/nvim-ts-autotag" }
+  add { gh "windwp/nvim-ts-autotag" }
   require("nvim-ts-autotag").setup()
 end)
