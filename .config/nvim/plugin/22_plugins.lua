@@ -74,74 +74,26 @@ now(function()
   Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
-now(function()
-  add {
-    gh "neovim/nvim-lspconfig",
-    gh "mason-org/mason.nvim",
-    gh "mason-org/mason-lspconfig.nvim",
-  }
+now_if_args(function()
+  add { gh "neovim/nvim-lspconfig" }
 
-  local servers = {
-    bashls = {},
-    cssls = {
-      settings = {
-        css = {
-          validate = true,
-          lint = {
-            unknownAtRules = "ignore",
-          },
-        },
-        scss = {
-          validate = true,
-          lint = {
-            unknownAtRules = "ignore",
-          },
-        },
-        less = {
-          validate = true,
-          lint = {
-            unknownAtRules = "ignore",
-          },
-        },
-      },
-    },
-    eslint = {},
-    biome = {},
-    gopls = {},
-    html = {},
-    emmylua_ls = {},
-    marksman = {},
-    roslyn = {
-      settings = {
-        ["csharp|inlay_hints"] = {
-          csharp_enable_inlay_hints_for_implicit_object_creation = true,
-          csharp_enable_inlay_hints_for_implicit_variable_types = true,
-        },
-        ["csharp|code_lens"] = {
-          dotnet_enable_references_code_lens = true,
-        },
-      },
-    },
-    svelte = {},
-    tailwindcss = {},
-    taplo = {},
-    vtsls = {},
-    yamlls = {},
-    copilot = {},
+  vim.lsp.enable {
+    "bashls",
+    "biome",
+    "copilot",
+    "cssls",
+    "eslint",
+    "emmylua_ls",
+    "gopls",
+    "html",
+    "marksman",
+    "roslyn_ls",
+    "svelte",
+    "tailwindcss",
+    "taplo",
+    "vtsls",
+    "yamlls",
   }
-
-  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
-  require("mason").setup {
-    registries = {
-      "github:mason-org/mason-registry",
-      "github:Crashdummyy/mason-registry",
-    },
-  }
-  require("mason-lspconfig").setup()
-
-  for server_name, config in pairs(servers) do
-    vim.lsp.config(server_name, config)
-  end
 
   vim.lsp.inline_completion.enable()
 end)
@@ -160,11 +112,6 @@ now_if_args(function()
       { path = "mini" },
     },
   }
-end)
-
-now_if_args(function()
-  add { gh "seblyng/roslyn.nvim" }
-  require("roslyn").setup()
 end)
 
 -- ─[ lazy load ]────────────────────────────────────────────────────
