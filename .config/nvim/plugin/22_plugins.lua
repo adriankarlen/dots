@@ -178,11 +178,6 @@ later(function()
 end)
 
 later(function()
-  add { gh "dmmulroy/tsc.nvim" }
-  require("tsc").setup()
-end)
-
-later(function()
   add { gh "christoomey/vim-tmux-navigator" }
 end)
 

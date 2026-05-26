@@ -48,10 +48,6 @@
       "rev": "558abff11b9e8f4cefc0de09df780c56841c7a4b",
       "src": "https://github.com/dmmulroy/ts-error-translator.nvim"
     },
-    "tsc.nvim": {
-      "rev": "e083bcf1e54bc3af7df92b33235efb334e8c782c",
-      "src": "https://github.com/dmmulroy/tsc.nvim"
-    },
     "vim-tmux-navigator": {
       "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
       "src": "https://github.com/christoomey/vim-tmux-navigator"
