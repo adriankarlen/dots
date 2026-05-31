@@ -1,9 +1,5 @@
 local add = vim.pack.add
-local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
-
-local gh = function(r)
-  return "https://github.com/" .. r
-end
+local gh, now, now_if_args, later = Config.gh, Config.now, Config.now_if_args, Config.later
 
 -- ─[ load at startup ]────────────────────────────────────────────────────
 now(function()

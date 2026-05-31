@@ -25,7 +25,6 @@ Config.new_autocmd = function(event, pattern, callback, desc)
   vim.api.nvim_create_autocmd(event, opts)
 end
 
-
 Config.on_packchanged = function(plugin_name, kinds, callback, desc)
   local f = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
@@ -38,4 +37,8 @@ Config.on_packchanged = function(plugin_name, kinds, callback, desc)
     callback(ev.data)
   end
   Config.new_autocmd("PackChanged", "*", f, desc)
+end
+
+Config.gh = function(r)
+  return "https://github.com/" .. r
 end

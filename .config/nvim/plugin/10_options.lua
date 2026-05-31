@@ -134,4 +134,3 @@ vim.filetype.add {
     [".*%.conf"] = "nginx",
   },
 }
--- stylua: ignore end

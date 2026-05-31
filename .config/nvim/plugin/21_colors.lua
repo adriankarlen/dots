@@ -1,8 +1,8 @@
 local add = vim.pack.add
-local now = Config.now
+local gh, now = Config.gh, Config.now
 
 now(function()
-  add { { src = "https://github.com/rose-pine/neovim", name = "rose-pine" } }
+  add { { src = gh "rose-pine/neovim", name = "rose-pine" } }
   ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("rose-pine").setup {
     highlight_groups = {
