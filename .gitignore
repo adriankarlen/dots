@@ -9,5 +9,10 @@
 .config/gcloud/
 .config/configstore/
 .config/openspec/
+.config/herdr/*
+!.config/herdr/config.toml
 
 restart_session_*
+
+.storecode/
+**/.claude/settings.local.json

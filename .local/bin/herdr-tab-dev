@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+# Get focused pane info
+PANE_INFO=$(herdr pane list | python3 -c '
+import sys, json
+panes = json.load(sys.stdin)["result"]["panes"]
+focused = [p for p in panes if p.get("focused")]
+if focused:
+    p = focused[0]
+    print(p["workspace_id"])
+    print(p.get("foreground_cwd", p.get("cwd", ".")))
+else:
+    exit(1)
+')
+
+WORKSPACE_ID=$(echo "$PANE_INFO" | sed -n '1p')
+CWD=$(echo "$PANE_INFO" | sed -n '2p')
+
+# Detect package manager from lockfiles
+if [ -f "$CWD/bun.lock" ] || [ -f "$CWD/bun.lockb" ]; then
+    PM="bun"
+elif [ -f "$CWD/pnpm-lock.yaml" ]; then
+    PM="pnpm"
+elif [ -f "$CWD/package-lock.json" ]; then
+    PM="npm"
+elif [ -f "$CWD/yarn.lock" ]; then
+    PM="yarn"
+else
+    echo "No lockfile found in $CWD" >&2
+    exit 1
+fi
+
+# Create new tab in the same workspace
+TAB_INFO=$(herdr tab create --workspace "$WORKSPACE_ID" --label "dev" --no-focus | python3 -c '
+import sys, json
+d = json.load(sys.stdin)["result"]
+print(d["tab"]["tab_id"])
+print(d["root_pane"]["pane_id"])
+')
+
+TAB_ID=$(echo "$TAB_INFO" | sed -n '1p')
+ROOT_PANE=$(echo "$TAB_INFO" | sed -n '2p')
+
+# cd to project dir and run dev
+herdr pane run "$ROOT_PANE" "cd \"$CWD\" && $PM run dev"
+
+echo "Started '$PM run dev' in tab $TAB_ID (pane $ROOT_PANE)"

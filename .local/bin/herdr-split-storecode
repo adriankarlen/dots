@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+FOCUSED=$(herdr pane list | python3 -c '
+import sys, json
+panes = json.load(sys.stdin)["result"]["panes"]
+focused = [p for p in panes if p.get("focused")]
+if focused:
+    print(focused[0]["pane_id"])
+else:
+    exit(1)
+')
+
+NEW_PANE=$(herdr pane split "$FOCUSED" --direction right | python3 -c '
+import sys, json
+print(json.load(sys.stdin)["result"]["pane"]["pane_id"])
+')
+
+herdr pane run "$NEW_PANE" "storecode"

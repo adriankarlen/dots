@@ -1,0 +1,42 @@
+onboarding = false
+[theme]
+name = "rose-pine"
+
+[keys]
+prefix = "ctrl+a"
+navigate_workspace_up = "ctrl+p"
+navigate_workspace_down = "ctrl+n"
+settings = ""
+next_tab = ""
+previous_tab = ""
+new_worktree = ""
+goto = "prefix+t"
+
+[[keys.command]]
+key = "prefix+g"
+type = "pane"
+command = "lazygit"
+
+[[keys.command]]
+key = "prefix+n"
+type = "shell"
+command = "herdr-tab-dev"
+
+[[keys.command]]
+key = "prefix+s"
+type = "shell"
+command = "herdr-split-storecode"
+
+[ui]
+sidebar_width = 20
+sidebar_min_width = 18
+sidebar_max_width = 30
+mobile_width_threshold = 64
+mouse_capture = true
+redraw_on_focus_gained = true
+mouse_scroll_lines = 3
+confirm_close = true
+prompt_new_tab_name = true
+show_agent_labels_on_pane_borders = true
+agent_panel_scope = "all"
+accent = "cyan"
