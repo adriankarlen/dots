@@ -22,11 +22,12 @@ nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "paste below")
 nmap("<Esc>", "<Cmd>noh<CR>", "clear search highlight")
 
 -- Tmux navigation
-nmap("<C-h>", "<Cmd>TmuxNavigateLeft<CR>", "navigate left")
-nmap("<C-j>", "<Cmd>TmuxNavigateDown<CR>", "navigate down")
-nmap("<C-k>", "<Cmd>TmuxNavigateUp<CR>", "navigate up")
-nmap("<C-l>", "<Cmd>TmuxNavigateRight<CR>", "navigate right")
-nmap("<C-\\>", "<Cmd>TmuxNavigatePrevious<CR>", "navigate previous")
+
+nmap("<C-h>", "<Cmd>lua require('smart-splits').move_cursor_left()<CR>", "navigate left")
+nmap("<C-j>", "<Cmd>lua require('smart-splits').move_cursor_down()<CR>", "navigate down")
+nmap("<C-k>", "<Cmd>lua require('smart-splits').move_cursor_up()<CR>", "navigate up")
+nmap("<C-l>", "<Cmd>lua require('smart-splits').move_cursor_right()<CR>", "navigate right")
+nmap("<C-\\>", "<Cmd>lua require('smart-splits').move_cursor_previous()<CR>", "navigate previous")
 
 -- Nordic keyboard remaps
 -- å -> \ : leader for marks, e.g. åma to set mark a

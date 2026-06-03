@@ -176,7 +176,7 @@ later(function()
 end)
 
 later(function()
-  add { gh "christoomey/vim-tmux-navigator" }
+  add { gh "mrjones2014/smart-splits.nvim" }
 end)
 
 later(function()

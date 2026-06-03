@@ -66,11 +66,6 @@ now(function()
         { name = "Explore", action = "lua MiniFiles.open()", section = "Actions" },
         { name = "Find", action = "Pick files", section = "Actions" },
         { name = "Grep", action = "Pick grep_live", section = "Actions" },
-        {
-          name = "OpenCode",
-          action = "lua require('sidekick.cli').toggle { name = 'opencode', focus = true }",
-          section = "Actions",
-        },
         { name = "Quit", action = "qall", section = "Actions" },
       },
     },
