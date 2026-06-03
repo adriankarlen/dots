@@ -118,6 +118,8 @@ later(function()
   require("conform").setup {
     default_format_opts = {
       lsp_format = "fallback",
+      async = true,
+      stop_after_first = true,
     },
     format_on_save = function(bufnr)
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -139,12 +141,12 @@ later(function()
       sh = { "shfmt" },
       zsh = { "shfmt" },
       lua = { "stylua" },
-      javascript = { "biome-check", "prettier", stop_after_first = true },
-      javascriptreact = { "biome-check", "prettier", stop_after_first = true },
-      typescript = { "biome-check", "prettier", stop_after_first = true },
-      typescriptreact = { "biome-check", "prettier", stop_after_first = true },
+      javascript = { "biome-check", "prettier" },
+      javascriptreact = { "biome-check", "prettier" },
+      typescript = { "biome-check", "prettier" },
+      typescriptreact = { "biome-check", "prettier" },
       svelte = { "biome-check", "rustywind" },
-      json = { "biome" },
+      json = { "biome", "prettier" },
       go = { "gofmt" },
       xml = { "xmlformatter" },
       svg = { "xmlformatter" },
