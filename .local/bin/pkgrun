@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+CMD="${1:?Usage: pkgrun <script>}"
+
+if [ -f "bun.lock" ] || [ -f "bun.lockb" ]; then
+    PM="bun"
+elif [ -f "pnpm-lock.yaml" ]; then
+    PM="pnpm"
+elif [ -f "package-lock.json" ]; then
+    PM="npm"
+elif [ -f "yarn.lock" ]; then
+    PM="yarn"
+else
+    echo "pkgrun: no lockfile found in $PWD" >&2
+    exit 1
+fi
+
+exec $PM run "$CMD"
