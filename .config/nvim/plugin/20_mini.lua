@@ -134,10 +134,10 @@ end)
 now_if_args(function()
   require("mini.files").setup {
     mappings = {
-      go_in = "<Tab>",
-      go_in_plus = "<CR>",
-      go_out = "<S-Tab>",
-      go_out_plus = "H",
+      go_in = "",
+      go_in_plus = "l",
+      go_out = "",
+      go_out_plus = "h",
     },
     windows = { preview = true },
   }
