@@ -8,14 +8,9 @@ vim.api.nvim_set_hl(0, "@lsp.mod.documentation.lua", { link = "Statement" })
 
 return {
   settings = {
-    Lua = {
-      diagnostics = {
-        disable = { "undefined-global" },
-      },
+    emmylua = {
       runtime = { version = "LuaJIT" },
-      semanticTokens = { enable = true },
       workspace = {
-        -- Add Neovim's methods for easier code writing
         library = vim.list_extend({ vim.env.VIMRUNTIME }, vim.api.nvim_get_runtime_file("lua", true)),
         ignoreDir = { "dual", "deps" },
       },
