@@ -99,17 +99,6 @@ now_if_args(function()
   add { gh "rafamadriz/friendly-snippets" }
 end)
 
-now_if_args(function()
-  add { gh "folke/lazydev.nvim" }
-  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
-  require("lazydev").setup {
-    library = {
-      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-      { path = "mini" },
-    },
-  }
-end)
-
 -- ─[ lazy load ]────────────────────────────────────────────────────
 later(function()
   add { gh "stevearc/conform.nvim" }
