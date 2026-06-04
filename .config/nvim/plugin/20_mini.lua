@@ -1,3 +1,4 @@
+local func = require "vim.func"
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 now(function()
@@ -166,6 +167,10 @@ now_if_args(function()
       vim.api.nvim_win_set_config(win_id, config)
     end,
   })
+end)
+
+now_if_args(function()
+  require("mini.input").setup {}
 end)
 
 now_if_args(function()
