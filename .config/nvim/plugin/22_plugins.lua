@@ -70,6 +70,7 @@ now(function()
   Config.new_autocmd("FileType", filetypes, ts_start, "Start tree-sitter")
 end)
 
+-- ─[ load if opened with file ]───────────────────────────────────────────
 now_if_args(function()
   add { gh "neovim/nvim-lspconfig" }
 
@@ -94,7 +95,6 @@ now_if_args(function()
   vim.lsp.inline_completion.enable()
 end)
 
--- ─[ load if opened with file ]───────────────────────────────────────────
 now_if_args(function()
   add { gh "rafamadriz/friendly-snippets" }
 end)
