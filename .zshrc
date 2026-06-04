@@ -150,10 +150,6 @@ if [ -f '/Users/adriankarlen/google-cloud-sdk/completion.zsh.inc' ]; then . '/Us
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-# secrets — load PAT/API tokens from macOS Keychain
-# usage: secret_set <name> <token>   — store token
-#        secret_load <name> <VARNAME> — export as env var
-#        secret_get <name>            — print token
 secret_set() {
   security add-generic-password -a "$USER" -s "shell:$1" -w "$2" -U
 }
@@ -162,9 +158,12 @@ secret_get() {
 }
 secret_load() {
   local val
-  val=$(secret_get "$1") || { echo "secret '$1' not found in Keychain" >&2; return 1; }
+  val=$(secret_get "$1") || {
+    echo "secret '$1' not found in Keychain" >&2
+    return 1
+  }
   export "${2:-$1}"="$val"
 }
 
-# load secrets into env — add more as needed
-# secret_load github_pat GITHUB_TOKEN
+secret_load NODE_AUTH_TOKEN
+secret_load NPM_PAT
