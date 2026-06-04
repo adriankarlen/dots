@@ -155,22 +155,6 @@ later(function()
 end)
 
 later(function()
-  add { gh "folke/sidekick.nvim" }
-  ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
-  require("sidekick").setup {
-    nes = { enabled = false },
-    mux = { enabled = true },
-  }
-end)
-
-later(function()
-  add { gh "nvim-zh/colorful-winsep.nvim" }
-  require("colorful-winsep").setup {
-    animate = { enabled = false },
-  }
-end)
-
-later(function()
   add { gh "dmmulroy/ts-error-translator.nvim" }
   require("ts-error-translator").setup()
 end)

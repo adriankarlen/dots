@@ -50,7 +50,6 @@ nmap("€", "$", "€ -> $", true)
 xmap("€", "$", "€ -> $", true)
 
 Config.leader_group_clues = {
-  { mode = "n", keys = "<Leader>a", desc = "+ai" },
   { mode = "n", keys = "<Leader>b", desc = "+buffer" },
   { mode = "n", keys = "<Leader>e", desc = "+explore" },
   { mode = "n", keys = "<Leader>f", desc = "+find" },
@@ -72,13 +71,6 @@ end
 local xmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc })
 end
-
--- a is for 'AI'
-nmap_leader("aa", "<Cmd>lua require('sidekick.cli').toggle { focus = true }<CR>", "toggle")
-nmap_leader("ao", "<Cmd>lua require('sidekick.cli').toggle { name = 'opencode', focus = true }<CR>", "toggle opencode")
-nmap_leader("ap", "<Cmd>lua require('sidekick.cli').prompt()<CR>", "ask prompt")
-
-xmap_leader("ap", "<Cmd>lua require('sidekick.cli').prompt()<CR>", "ask prompt")
 
 -- b is for 'Buffer'
 local new_scratch_buffer = function()
