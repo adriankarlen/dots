@@ -5,15 +5,6 @@ local xmap = function(lhs, rhs, desc, remap)
   vim.keymap.set("x", lhs, rhs, { desc = desc, remap = remap or false })
 end
 
--- Copy selection to system clipboard
-xmap("Y", '"+y', "yank to system clipboard")
--- Copy entire file contents to system clipboard
-nmap("yY", function()
-  local winview = vim.fn.winsaveview()
-  vim.cmd 'keepjumps keepmarks normal! ggVG"+y'
-  vim.fn.winrestview(winview)
-end, "yank entire file to system clipboard")
-
 -- Paste linewise before/after current line
 nmap("[p", '<Cmd>exe "iput! " . v:register<CR>', "paste above")
 nmap("]p", '<Cmd>exe "iput "  . v:register<CR>', "paste below")
