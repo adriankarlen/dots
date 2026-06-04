@@ -9,6 +9,9 @@ vim.api.nvim_set_hl(0, "@lsp.mod.documentation.lua", { link = "Statement" })
 return {
   settings = {
     emmylua = {
+      diagnostics = {
+        disable = { "undefined-global" },
+      },
       runtime = { version = "LuaJIT" },
       workspace = {
         library = vim.list_extend({ vim.env.VIMRUNTIME }, vim.api.nvim_get_runtime_file("lua", true)),
