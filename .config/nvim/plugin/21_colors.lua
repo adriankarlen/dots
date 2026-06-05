@@ -6,8 +6,8 @@ now(function()
   ---@diagnostic disable-next-line: missing-fields, param-type-mismatch
   require("rose-pine").setup {
     highlight_groups = {
-      MatchParen = { fg = "love", bg = "love", blend = 25 },
       MiniStarterHeader = { fg = "love" },
+      MiniInputPrompt = { bg = "surface" },
     },
   }
   vim.cmd.colorscheme "rose-pine"

@@ -170,7 +170,7 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-  require("mini.input").setup {}
+  require("mini.input").setup()
 end)
 
 now_if_args(function()
