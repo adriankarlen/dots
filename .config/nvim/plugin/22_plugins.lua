@@ -108,14 +108,13 @@ later(function()
     default_format_opts = {
       lsp_format = "fallback",
       async = true,
+      timeout_ms = 1000,
     },
     format_on_save = function(bufnr)
       if vim.bo[bufnr].buftype ~= "" then
         return
       end
-      return {
-        timeout_ms = 1000,
-      }
+      return {}
     end,
     formatters = {
       biome = {
