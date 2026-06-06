@@ -5,36 +5,21 @@ now(function()
   require("mini.basics").setup {
     options = { basic = false },
     mappings = {
-      windows = true,
-      move_with_alt = true,
+      -- Handled by smart-splits.nvim
+      windows = false,
     },
   }
 end)
 
 now(function()
-  -- Set up to not prefer extension-based icon for some extensions
   local ext3_blocklist = { scm = true, txt = true, yml = true }
   local ext4_blocklist = { json = true, yaml = true }
   require("mini.icons").setup {
     use_file_extension = function(ext, _)
       return not (ext3_blocklist[ext:sub(-3)] or ext4_blocklist[ext:sub(-4)])
     end,
-
-    filetype = {
-      dotenv = { glyph = "", hl = "MiniIconsYellow" },
-    },
-    file = {
-      [".keep"] = { glyph = "󰊢", hl = "MiniIconsGrey" },
-      ["init.lua"] = { glyph = "󰢱", hl = "MiniIconsAzure" },
-    },
-    lsp = {
-      copilot = { glyph = "", hl = "MiniIconsOrange" },
-      snippet = { glyph = "" },
-    },
   }
-
   later(MiniIcons.mock_nvim_web_devicons)
-
   later(MiniIcons.tweak_lsp_kind)
 end)
 
@@ -110,6 +95,10 @@ now(function()
   }
 end)
 
+now(function()
+  require("mini.tabline").setup()
+end)
+
 now_if_args(function()
   local process_items_opts = { kind_priority = { Text = -1, Snippet = 99 } }
   local process_items = function(items, base)
@@ -170,10 +159,6 @@ now_if_args(function()
 end)
 
 now_if_args(function()
-  require("mini.input").setup()
-end)
-
-now_if_args(function()
   require("mini.misc").setup()
   MiniMisc.setup_auto_root()
   MiniMisc.setup_restore_cursor()
@@ -193,6 +178,10 @@ later(function()
     },
     search_method = "cover",
   }
+end)
+
+later(function()
+  require("mini.align").setup()
 end)
 
 later(function()
@@ -263,6 +252,10 @@ later(function()
   end
   Config.new_autocmd("FileType", ft, f, "disable indentscope for some filetypes")
   Config.new_autocmd("TermOpen", "*", f, "disable indentscope for terminal buffers")
+end)
+
+later(function()
+  require("mini.input").setup()
 end)
 
 later(function()
