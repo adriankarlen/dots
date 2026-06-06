@@ -1,4 +1,3 @@
-local func = require "vim.func"
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 now(function()
