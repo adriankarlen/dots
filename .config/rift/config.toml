@@ -65,30 +65,24 @@ reapply_app_rules_on_title_change = false
 
 workspace_rules = []
 
-workspace_names = [
-	"browse",
-	"code",
-	"coms",
-	"music",
-  "misc",
-]
+workspace_names = ["browse", "code", "coms", "music", "misc"]
 
 app_rules = [
   { title_substring = "Preferences", floating = true },
   { title_substring = "Settings", floating = true },
   { title_substring = "Bitwarden", floating = true },
-	{ app_id = "org.mozilla.firefox", workspace = 0 },
-	{ app_id = "com.google.Chrome", workspace = 0 },
-	{ app_id = "net.imput.helium", workspace = 0 },
-	{ app_id = "com.microsoft.edgemac", workspace = 0 },
-	{ app_id = "com.mitchellh.ghostty", workspace = 1 },
-	{ app_id = "org.wezfurlong.wezterm", workspace = 1 },
-	{ app_id = "com.microsoft.VSCode", workspace = 1 },
-	{ app_id = "com.visualstudio.code", workspace = 1 },
-	{ app_id = "com.microsoft.teams", workspace = 2 },
-	{ app_id = "com.microsoft.teams2", workspace = 2 },
-	{ app_id = "com.tinyspeck.slackmacgap", workspace = 2 },
-	{ app_id = "com.spotify.client", workspace = 3 },
+  { app_id = "org.mozilla.firefox", workspace = 0 },
+  { app_id = "com.google.Chrome", workspace = 0 },
+  { app_id = "net.imput.helium", workspace = 0 },
+  { app_id = "com.microsoft.edgemac", workspace = 0 },
+  { app_id = "com.mitchellh.ghostty", workspace = 1 },
+  { app_id = "org.wezfurlong.wezterm", workspace = 1 },
+  { app_id = "com.microsoft.VSCode", workspace = 1 },
+  { app_id = "com.visualstudio.code", workspace = 1 },
+  { app_id = "com.microsoft.teams", workspace = 2 },
+  { app_id = "com.microsoft.teams2", workspace = 2 },
+  { app_id = "com.tinyspeck.slackmacgap", workspace = 2 },
+  { app_id = "com.spotify.client", workspace = 3 },
 
 ]
 
@@ -132,7 +126,7 @@ secondary = "AltLeft + Shift"
 "secondary + F" = "toggle_fullscreen_within_gaps"
 
 # smartly resize windows
-"secondary + Equal" = "resize_window_grow"
+"secondary + 0" = "resize_window_grow"
 "secondary + Minus" = "resize_window_shrink"
 
 # Move mouse cursor to display by index (0-based) or UUID
