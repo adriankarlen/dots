@@ -108,7 +108,6 @@ later(function()
     default_format_opts = {
       lsp_format = "fallback",
       async = true,
-      stop_after_first = true,
     },
     format_on_save = function(bufnr)
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -125,20 +124,24 @@ later(function()
       biome = {
         require_cwd = true,
       },
+      ["biome-check"] = {
+        require_cwd = true,
+      },
+      prettierd = {
+        require_cwd = true,
+      },
     },
     formatters_by_ft = {
-      sh = { "shfmt" },
-      zsh = { "shfmt" },
-      lua = { "stylua" },
-      javascript = { "biome-check", "prettier" },
-      javascriptreact = { "biome-check", "prettier" },
-      typescript = { "biome-check", "prettier" },
-      typescriptreact = { "biome-check", "prettier" },
-      svelte = { "biome-check", "rustywind" },
-      json = { "biome", "prettier" },
       go = { "gofmt" },
-      xml = { "xmlformatter" },
-      svg = { "xmlformatter" },
+      javascript = { "biome-check", "prettierd" },
+      javascriptreact = { "biome-check", "prettierd" },
+      json = { "biome", "prettierd" },
+      lua = { "stylua" },
+      sh = { "shfmt" },
+      svelte = { "prettierd", "rustywind" },
+      typescript = { "biome-check", "prettierd" },
+      typescriptreact = { "biome-check", "prettierd" },
+      zsh = { "shfmt" },
     },
   }
 end)
