@@ -1,0 +1,16 @@
+{
+  "trustedtaps": [
+    "acsandman/tap",
+    "acsandmann/tap",
+    "asmvik/formulae",
+    "atlassian/acli",
+    "felixkratz/formulae",
+    "gromgit/brewtils",
+    "isen-ng/dotnet-sdk-versions",
+    "jandedobbeleer/oh-my-posh",
+    "sst/tap"
+  ],
+  "trustedcasks": [
+    "tmuxpack/tpack/tpack"
+  ]
+}
