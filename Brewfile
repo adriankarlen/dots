@@ -1,10 +1,12 @@
 # Taps
 tap "acsandmann/tap"
 tap "asmvik/formulae"
+tap "atlassian/acli"
 tap "felixkratz/formulae"
 tap "gromgit/brewtils"
 tap "isen-ng/dotnet-sdk-versions"
 tap "jandedobbeleer/oh-my-posh"
+tap "koekeishiya/formulae"
 tap "sst/tap"
 
 
@@ -49,9 +51,29 @@ brew "git-delta"
 brew "lazydocker"
 brew "lazygit"
 brew "openapi-tui"
+brew "zizmor"
+
+# Formatters
+brew "prettier"
+brew "prettierd"
+brew "rustywind"
+brew "shfmt"
+brew "stylua"
+brew "taplo"
+
+# Language Servers
+brew "bash-language-server"
+brew "emmylua_ls"
+brew "gopls"
+brew "marksman"
+brew "tailwindcss-language-server"
+brew "vscode-langservers-extracted"
+brew "vtsls"
+brew "yaml-language-server"
 
 # Cloud & Infrastructure
 brew "azure-cli"
+brew "mole"
 brew "sesh"
 brew "sst/tap/opencode"
 
@@ -66,6 +88,7 @@ brew "resvg"
 brew "sevenzip"
 
 # macOS Utilities
+brew "herdr"
 brew "media-control"
 brew "spicetify-cli", link: false
 brew "switchaudio-osx"
@@ -73,6 +96,7 @@ brew "switchaudio-osx"
 # Custom Taps
 brew "acsandmann/tap/rift"
 brew "asmvik/formulae/skhd"
+brew "atlassian/acli/acli"
 brew "felixkratz/formulae/borders"
 brew "felixkratz/formulae/sketchybar"
 brew "gromgit/brewtils/taproom"
@@ -85,8 +109,6 @@ cask "font-symbols-only-nerd-font"
 
 # Productivity & Apps
 cask "karabiner-elements"
-cask "outguess"
-cask "raycast"
 cask "sf-symbols"
 cask "slack"
 cask "spotify"
@@ -95,6 +117,7 @@ cask "zed"
 
 # Microsoft
 cask "copilot-cli"
+cask "copilot-language-server"
 cask "microsoft-auto-update"
 cask "microsoft-outlook"
 cask "powershell"
