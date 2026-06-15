@@ -1,4 +1,5 @@
 .DS_Store
+.config/acli/
 .config/gh/
 .config/github-copilot/
 .config/raycast/
