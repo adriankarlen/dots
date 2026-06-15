@@ -1,3 +1,6 @@
+-- Set 'formatprg' (prettier/biome if the project uses it)
+Config.set_formatprg()
+
 -- Enable spelling and wrap for window
 vim.cmd "setlocal spell wrap"
 

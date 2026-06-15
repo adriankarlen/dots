@@ -84,6 +84,8 @@ now_if_args(function()
     "gopls",
     "html",
     "marksman",
+    "oxfmt",
+    "oxlint",
     "roslyn_ls",
     "svelte",
     "tailwindcss",
@@ -100,47 +102,48 @@ now_if_args(function()
 end)
 
 -- ─[ lazy load ]────────────────────────────────────────────────────
-later(function()
-  add { gh "stevearc/conform.nvim" }
-
-  ---@diagnostic disable-next-line: param-type-mismatch
-  require("conform").setup {
-    default_format_opts = {
-      lsp_format = "fallback",
-      async = true,
-      timeout_ms = 1000,
-    },
-    format_on_save = function(bufnr)
-      if vim.bo[bufnr].buftype ~= "" then
-        return
-      end
-      return {}
-    end,
-    formatters = {
-      biome = {
-        require_cwd = true,
-      },
-      ["biome-check"] = {
-        require_cwd = true,
-      },
-      prettierd = {
-        require_cwd = true,
-      },
-    },
-    formatters_by_ft = {
-      go = { "gofmt" },
-      javascript = { "biome-check", "prettierd" },
-      javascriptreact = { "biome-check", "prettierd" },
-      json = { "biome", "prettierd" },
-      lua = { "stylua" },
-      sh = { "shfmt" },
-      svelte = { "prettierd", "rustywind" },
-      typescript = { "biome-check", "prettierd" },
-      typescriptreact = { "biome-check", "prettierd" },
-      zsh = { "shfmt" },
-    },
-  }
-end)
+-- conform replaced by plugin/23_format.lua (formatprg approach, see ftplugin/)
+-- later(function()
+--   add { gh "stevearc/conform.nvim" }
+--
+--   ---@diagnostic disable-next-line: param-type-mismatch
+--   require("conform").setup {
+--     default_format_opts = {
+--       lsp_format = "fallback",
+--       async = true,
+--       timeout_ms = 1000,
+--     },
+--     format_on_save = function(bufnr)
+--       if vim.bo[bufnr].buftype ~= "" then
+--         return
+--       end
+--       return {}
+--     end,
+--     formatters = {
+--       biome = {
+--         require_cwd = true,
+--       },
+--       ["biome-check"] = {
+--         require_cwd = true,
+--       },
+--       prettierd = {
+--         require_cwd = true,
+--       },
+--     },
+--     formatters_by_ft = {
+--       go = { "gofmt" },
+--       javascript = { "biome-check", "prettierd" },
+--       javascriptreact = { "biome-check", "prettierd" },
+--       json = { "biome", "prettierd" },
+--       lua = { "stylua" },
+--       sh = { "shfmt" },
+--       svelte = { "prettierd", "rustywind" },
+--       typescript = { "biome-check", "prettierd" },
+--       typescriptreact = { "biome-check", "prettierd" },
+--       zsh = { "shfmt" },
+--     },
+--   }
+-- end)
 
 later(function()
   add { gh "dmmulroy/ts-error-translator.nvim" }
