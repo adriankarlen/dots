@@ -4,7 +4,7 @@ app_icon() {
   case "$1" in
   # Browsers
   "com.apple.Safari" | Safari) echo " " ;;
-  Firefox | "org.mozilla.firefox") echo " " ;;
+  "org.mozilla.firefox" | Firefox) echo " " ;;
   "com.google.Chrome" | "Google Chrome") echo " " ;;
   "net.imput.helium" | Helium) echo "󰛄 " ;;
   "com.brave.Browser" | Brave*) echo " " ;;
@@ -25,11 +25,12 @@ app_icon() {
     "com.visualstudio.code") echo " " ;;
   "com.microsoft.VSCodeInsiders" | \
     "Visual Studio Code - Insiders") echo " " ;;
-  "com.jetbrains.intellij" | IntelliJ*) echo " " ;;
-  "com.jetbrains.pycharm" | PyCharm*) echo " " ;;
-  "com.jetbrains.webstorm" | WebStorm*) echo " " ;;
-  "com.sublimetext.4" | "Sublime Text") echo " " ;;
-  "com.apple.dt.Xcode" | Xcode) echo " " ;;
+  "com.jetbrains.intellij" | IntelliJ*) echo " " ;;
+  "com.jetbrains.pycharm" | PyCharm*) echo " " ;;
+  "com.jetbrains.webstorm" | WebStorm*) echo " " ;;
+  "com.sublimetext.4" | "Sublime Text") echo " " ;;
+  "com.apple.dt.Xcode" | Xcode) echo " " ;;
+  "dev.zed.Zed" | Zed) echo "ℤ " ;;
 
   # Chat / meetings
   Discord | "com.hnc.Discord") echo " " ;;
@@ -62,7 +63,7 @@ app_icon() {
   "com.apple.Preview" | Preview) echo " " ;;
   "com.apple.Photos" | Photos) echo " " ;;
   "com.apple.Calculator" | Calculator) echo " " ;;
-  "com.apple.Calendar" | Calendar) echo " " ;;
+  "com.apple.iCal" | Calendar) echo " " ;;
   "com.apple.Notes" | Notes) echo " " ;;
   "com.apple.Reminders" | Reminders) echo " " ;;
   "com.apple.Maps" | Maps) echo " " ;;
@@ -100,6 +101,9 @@ app_icon() {
   "com.github.GitHubClient" | GitHub\ Desktop) echo " " ;;
   "com.tinyspeck.slackmacgap" | Slack) echo " " ;;
   "com.jgraph.drawio.desktop" | draw.io) echo " " ;;
+
+  # Media tools
+  "com.canva.affinity" | Affinity) echo " " ;;
 
   *)
     echo " "
