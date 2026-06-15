@@ -21,28 +21,40 @@ H.prettier_configs = {
   "prettier.config.ts",
 }
 
-H.buf_dir = function() return vim.fn.expand("%:p:h") end
+H.buf_dir = function()
+  return vim.fn.expand "%:p:h"
+end
 
 H.find_upward = function(names)
+  ---@diagnostic disable-next-line: param-type-mismatch
   return vim.fs.find(names, { path = H.buf_dir(), upward = true, type = "file" })[1] ~= nil
 end
 
 H.pkg_has = function(field)
+  ---@diagnostic disable-next-line: param-type-mismatch
   local pkg = vim.fs.find("package.json", { path = H.buf_dir(), upward = true, type = "file" })[1]
-  if not pkg then return false end
+  if not pkg then
+    return false
+  end
   for line in io.lines(pkg) do
-    if line:find(field, 1, true) then return true end
+    if line:find(field, 1, true) then
+      return true
+    end
   end
   return false
 end
 
 -- Prepare cmd for formatters that need filename for EditorConfig resolution
 H.fixup_cmd = function(cmd, bufname)
-  if bufname == "" then return cmd end
+  if bufname == "" then
+    return cmd
+  end
 
   -- shfmt ignores EditorConfig on stdin unless --filename is provided
-  if cmd[1]:match("shfmt$") then
-    if cmd[#cmd] == "-" then table.remove(cmd) end
+  if cmd[1]:match "shfmt$" then
+    if cmd[#cmd] == "-" then
+      table.remove(cmd)
+    end
     table.insert(cmd, "--filename")
     table.insert(cmd, bufname)
   end
@@ -55,10 +67,10 @@ end
 -- Detect and set buffer-local 'formatprg' for JS/TS-family filetypes.
 -- Biome > prettierd > empty (falls back to LSP).
 Config.set_formatprg = function()
-  local file = vim.fn.expand("%:p")
-  if H.find_upward({ "biome.json", "biome.jsonc" }) then
+  local file = vim.fn.expand "%:p"
+  if H.find_upward { "biome.json", "biome.jsonc" } then
     vim.bo.formatprg = "biome check --write --assist-enabled=true --stdin-file-path " .. file
-  elseif H.find_upward(H.prettier_configs) or H.pkg_has('"prettier"') then
+  elseif H.find_upward(H.prettier_configs) or H.pkg_has '"prettier"' then
     vim.bo.formatprg = "prettierd --stdin-filepath " .. file
   end
 end
@@ -66,7 +78,9 @@ end
 -- Format current buffer via 'formatprg', or fall back to LSP.
 Config.format = function()
   local prg = vim.bo.formatprg
-  if prg == "" then return vim.lsp.buf.format() end
+  if prg == "" then
+    return vim.lsp.buf.format()
+  end
 
   local bufname = vim.api.nvim_buf_get_name(0)
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
@@ -86,8 +100,14 @@ end
 vim.g.format_on_save = true
 
 Config.new_autocmd("BufWritePre", "*", function()
-  if vim.bo.buftype ~= "" then return end
+  if vim.bo.buftype ~= "" then
+    return
+  end
   local enabled = vim.b.format_on_save
-  if enabled == nil then enabled = vim.g.format_on_save end
-  if enabled then Config.format() end
+  if enabled == nil then
+    enabled = vim.g.format_on_save
+  end
+  if enabled then
+    Config.format()
+  end
 end, "Format on save")
