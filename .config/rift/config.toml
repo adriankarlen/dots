@@ -3,7 +3,7 @@ animate = true
 animation_duration = 0.1
 animation_fps = 60
 
-auto_focus_blacklist = ["com.raycast.macos"]
+auto_focus_blacklist = ["com.monarch.macos"]
 run_on_start = []
 hot_reload = true
 
