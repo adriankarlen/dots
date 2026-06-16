@@ -139,9 +139,6 @@ nmap_leader("mt", "<Cmd>lua MiniMap.toggle()<CR>", "toggle")
 nmap_leader("or", "<Cmd>lua MiniMisc.resize_window()<CR>", "resize to default width")
 nmap_leader("ot", "<Cmd>lua MiniTrailspace.trim()<CR>", "trim trailspace")
 nmap_leader("oz", "<Cmd>lua MiniMisc.zoom()<CR>", "zoom toggle")
-nmap_leader("op", '"+p<CR>', "paste from system clipboard")
-
-xmap_leader("op", '"+p<CR>', "paste from system clipboard")
 
 -- s is for 'Session'
 local session_new = 'vim.ui.input({ prompt = "Session name: " }, MiniSessions.write)'
