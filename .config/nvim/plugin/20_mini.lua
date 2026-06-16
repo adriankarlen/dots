@@ -196,7 +196,32 @@ later(function()
 end)
 
 later(function()
-  require("mini.comment").setup()
+  local jsx_nodes = {
+    jsx_element = "{/* %s */}",
+    jsx_fragment = "{/* %s */}",
+    jsx_attribute = "// %s",
+    call_expression = "// %s",
+    statement_block = "// %s",
+    spread_element = "// %s",
+  }
+
+  require("mini.comment").setup {
+    options = {
+      custom_commentstring = function(ref_position)
+        if vim.bo.filetype ~= "typescriptreact" then
+          return
+        end
+        local pos = { ref_position[1] - 1, ref_position[2] }
+        local ok, node = pcall(vim.treesitter.get_node, { ignore_injections = false, pos = pos })
+        while ok and node do
+          if jsx_nodes[node:type()] then
+            return jsx_nodes[node:type()]
+          end
+          node = node:parent()
+        end
+      end,
+    },
+  }
 end)
 
 later(function()
