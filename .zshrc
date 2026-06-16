@@ -96,17 +96,6 @@ export FZF_DEFAULT_OPTS="
 	--color=spinner:#f6c177,info:#9ccfd8
 	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
 
-# gum
-function fs() {
-  local result
-  result="$(gum filter)"
-  [[ -n "$result" ]] && BUFFER+="$result"
-  zle end-of-line
-}
-zle -N fs
-bindkey "^t" fs
-source "$HOME/dots/manual_configs/gum-ctp.sh" mocha
-
 # nvim nightly
 function update-nvim() {
   local dir="$HOME/.local/nvim-nightly"
@@ -126,6 +115,7 @@ alias v="nvim"
 alias vim="nvim"
 alias c="clear"
 alias l="eza -lh --icons=auto --color=always"                                         # long list
+alias la="eza -lha --icons=auto --color=always"                                       # long list all
 alias ls="eza --icons=auto --color=always"                                            # short list
 alias ll="eza -lha --icons=auto --sort=name --group-directories-first --color=always" # long list all
 alias ld="eza -lhD --icons=auto --color=always"                                       # long list dirs
