@@ -126,7 +126,7 @@ nmap_leader("lr", "<Cmd>lua vim.lsp.buf.rename()<CR>", "rename")
 nmap_leader("lR", "<Cmd>lua vim.lsp.buf.references()<CR>", "references")
 nmap_leader("ls", "<Cmd>lua vim.lsp.buf.definition()<CR>", "source definition")
 nmap_leader("lt", "<Cmd>lua vim.lsp.buf.type_definition()<CR>", "type definition")
-nmap_leader("lc", "<Cmd>TSC<CR>", "typecheck project")
+nmap_leader("lc", "<Cmd>lua Config.tsc()<CR>", "typecheck project")
 
 xmap_leader("lf", "<Cmd>lua Config.format()<CR>", "format selection")
 

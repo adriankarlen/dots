@@ -47,7 +47,3 @@ Config.tsc = function()
     end)
   )
 end
-
--- Commands ====================================================================
-
-vim.api.nvim_create_user_command("TSC", Config.tsc, { desc = "Run tsc type-check" })
