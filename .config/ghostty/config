@@ -1,6 +1,6 @@
 #!/bin/bash
 
-theme = Rose Pine
+theme = dark:Rose Pine,light:Rose Pine Dawn
 
 adjust-cell-height = 45%
 font-family = Berkeley Mono
