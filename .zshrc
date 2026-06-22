@@ -88,6 +88,9 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --icons -a --group-d
 # opts
 setopt auto_cd
 
+# gum
+source gum-rose-pine
+
 # fzf
 export FZF_DEFAULT_OPTS="
 	--color=fg:#908caa,bg:#191724,hl:#ebbcba

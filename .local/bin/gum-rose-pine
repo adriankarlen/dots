@@ -1,0 +1,270 @@
+#!/bin/bash
+
+GUMC_FLAVOUR="${1:-main}"
+
+# Validate flavour
+if [[ ! "$GUMC_FLAVOUR" =~ ^(main|moon|dawn)$ ]]; then
+  echo "Invalid flavour: $GUMC_FLAVOUR. Must be one of: main, moon or dawn" >&2
+  return 1
+fi
+
+GUMC_ACCENT_NAME="${2:-iris}"
+GUMC_HIGHLIGHT_NAME="${3}"
+if [[ -z "$GUMC_HIGHLIGHT_NAME" ]]; then
+  case $GUMC_ACCENT_NAME in
+  love)
+    GUMC_HIGHLIGHT_NAME="love"
+    ;;
+  gold)
+    GUMC_HIGHLIGHT_NAME="gold"
+    ;;
+  rose)
+    GUMC_HIGHLIGHT_NAME="rose"
+    ;;
+  pine)
+    GUMC_HIGHLIGHT_NAME="pine"
+    ;;
+  iris)
+    GUMC_HIGHLIGHT_NAME="iris"
+    ;;
+  foam)
+    GUMC_HIGHLIGHT_NAME="foam"
+    ;;
+  *)
+    echo "Invalid accent ${GUMC_ACCENT_NAME}" >&2
+    return 1
+    ;;
+  esac
+fi
+
+function _get_rosepine_color() {
+  case $1 in
+  dawn)
+    case $2 in
+    base)
+      echo "#faf4ed"
+      ;;
+    surface)
+      echo "#fffaf3"
+      ;;
+    overlay)
+      echo "#f2e9e1"
+      ;;
+    muted)
+      echo "#9893a5"
+      ;;
+    subtle)
+      echo "#797593"
+      ;;
+    text)
+      echo "#575279"
+      ;;
+    love)
+      echo "#b4637a"
+      ;;
+    gold)
+      echo "#ea9d34"
+      ;;
+    rose)
+      echo "#d7827e"
+      ;;
+    pine)
+      echo "#286983"
+      ;;
+    foam)
+      echo "#56949f"
+      ;;
+    iris)
+      echo "#907aa9"
+      ;;
+    highlightLow)
+      echo "#f4ede8"
+      ;;
+    highlightMed)
+      echo "#dfdad9"
+      ;;
+    highlightHigh)
+      echo "#cecacd"
+      ;;
+    *)
+      echo "Invalid color $2" >&2
+      return 1
+      ;;
+    esac
+    ;;
+  moon)
+    case $2 in
+    base)
+      echo "#232136"
+      ;;
+    surface)
+      echo "#2a273f"
+      ;;
+    overlay)
+      echo "#393552"
+      ;;
+    muted)
+      echo "#6e6a86"
+      ;;
+    subtle)
+      echo "#908caa"
+      ;;
+    text)
+      echo "#e0def4"
+      ;;
+    love)
+      echo "#eb6f92"
+      ;;
+    gold)
+      echo "#f6c177"
+      ;;
+    rose)
+      echo "#ea9a97"
+      ;;
+    pine)
+      echo "#3e8fb0"
+      ;;
+    foam)
+      echo "#9ccfd8"
+      ;;
+    iris)
+      echo "#c4a7e7"
+      ;;
+    highlightLow)
+      echo "#2a283e"
+      ;;
+    highlightMed)
+      echo "#44415a"
+      ;;
+    highlightHigh)
+      echo "#56526e"
+      ;;
+    *)
+      echo "Invalid color $2" >&2
+      return 1
+      ;;
+    esac
+    ;;
+  main)
+    case $2 in
+    base)
+      echo "#191724"
+      ;;
+    surface)
+      echo "#1f1d2e"
+      ;;
+    overlay)
+      echo "#26233a"
+      ;;
+    muted)
+      echo "#6e6a86"
+      ;;
+    subtle)
+      echo "#908caa"
+      ;;
+    text)
+      echo "#e0def4"
+      ;;
+    love)
+      echo "#eb6f92"
+      ;;
+    gold)
+      echo "#f6c177"
+      ;;
+    rose)
+      echo "#ebbcba"
+      ;;
+    pine)
+      echo "#31748f"
+      ;;
+    foam)
+      echo "#9ccfd8"
+      ;;
+    iris)
+      echo "#c4a7e7"
+      ;;
+    highlightLow)
+      echo "#21202e"
+      ;;
+    highlightMed)
+      echo "#403d52"
+      ;;
+    highlightHigh)
+      echo "#524f67"
+      ;;
+    *)
+      echo "Invalid color $2" >&2
+      return 1
+      ;;
+    esac
+    ;;
+  *)
+    echo "Invalid flavour" >&2
+    return 1
+    ;;
+  esac
+}
+
+GUMC_ACCENT="$(_get_rosepine_color "$GUMC_FLAVOUR" "$GUMC_ACCENT_NAME")" || return 1
+GUMC_HIGHLIGHT="$(_get_rosepine_color "$GUMC_FLAVOUR" "$GUMC_HIGHLIGHT_NAME")" || return 1
+GUMC_HIGHLIGHTED_BG="$(_get_rosepine_color "$GUMC_FLAVOUR" overlay)" || return 1
+GUMC_DIM="$(_get_rosepine_color "$GUMC_FLAVOUR" muted)" || return 1
+
+# choose
+export GUM_CHOOSE_CURSOR_FOREGROUND="$GUMC_ACCENT"
+export GUM_CHOOSE_SELECTED_FOREGROUND="$GUMC_ACCENT"
+export GUM_CHOOSE_HEADER_FOREGROUND="$GUMC_HIGHLIGHT"
+
+# confirm
+export GUM_CONFIRM_SELECTED_BACKGROUND="$GUMC_ACCENT"
+export GUM_CONFIRM_SELECTED_FOREGROUND="$GUMC_HIGHLIGHTED_BG"
+export GUM_CONFIRM_PROMPT_FOREGROUND="$GUMC_HIGHLIGHT"
+# shellcheck disable=SC2155
+export GUM_CONFIRM_UNSELECTED_FOREGROUND="$(_get_rosepine_color "$GUMC_FLAVOUR" text)"
+export GUM_CONFIRM_UNSELECTED_BACKGROUND="$GUMC_HIGHLIGHTED_BG"
+
+# input
+export GUM_INPUT_CURSOR_FOREGROUND="$GUMC_ACCENT"
+export GUM_INPUT_HEADER_FOREGROUND="$GUMC_HIGHLIGHT"
+export GUM_INPUT_PLACEHOLDER_FOREGROUND="$GUMC_DIM"
+
+# filter
+export GUM_FILTER_INDICATOR_FOREGROUND="$GUMC_ACCENT"
+export GUM_FILTER_SELECTED_PREFIX_FOREGROUND="$GUMC_ACCENT"
+export GUM_FILTER_UNSELECTED_PREFIX_FOREGROUND="$GUMC_DIM"
+export GUM_FILTER_HEADER_FOREGROUND="$GUMC_HIGHLIGHT"
+export GUM_FILTER_MATCH_FOREGROUND="$GUMC_HIGHLIGHT"
+export GUM_FILTER_PROMPT_FOREGROUND="$GUMC_DIM"
+export GUM_FILTER_PLACEHOLDER_FOREGROUND="$GUMC_DIM"
+
+# spin
+export GUM_SPIN_SPINNER_FOREGROUND="$GUMC_ACCENT"
+
+# table
+export GUM_TABLE_SELECTED_FOREGROUND="$GUMC_ACCENT"
+export GUM_TABLE_HEADER_FOREGROUND="$GUMC_HIGHLIGHT"
+
+# write
+export GUM_WRITE_CURSOR_FOREGROUND="$GUMC_ACCENT"
+export GUM_WRITE_HEADER_FOREGROUND="$GUMC_HIGHLIGHT"
+export GUM_WRITE_PLACEHOLDER_FOREGROUND="$GUMC_DIM"
+export GUM_WRITE_PROMPT_FOREGROUND="$GUMC_HIGHLIGHT"
+
+# file
+export GUM_FILE_CURSOR_FOREGROUND="$GUMC_ACCENT"
+export GUM_FILE_DIRECTORY_FOREGROUND="$GUMC_HIGHLIGHT"
+export GUM_FILE_SELECTED_FOREGROUND="$GUMC_ACCENT"
+# shellcheck disable=SC2155
+export GUM_FILE_PERMISSIONS_FOREGROUND="$(_get_rosepine_color "$GUMC_FLAVOUR" subtle)"
+# shellcheck disable=SC2155
+export GUM_FILE_FILE_SIZE_FOREGROUND="$(_get_rosepine_color "$GUMC_FLAVOUR" muted)"
+# shellcheck disable=SC2155
+export GUM_FILE_SYMLINK_FOREGROUND="$(_get_rosepine_color "$GUMC_FLAVOUR" foam)"
+
+# Prevent unnecessary leakage of variables
+unset GUMC_ACCENT
+unset GUMC_HIGHLIGHT
+unset GUMC_HIGHLIGHTED_BG
+unset GUMC_DIM
+unset GUMC_FLAVOUR
+unset _get_rosepine_color
