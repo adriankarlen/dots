@@ -6,30 +6,11 @@ local H = {}
 
 -- Helpers =====================================================================
 
-H.prettier_configs = {
-  ".prettierrc",
-  ".prettierrc.json",
-  ".prettierrc.json5",
-  ".prettierrc.yml",
-  ".prettierrc.yaml",
-  ".prettierrc.js",
-  ".prettierrc.cjs",
-  ".prettierrc.mjs",
-  "prettier.config.js",
-  "prettier.config.cjs",
-  "prettier.config.mjs",
-  "prettier.config.ts",
-}
-
 H.buf_dir = function()
   return vim.fn.expand "%:p:h"
 end
 
-H.find_upward = function(names)
-  ---@diagnostic disable-next-line: param-type-mismatch
-  return vim.fs.find(names, { path = H.buf_dir(), upward = true, type = "file" })[1] ~= nil
-end
-
+-- Check if package.json has a field, e.g. "prettier".
 H.pkg_has = function(field)
   ---@diagnostic disable-next-line: param-type-mismatch
   local pkg = vim.fs.find("package.json", { path = H.buf_dir(), upward = true, type = "file" })[1]
@@ -62,16 +43,24 @@ H.fixup_cmd = function(cmd, bufname)
   return cmd
 end
 
+-- Check if any LSP client supports formatting
+H.has_lsp_formatter = function(bufnr)
+  bufnr = bufnr or 0
+  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  for _, client in ipairs(clients) do
+    if client:supports_method "textDocument/formatting" then
+      return true
+    end
+  end
+  return false
+end
+
 -- Public API ==================================================================
 
--- Detect and set buffer-local 'formatprg' for JS/TS-family filetypes.
--- Biome > prettierd > empty (falls back to LSP).
+-- Detect and set buffer-local 'formatprg' for prettier projects.
 Config.set_formatprg = function()
-  local file = vim.fn.expand "%:p"
-  if H.find_upward { "biome.json", "biome.jsonc" } then
-    vim.bo.formatprg = "biome check --write --assist-enabled=true --stdin-file-path " .. file
-  elseif H.find_upward(H.prettier_configs) or H.pkg_has '"prettier"' then
-    vim.bo.formatprg = "prettierd --stdin-filepath " .. file
+  if H.pkg_has '"prettier"' then
+    vim.bo.formatprg = "prettierd --stdin-filepath " .. vim.fn.expand "%:p"
   end
 end
 
@@ -79,6 +68,9 @@ end
 Config.format = function()
   local prg = vim.bo.formatprg
   if prg == "" then
+    if not H.has_lsp_formatter() then
+      return
+    end
     return vim.lsp.buf.format()
   end
 
