@@ -1,0 +1,31 @@
+{
+  "clipboard": {
+    "saveHistory": false
+  },
+  "calendar": {
+    "selectedCalendarIds": [
+      "DBB581F8-DA9B-4238-8D1A-9AD4F5916BAA",
+      "CA36C8E5-DEAA-4A27-A73E-A3F659717414",
+      "6FCF40E3-BC7C-4950-8CC5-5BAC12E23E12",
+      "53D6C2FF-A586-4BC9-8845-24CE98864721",
+      "73AB3A3F-D4BF-4ABB-B3B3-512595A10B6E",
+      "66DD0BA5-C88C-4A2E-B936-44B824B74E41"
+    ],
+    "hasInitializedSelection": true
+  },
+  "emoji": {
+    "frequentlyUsedEmojis": {}
+  },
+  "frequencies": {
+    "file:///Applications/Helium.app/": 2
+  },
+  "selectionTimestamps": {
+    "file:///Applications/Helium.app/": 1784403813811
+  },
+  "history": [
+    "helium",
+    "he"
+  ],
+  "note": "",
+  "onboardingStep": "v1_completed"
+}
