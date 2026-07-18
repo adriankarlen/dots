@@ -71,6 +71,8 @@ app_rules = [
   { title_substring = "Preferences", floating = true },
   { title_substring = "Settings", floating = true },
   { title_substring = "Bitwarden", floating = true },
+  { title_substring = "Copy", floating = true },
+  { title_substring = "Update", floating = true },
   { app_id = "org.mozilla.firefox", workspace = 0 },
   { app_id = "com.google.Chrome", workspace = 0 },
   { app_id = "net.imput.helium", workspace = 0 },
