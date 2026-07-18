@@ -14,7 +14,7 @@ return {
       },
       runtime = { version = "LuaJIT" },
       workspace = {
-        library = { vim.env.VIMRUNTIME },
+        library = vim.list_extend({ vim.env.VIMRUNTIME }, vim.api.nvim_get_runtime_file("lua", true)),
         ignoreDir = { "dual", "deps" },
       },
     },
