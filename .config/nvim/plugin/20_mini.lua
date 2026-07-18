@@ -350,21 +350,7 @@ later(function()
 end)
 
 later(function()
-  require("mini.pick").setup {
-    window = {
-      config = function()
-        local height = math.floor(0.3 * vim.o.lines)
-        local width = math.floor(0.45 * vim.o.columns)
-        return {
-          anchor = "NW",
-          height = height,
-          width = width,
-          row = math.floor((vim.o.lines - height) / 2),
-          col = math.floor((vim.o.columns - width) / 2),
-        }
-      end,
-    },
-  }
+  require("mini.pick").setup()
 end)
 
 later(function()
