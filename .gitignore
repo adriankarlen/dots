@@ -12,7 +12,10 @@
 .config/openspec/
 .config/herdr/*
 !.config/herdr/config.toml
-
+.config/sol/*
+!.config/sol/config.json
+.config/hunk/*
+!.config/hunk/config.toml
 restart_session_*
 
 .storecode/
