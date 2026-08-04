@@ -31,7 +31,7 @@
     "clipboard_manager": "command+option+v"
   },
   "showInAppBrowserBookMarks": true,
-  "hasDismissedGettingStarted": false,
+  "hasDismissedGettingStarted": true,
   "hyperKeyEnabled": false,
   "customItems": [],
   "disabledItemIds": []
