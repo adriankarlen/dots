@@ -1,0 +1,7 @@
+theme = "custom"
+
+[custom_theme]
+base = "rose-pine"
+background = "#191724"
+panel = "#191724"
+panelAlt = "#1f1d2e"
