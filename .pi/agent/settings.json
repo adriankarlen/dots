@@ -1,0 +1,13 @@
+{
+  "packages": [
+    "npm:pi-zentui",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-access",
+    "npm:@twogiants/pi-anthropic-vertex"
+  ],
+  "lastChangelogVersion": "0.84.1",
+  "theme": "rose-pine",
+  "defaultProvider": "anthropic-vertex",
+  "defaultModel": "claude-sonnet-4-6",
+  "defaultThinkingLevel": "high"
+}
