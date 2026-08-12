@@ -1,0 +1,8 @@
+{
+  "tui.editor.historyPrevious": "ctrl+p",
+  "tui.editor.historyNext": "ctrl+n",
+  "tui.select.up": ["up", "ctrl+p"],
+  "tui.select.down": ["down", "ctrl+n"],
+  "app.model.cycleForward": "ctrl+l",
+  "app.model.cycleBackward": "shift+ctrl+l"
+}
