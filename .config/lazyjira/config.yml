@@ -1,0 +1,26 @@
+gui:
+  theme: auto
+
+  themeDark:
+    white: "#e0def4" # Text
+    gray: "#6e6a86" # Muted
+    green: "#31748f" # Pine
+    blue: "#9ccfd8" # Foam
+    cyan: "#9ccfd8"
+    red: "#eb6f92" # Love
+    yellow: "#f6c177" # Gold
+    magenta: "#c4a7e7" # Iris
+    orange: "#ebbcba" # Rose
+    highlight: "#403d52"
+
+  themeLight:
+    white: "#575279"
+    gray: "#9893a5"
+    green: "#286983"
+    blue: "#56949f"
+    cyan: "#56949f"
+    red: "#b4637a"
+    yellow: "#ea9d34"
+    magenta: "#907aa9"
+    orange: "#d7827e"
+    highlight: "#dfdad9"
