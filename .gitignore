@@ -17,6 +17,18 @@
 .config/hunk/*
 !.config/hunk/config.toml
 restart_session_*
+.config/lazyjira/auth.json
+.config/pi/web-search-cache/
+
+.pi/agent/sessions/
+.pi/agent/npm/
+.pi/agent/trust.json
+.pi/agent/models-store.json
+.pi/agent/auth.json
+.pi/agent/claude-bridge.json
+.pi/agent/mcp-cache.json
+.pi/agent/mcp-npx-cache.json
+.pi/agent/pi-crash.log
 
 .storecode/
 **/.claude/settings.local.json
