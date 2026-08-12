@@ -32,7 +32,7 @@ default_orientation = "perpendicular"
 [settings.layout.gaps]
 
 [settings.layout.gaps.outer]
-top = 40
+top = 42
 left = 5
 bottom = 5
 right = 5
