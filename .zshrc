@@ -5,7 +5,9 @@ fi
 # env vars
 export XDG_CONFIG_HOME="$HOME/.config"
 export EZA_CONFIG_DIR="$HOME/.config/eza"
+export LAZYJIRA_CONFIG_DIR="$HOME/.config/lazyjira"
 export VERTEX_LOCATION="global"
+export GOOGLE_CLOUD_LOCATION="global"
 export EDITOR=nvim
 
 # PATH
@@ -155,3 +157,6 @@ if [[ -z "$SSH_CONNECTION" ]]; then
   secret_load NPM_PAT
   secret_load GOOGLE_CLOUD_PROJECT
 fi
+
+# Pi
+export PATH="/Users/adriankarlen/.local/share/fnm/node-versions/v24.19.0/installation/bin:$PATH"
