@@ -41,6 +41,7 @@ nmap("€", "$", "€ -> $", true)
 xmap("€", "$", "€ -> $", true)
 
 Config.leader_group_clues = {
+  { mode = "n", keys = "<Leader>a", desc = "+ai" },
   { mode = "n", keys = "<Leader>b", desc = "+buffer" },
   { mode = "n", keys = "<Leader>e", desc = "+explore" },
   { mode = "n", keys = "<Leader>f", desc = "+find" },
@@ -62,6 +63,11 @@ end
 local xmap_leader = function(suffix, rhs, desc)
   vim.keymap.set("x", "<Leader>" .. suffix, rhs, { desc = desc })
 end
+
+-- a is for 'AI'
+nmap_leader("ao", "<Cmd>!tmux split-window -h -l 25\\% -c '\\#{pane_current_path}' opencode<CR>", "opencode")
+nmap_leader("as", "<Cmd>!tmux split-window -h -l 25\\% -c '\\#{pane_current_path}' storecode --yolo<CR>", "storecode")
+nmap_leader("ap", "<Cmd>!tmux split-window -h -l 25\\% -c '\\#{pane_current_path}' pi<CR>", "pi")
 
 -- b is for 'Buffer'
 local new_scratch_buffer = function()
