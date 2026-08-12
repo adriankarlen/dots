@@ -12,5 +12,8 @@
   ],
   "trustedcasks": [
     "tmuxpack/tpack/tpack"
+  ],
+  "trustedformulae": [
+    "textfuel/tap/lazyjira"
   ]
 }
