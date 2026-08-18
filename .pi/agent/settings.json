@@ -3,11 +3,12 @@
     "npm:pi-zentui",
     "npm:pi-mcp-adapter",
     "npm:pi-web-access",
-    "npm:@twogiants/pi-anthropic-vertex"
+    "npm:@twogiants/pi-anthropic-vertex",
+    "npm:@zenobius/pi-rose-pine"
   ],
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "0.84.2",
   "theme": "rose-pine",
-  "defaultProvider": "anthropic-vertex",
-  "defaultModel": "claude-sonnet-4-6",
+  "defaultProvider": "github-copilot",
+  "defaultModel": "claude-sonnet-5",
   "defaultThinkingLevel": "high"
 }
