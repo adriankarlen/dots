@@ -4,7 +4,8 @@
     "npm:pi-mcp-adapter",
     "npm:pi-web-access",
     "npm:@twogiants/pi-anthropic-vertex",
-    "npm:@zenobius/pi-rose-pine"
+    "npm:@zenobius/pi-rose-pine",
+    "npm:pi-permission-system"
   ],
   "lastChangelogVersion": "0.84.2",
   "theme": "rose-pine",
