@@ -88,8 +88,8 @@ now_if_args(function()
     "oxlint",
     "roslyn_ls",
     "svelte",
-    "tailwindcss",
     "taplo",
+    "tsc",
     "vtsls",
     "yamlls",
   }
