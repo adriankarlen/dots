@@ -76,6 +76,7 @@ app_rules = [
   { app_id = "org.mozilla.firefox", workspace = 0 },
   { app_id = "com.google.Chrome", workspace = 0 },
   { app_id = "net.imput.helium", workspace = 0 },
+  { app_id = "dev.kvist.browser", workspace = 0 },
   { app_id = "com.microsoft.edgemac", workspace = 0 },
   { app_id = "com.mitchellh.ghostty", workspace = 1 },
   { app_id = "org.wezfurlong.wezterm", workspace = 1 },
