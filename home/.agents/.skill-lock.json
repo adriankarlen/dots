@@ -99,6 +99,15 @@
       "skillFolderHash": "3df14e2d3a89459bf300614be9247e3ce74798f8",
       "installedAt": "2026-08-11T09:56:50.102Z",
       "updatedAt": "2026-08-21T09:10:28.510Z"
+    },
+    "caveman-commit": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-commit/SKILL.md",
+      "skillFolderHash": "6ba13fa3503e9607eed8f94828b524510d83b7ef",
+      "installedAt": "2026-08-26T12:27:19.493Z",
+      "updatedAt": "2026-08-26T12:27:19.493Z"
     }
   },
   "dismissed": {
@@ -117,7 +126,6 @@
     "kimi-code-cli",
     "opencode",
     "warp",
-    "zed",
-    "claude-code"
+    "zed"
   ]
 }
