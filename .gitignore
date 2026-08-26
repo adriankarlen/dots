@@ -32,3 +32,4 @@ restart_session_*
 
 .storecode/
 **/.claude/settings.local.json
+/.pi/agent/mcp-onboarding.json
