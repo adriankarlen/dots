@@ -84,7 +84,6 @@ now_if_args(function()
     "gopls",
     "html",
     "marksman",
-    "oxfmt",
     "oxlint",
     "roslyn_ls",
     "svelte",
