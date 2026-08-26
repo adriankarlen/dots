@@ -29,7 +29,7 @@ restart_session_*
 .pi/agent/mcp-cache.json
 .pi/agent/mcp-npx-cache.json
 .pi/agent/pi-crash.log
+.pi/agent/mcp-onboarding.json
 
 .storecode/
 **/.claude/settings.local.json
-/.pi/agent/mcp-onboarding.json
