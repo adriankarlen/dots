@@ -38,8 +38,8 @@ restart_session_*
 # other project; this repo isn't special-cased, so it needs the same rule)
 /.pi/
 
-.storecode/
-**/.claude/settings.local.json
+/.storecode/
+/.claude/
 /home/.agents/.skills-meta.json
 /home/.agents/skills/spp*/
 /home/.agents/mcp.json
