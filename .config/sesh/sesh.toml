@@ -3,7 +3,7 @@ import = ["~/.config/sesh/spp.toml"]
 blacklist = ["^scratch$", "^_"]
 
 [[wildcard]]
-pattern = "~/repos/*"
+pattern = "~/repos/**"
 startup_command = "nvim"
 
 [[session]]
