@@ -7,7 +7,7 @@
     "npm:@zenobius/pi-rose-pine",
     "npm:pi-permission-system"
   ],
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "theme": "rose-pine",
   "defaultProvider": "github-copilot",
   "defaultModel": "claude-sonnet-5",
