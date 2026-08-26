@@ -28,15 +28,6 @@
       "installedAt": "2026-03-10T14:27:55.646Z",
       "updatedAt": "2026-03-24T12:33:25.735Z"
     },
-    "tanstack-query-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/deckardger/tanstack-agent-skills.git",
-      "skillPath": "skills/tanstack-query/SKILL.md",
-      "skillFolderHash": "b73085898a2015a0f33c98aef0f3f2ff4ee9454f",
-      "installedAt": "2026-03-24T12:36:48.955Z",
-      "updatedAt": "2026-03-24T12:36:48.955Z"
-    },
     "tanstack-router-best-practices": {
       "source": "deckardger/tanstack-agent-skills",
       "sourceType": "github",
@@ -63,15 +54,6 @@
       "skillFolderHash": "7e9663cb1d15ca0aff369d35a31348b7e8cf5e95",
       "installedAt": "2026-03-27T09:30:10.036Z",
       "updatedAt": "2026-08-11T09:54:37.903Z"
-    },
-    "svelte-code-writer": {
-      "source": "sveltejs/ai-tools",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/sveltejs/ai-tools.git",
-      "skillPath": "plugins/claude/svelte/skills/svelte-code-writer/SKILL.md",
-      "skillFolderHash": "177e9694aa97200de84999b8ab46b7b8db43c5cb",
-      "installedAt": "2026-04-07T19:18:30.301Z",
-      "updatedAt": "2026-08-11T09:54:39.882Z"
     },
     "docker-expert": {
       "source": "sickn33/antigravity-awesome-skills",
