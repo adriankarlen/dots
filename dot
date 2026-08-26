@@ -98,6 +98,29 @@ __require_stow() {
     fi
 }
 
+# Keep git submodules (e.g. home/.config/nvim) checked out before stowing,
+# so stow always has real content to link rather than an empty directory.
+# Safe to re-run: `git submodule update` no-ops if already at the pinned
+# commit, and refuses to clobber uncommitted changes inside a submodule.
+__sync_submodules() {
+    if [[ ! -f "${DOTFILES_DIR}/.gitmodules" ]]; then
+        return 0
+    fi
+
+    if ! __command_exists git; then
+        __print_warning "git not found, skipping submodule sync"
+        return 0
+    fi
+
+    __print_info "Syncing git submodules..."
+    if git -C "${DOTFILES_DIR}" submodule update --init --recursive; then
+        __print_success "Submodules up to date"
+    else
+        __print_warning "Submodule sync failed (continuing)"
+        return 1
+    fi
+}
+
 # ─── Stow commands ──────────────────────────────────────────────────────────
 cmd_stow() {
     local no_restow=false
@@ -126,6 +149,7 @@ cmd_stow() {
     done
 
     __require_stow
+    __sync_submodules
 
     __print_header "Stowing dotfiles"
     __print_info "Source: ${HOME_DIR}"
@@ -211,11 +235,7 @@ cmd_restow() {
         return 0
     fi
 
-    __print_header "Restowing dotfiles"
-    __print_info "Source: ${HOME_DIR}"
-    __print_info "Target: ${STOW_TARGET}"
-    stow -R -v -d "${DOTFILES_DIR}" -t "${STOW_TARGET}" home
-    __print_success "Dotfiles restowed"
+    cmd_stow
 }
 
 cmd_doctor() {
@@ -277,6 +297,33 @@ cmd_doctor() {
 
     if [[ $issues -gt 0 ]]; then
         __print_info "Run '${SCRIPT_NAME} stow' to repair"
+    fi
+
+    if [[ -f "${DOTFILES_DIR}/.gitmodules" ]] && __command_exists git; then
+        __print_info "Checking git submodules..."
+        local line status_char sub_path
+        while IFS= read -r line; do
+            [[ -z "$line" ]] && continue
+            status_char="${line:0:1}"
+            sub_path="$(awk '{print $2}' <<< "${line:1}")"
+            case "$status_char" in
+                " ")
+                    __print_success "  ${sub_path} (checked out)"
+                    ;;
+                "+")
+                    __print_warning "  ${sub_path} (checked out, but not at the pinned commit)"
+                    ;;
+                "-")
+                    __print_error "  ${sub_path} is not initialized"
+                    __print_info "Run '${SCRIPT_NAME} stow' to initialize it"
+                    ((++issues))
+                    ;;
+                "U")
+                    __print_error "  ${sub_path} has merge conflicts"
+                    ((++issues))
+                    ;;
+            esac
+        done < <(git -C "${DOTFILES_DIR}" submodule status 2>/dev/null)
     fi
 
     __print_info "Scanning for broken symlinks under \$HOME (maxdepth 4)..."

@@ -20,10 +20,18 @@ dots/
 │   ├── .zshrc
 │   ├── .agents/
 │   ├── .config/
+│   │   └── nvim/       # git submodule → adriankarlen/nvim
 │   ├── .local/
 │   └── .pi/
 └── readme.md
 ```
+
+`home/.config/nvim` is a git submodule pointing at
+[adriankarlen/nvim](https://github.com/adriankarlen/nvim), so it can be
+reused standalone outside of `dots` too. `dot stow` (and therefore `dot
+init`, which calls it) always runs `git submodule update --init --recursive`
+first, so plain `git clone` (without `--recurse-submodules`) is fine — the
+submodule gets synced the first time you run `dot stow`.
 
 ## `dot`
 
