@@ -33,3 +33,6 @@ restart_session_*
 
 .storecode/
 **/.claude/settings.local.json
+/.agents/.skills-meta.json
+/.agents/skills/spp*/
+/.agents/mcp.json
