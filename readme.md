@@ -13,7 +13,8 @@ those are global, not project-local.
 ```
 dots/
 ├── dot                 # CLI: stow management + machine bootstrap
-├── Brewfile            # Homebrew formulae/casks (not stowed)
+├── packages/
+│   └── Brewfile        # Homebrew formulae/casks (not stowed)
 ├── home/               # stow package — symlinked into $HOME
 │   ├── .stow-local-ignore
 │   ├── .zshrc

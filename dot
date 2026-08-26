@@ -37,7 +37,8 @@ readonly HOME_DIR="${DOTFILES_DIR}/home"
 readonly STOW_TARGET="${HOME}"
 readonly LINK_DIR="${HOME}/.local/bin"
 readonly LINK_PATH="${LINK_DIR}/${SCRIPT_NAME}"
-readonly BREWFILE="${DOTFILES_DIR}/Brewfile"
+readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
+readonly BREWFILE="${PACKAGES_DIR}/Brewfile"
 
 # Representative paths to spot-check in `doctor`. Mix of top-level files
 # (stow'd as individual symlinks) and nested entries under .config
@@ -413,7 +414,7 @@ __brew_install_entry() {
 __save_failed_packages() {
     [[ $# -eq 0 ]] && return 0
     local failed_file
-    failed_file="${DOTFILES_DIR}/failed_packages_$(date +%Y%m%d_%H%M%S)_$$.txt"
+    failed_file="${PACKAGES_DIR}/failed_packages_$(date +%Y%m%d_%H%M%S)_$$.txt"
     printf '%s\n' "$@" | sort -u > "$failed_file"
     __print_info "Failed packages saved to: $failed_file"
 }
