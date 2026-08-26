@@ -1,0 +1,780 @@
+#!/usr/bin/env bash
+# dot — dotfiles manager for adriankarlen/dots (macOS).
+#
+# Thin wrapper around GNU Stow, mirroring the command set from
+# adriankarlen/dots-fedora's `dot` (stow/unstow/restow/doctor/link/unlink/
+# edit/help), plus a macOS-specific `init` that folds in the Homebrew-driven
+# machine bootstrap that used to live in install.sh. `init` is safe to
+# re-run: every step checks for existing state before doing work.
+#
+# Design patterns for the resilient Homebrew install/bundle steps are
+# adapted from dmmulroy/.dotfiles.
+
+set -euo pipefail
+
+# ─── Colors ──────────────────────────────────────────────────────────────────
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly BLUE='\033[0;34m'
+readonly CYAN='\033[0;36m'
+readonly RESET='\033[0m'
+readonly BOLD='\033[1m'
+
+# ─── Constants ──────────────────────────────────────────────────────────────
+readonly SCRIPT_NAME="dot"
+readonly VERSION="0.1.0"
+# Resolve DOTFILES_DIR through any symlinks (e.g. when invoked via
+# ~/.local/bin/dot → <repo>/dot). Both `realpath` and `readlink -f` ship in
+# base macOS, so no coreutils dependency is required here.
+if command -v realpath >/dev/null 2>&1; then
+    DOTFILES_DIR="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")" && pwd)"
+else
+    DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+readonly DOTFILES_DIR
+readonly HOME_DIR="${DOTFILES_DIR}/home"
+readonly STOW_TARGET="${HOME}"
+readonly LINK_DIR="${HOME}/.local/bin"
+readonly LINK_PATH="${LINK_DIR}/${SCRIPT_NAME}"
+readonly BREWFILE="${DOTFILES_DIR}/Brewfile"
+
+# Representative paths to spot-check in `doctor`. Mix of top-level files
+# (stow'd as individual symlinks) and nested entries under .config
+# (reachable via the tree-fold symlink at ~/.config → home/.config).
+readonly -a DOCTOR_PATHS=(
+    ".zshrc"
+    ".config"
+    ".config/ohmyposh"
+    ".config/nvim"
+    ".agents"
+    ".pi"
+)
+
+# Set by cmd_init's flag parsing; read by the init step functions.
+INIT_SKIP_SERVICES=false
+INIT_SKIP_SPICETIFY=false
+
+# Progress indicators for `init`.
+CURRENT_STEP=0
+TOTAL_STEPS=0
+
+# ─── Helpers ────────────────────────────────────────────────────────────────
+__print_header() {
+    echo -e "\n${BOLD}${BLUE}==>${RESET} ${BOLD}$1${RESET}"
+}
+
+__print_success() {
+    echo -e "${GREEN}✓${RESET} $1"
+}
+
+__print_error() {
+    echo -e "${RED}✗${RESET} $1" >&2
+}
+
+__print_warning() {
+    echo -e "${YELLOW}⚠${RESET} $1"
+}
+
+__print_info() {
+    echo -e "${CYAN}ℹ${RESET} $1"
+}
+
+__print_step() {
+    ((++CURRENT_STEP))
+    echo -e "\n${BOLD}[${CURRENT_STEP}/${TOTAL_STEPS}]${RESET} $1"
+}
+
+__command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+__require_stow() {
+    if ! __command_exists stow; then
+        __print_error "GNU Stow is not installed"
+        __print_info "Install with: brew install stow"
+        return 1
+    fi
+}
+
+# ─── Stow commands ──────────────────────────────────────────────────────────
+cmd_stow() {
+    local no_restow=false
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                echo -e "${BOLD}USAGE:${RESET}"
+                echo -e "    ${SCRIPT_NAME} stow [--no-restow]"
+                echo
+                echo "Create or refresh symlinks from ${HOME_DIR}/ into ${STOW_TARGET}/."
+                echo "Default behavior is 'stow --restow' (idempotent — refreshes existing"
+                echo "links and adds new ones). Pass --no-restow for an additive-only stow"
+                echo "that won't touch links already in place."
+                return 0
+                ;;
+            --no-restow)
+                no_restow=true
+                shift
+                ;;
+            *)
+                __print_error "Unknown option: $1"
+                __print_info "Run '${SCRIPT_NAME} stow --help' for usage"
+                return 1
+                ;;
+        esac
+    done
+
+    __require_stow
+
+    __print_header "Stowing dotfiles"
+    __print_info "Source: ${HOME_DIR}"
+    __print_info "Target: ${STOW_TARGET}"
+
+    local -a flags=(-v -d "${DOTFILES_DIR}" -t "${STOW_TARGET}")
+    if [[ "$no_restow" == false ]]; then
+        flags=(-R "${flags[@]}")
+    fi
+
+    # If stow aborts because of "existing target is not owned by stow"
+    # conflicts, the most common cause is symlinks in $HOME that point
+    # into ${HOME_DIR} with absolute paths (hand-created before stow was
+    # adopted). Stow only manages relative symlinks, so it sees them as
+    # foreign. We auto-replace such symlinks with whatever stow wants.
+    # This is safe: we only touch symlinks that already point into
+    # ${HOME_DIR}, never real files, and only when stow would create the
+    # same logical link anyway.
+    local attempt=1 max_attempts=5 replaced=true
+    while $replaced && [[ $attempt -le $max_attempts ]]; do
+        replaced=false
+        local stow_output
+        stow_output=$(stow "${flags[@]}" home 2>&1) || true
+        printf '%s\n' "$stow_output"
+
+        local rel
+        while IFS= read -r rel; do
+            [[ -z "$rel" ]] && continue
+            local link="${STOW_TARGET}/${rel}"
+            if [[ -L "$link" ]]; then
+                local resolved
+                resolved=$(readlink -f "$link")
+                if [[ "$resolved" == "${HOME_DIR}"/* ]]; then
+                    __print_warning "Replacing manually-created absolute symlink: ${rel} → $(readlink "$link")"
+                    rm "$link"
+                    replaced=true
+                else
+                    __print_error "Conflict on ${rel} but it doesn't resolve into ${HOME_DIR} (got ${resolved})"
+                    __print_info "Resolve manually, then re-run"
+                    return 1
+                fi
+            else
+                __print_error "Conflict on ${rel} but it's not a symlink (stow won't replace it for safety)"
+                __print_info "Resolve manually, then re-run"
+                return 1
+            fi
+        done < <(printf '%s\n' "$stow_output" \
+            | sed -n 's/^.*existing target is not owned by stow: //p')
+        ((++attempt))
+    done
+
+    if $replaced; then
+        __print_error "Auto-replace hit the ${max_attempts}-attempt limit"
+        return 1
+    fi
+    __print_success "Dotfiles stowed"
+}
+
+cmd_unstow() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} unstow"
+        echo
+        echo "Remove the symlinks stow manages under ${STOW_TARGET}/. Files that were"
+        echo "not placed there by stow are left alone."
+        return 0
+    fi
+
+    __require_stow
+
+    __print_header "Unstowing dotfiles"
+    stow -D -v -d "${DOTFILES_DIR}" -t "${STOW_TARGET}" home
+    __print_success "Dotfiles unstowed"
+}
+
+cmd_restow() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} restow"
+        echo
+        echo "Alias for '${SCRIPT_NAME} stow'. Use this when you want to be explicit"
+        echo "that you're refreshing, not adding."
+        return 0
+    fi
+
+    __print_header "Restowing dotfiles"
+    __print_info "Source: ${HOME_DIR}"
+    __print_info "Target: ${STOW_TARGET}"
+    stow -R -v -d "${DOTFILES_DIR}" -t "${STOW_TARGET}" home
+    __print_success "Dotfiles restowed"
+}
+
+cmd_doctor() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} doctor"
+        echo
+        echo "Verify that Homebrew and stow are installed, that representative"
+        echo "dotfile paths under \$HOME are present (as symlinks into ${HOME_DIR},"
+        echo "or reachable via a tree-folded ancestor like ~/.config → home/.config),"
+        echo "and that no symlinks under \$HOME are broken."
+        return 0
+    fi
+
+    __print_header "Running diagnostics"
+    local issues=0
+
+    if __command_exists brew; then
+        __print_success "Homebrew installed: $(command -v brew)"
+    else
+        __print_error "Homebrew not installed"
+        __print_info "Run '${SCRIPT_NAME} init' to install it"
+        ((++issues))
+    fi
+
+    if __command_exists stow; then
+        __print_success "GNU Stow installed: $(command -v stow)"
+    else
+        __print_error "GNU Stow not installed"
+        __print_info "Install with: brew install stow"
+        ((++issues))
+    fi
+
+    __print_info "Checking representative stowed paths..."
+    local rel
+    for rel in "${DOCTOR_PATHS[@]}"; do
+        local path="${STOW_TARGET}/${rel}"
+        if [[ -L "$path" ]]; then
+            local target resolved
+            target=$(readlink "$path")
+            resolved=$(readlink -f "$path")
+            # Tree-folded symlinks resolve to the package directory itself
+            # (e.g. ~/.config → …/home/.config); individual file symlinks
+            # resolve to the file inside the package tree.
+            if [[ "$resolved" == "${HOME_DIR}" || "$resolved" == "${HOME_DIR}"/* ]]; then
+                __print_success "  ${rel} → ${target}"
+            else
+                __print_warning "  ${rel} → ${target} (resolves to ${resolved}, not inside ${HOME_DIR})"
+            fi
+        elif [[ -e "$path" ]]; then
+            # Reachable via a tree-folded ancestor symlink (e.g.
+            # ~/.config/nvim exists because ~/.config → home/.config).
+            __print_success "  ${rel} (reachable via tree-folded ancestor)"
+        else
+            __print_error "  ${rel} is missing"
+            ((++issues))
+        fi
+    done
+
+    if [[ $issues -gt 0 ]]; then
+        __print_info "Run '${SCRIPT_NAME} stow' to repair"
+    fi
+
+    __print_info "Scanning for broken symlinks under \$HOME (maxdepth 4)..."
+    local broken=0
+    while IFS= read -r -d '' link; do
+        if [[ ! -e "$link" ]]; then
+            ((++broken))
+            __print_warning "  broken: ${link}"
+        fi
+    done < <(find "${STOW_TARGET}" -maxdepth 4 -type l -print0 2>/dev/null)
+
+    if [[ $broken -eq 0 ]]; then
+        __print_success "No broken symlinks under \$HOME"
+    fi
+
+    if [[ -L "$LINK_PATH" ]]; then
+        __print_success "\`dot\` is linked at ${LINK_PATH}"
+    elif __command_exists dot; then
+        __print_info "\`dot\` is on PATH (but not at ${LINK_PATH})"
+    else
+        __print_warning "\`dot\` is not on PATH"
+        __print_info "Run '${SCRIPT_NAME} link' to install it to ${LINK_PATH}"
+    fi
+
+    if [[ $issues -eq 0 ]]; then
+        __print_header "All critical checks passed ✓"
+    else
+        __print_header "Found ${issues} issue(s)"
+        return 1
+    fi
+}
+
+cmd_link() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} link"
+        echo
+        echo "Symlink this script to ${LINK_PATH} so that \`dot\` is on PATH"
+        echo "(assumes ${LINK_DIR} is on PATH — it is in the default dotfiles' .zshrc)."
+        return 0
+    fi
+
+    __print_header "Linking \`dot\` into PATH"
+
+    if [[ ! -d "$LINK_DIR" ]]; then
+        __print_info "Creating ${LINK_DIR}"
+        mkdir -p "$LINK_DIR"
+    fi
+
+    if [[ -e "$LINK_PATH" ]] && [[ ! -L "$LINK_PATH" ]]; then
+        __print_error "${LINK_PATH} exists and is not a symlink"
+        __print_info "Remove it manually if you want \`dot\` linked there"
+        return 1
+    fi
+
+    ln -sfn "${DOTFILES_DIR}/${SCRIPT_NAME}" "$LINK_PATH"
+    __print_success "Linked ${LINK_PATH} → ${DOTFILES_DIR}/${SCRIPT_NAME}"
+    __print_info "Make sure ${LINK_DIR} is on your PATH"
+}
+
+cmd_unlink() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} unlink"
+        echo
+        echo "Remove the symlink at ${LINK_PATH} if present."
+        return 0
+    fi
+
+    __print_header "Unlinking \`dot\` from PATH"
+
+    if [[ -L "$LINK_PATH" ]]; then
+        rm "$LINK_PATH"
+        __print_success "Removed ${LINK_PATH}"
+    else
+        __print_warning "No symlink at ${LINK_PATH}"
+    fi
+}
+
+cmd_edit() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} edit"
+        echo
+        echo "Open the dotfiles repository in \${EDITOR:-nvim}."
+        return 0
+    fi
+
+    local editor="${EDITOR:-nvim}"
+    if ! __command_exists "$editor"; then
+        __print_error "Editor '$editor' not found"
+        __print_info "Set EDITOR environment variable to specify a different one"
+        return 1
+    fi
+
+    exec "$editor" "${DOTFILES_DIR}"
+}
+
+# ─── Init: Homebrew-driven machine bootstrap ───────────────────────────────
+# Adapted from dmmulroy/.dotfiles' resilient install/bundle patterns, but
+# trimmed to what this repo actually needs (no bun/vite+/pi/ssh-key/font/
+# fish steps). Every step below is written to be safe to re-run.
+
+__parse_brewfile_entry() {
+    local line="$1"
+
+    [[ "$line" =~ ^[[:space:]]*# ]] && return 1
+    [[ -z "${line//[[:space:]]/}" ]] && return 1
+
+    if [[ "$line" =~ ^[[:space:]]*brew[[:space:]]+\"([^\"]+)\" ]]; then
+        printf 'brew\t%s\n' "${BASH_REMATCH[1]}"
+        return 0
+    fi
+
+    if [[ "$line" =~ ^[[:space:]]*cask[[:space:]]+\"([^\"]+)\" ]]; then
+        printf 'cask\t%s\n' "${BASH_REMATCH[1]}"
+        return 0
+    fi
+
+    return 1
+}
+
+__brew_install_entry() {
+    local package_type="$1" package_name="$2"
+    case "$package_type" in
+        brew) brew install "$package_name" ;;
+        cask) brew install --cask "$package_name" ;;
+        *)
+            __print_error "Unsupported package type: $package_type"
+            return 1
+            ;;
+    esac
+}
+
+__save_failed_packages() {
+    [[ $# -eq 0 ]] && return 0
+    local failed_file
+    failed_file="${DOTFILES_DIR}/failed_packages_$(date +%Y%m%d_%H%M%S)_$$.txt"
+    printf '%s\n' "$@" | sort -u > "$failed_file"
+    __print_info "Failed packages saved to: $failed_file"
+}
+
+__install_homebrew() {
+    if __command_exists brew; then
+        __print_success "Homebrew is already installed"
+    else
+        __print_info "Homebrew is not installed. Installing now..."
+        local log_file
+        log_file=$(mktemp)
+
+        if NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" > "$log_file" 2>&1; then
+            __print_success "Homebrew installation successful"
+        else
+            __print_error "Homebrew installation failed"
+            if [[ -s "$log_file" ]]; then
+                __print_info "Last 20 lines of installer output:"
+                tail -20 "$log_file" | while IFS= read -r line; do echo "  $line"; done
+            fi
+            rm -f "$log_file"
+            return 1
+        fi
+        rm -f "$log_file"
+
+        if [[ "$(uname -m)" == "arm64" ]]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        else
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
+    fi
+
+    __print_info "Disabling Homebrew analytics..."
+    brew analytics off >/dev/null 2>&1 || true
+}
+
+__install_packages() {
+    if [[ ! -f "$BREWFILE" ]]; then
+        __print_error "Brewfile not found at ${BREWFILE}"
+        return 1
+    fi
+
+    __print_info "Installing packages from Brewfile..."
+    if brew bundle --file="$BREWFILE"; then
+        __print_success "All Brewfile packages installed successfully"
+        return 0
+    fi
+
+    __print_warning "Some packages failed via 'brew bundle', retrying individually..."
+    local failed_packages=() installed_count=0
+    local line parsed package_type package_name
+
+    while IFS= read -r line; do
+        parsed=$(__parse_brewfile_entry "$line") || continue
+        IFS=$'\t' read -r package_type package_name <<< "$parsed"
+
+        __print_info "Installing $package_type package: $package_name"
+        if __brew_install_entry "$package_type" "$package_name" 2>/dev/null; then
+            ((++installed_count))
+        else
+            __print_warning "Failed to install: $package_name"
+            failed_packages+=("${package_type}:${package_name}")
+        fi
+    done < "$BREWFILE"
+
+    __print_success "Installed $installed_count package(s) individually"
+
+    if [[ ${#failed_packages[@]} -gt 0 ]]; then
+        __print_warning "Failed to install ${#failed_packages[@]} package(s):"
+        printf "  - %s\n" "${failed_packages[@]}"
+        __save_failed_packages "${failed_packages[@]}"
+    fi
+}
+
+__init_stow_dotfiles() {
+    cmd_stow
+}
+
+__set_macos_defaults() {
+    if [[ "$INIT_SKIP_SERVICES" == true ]]; then
+        __print_info "Skipping macOS defaults (--skip-services)"
+        return 0
+    fi
+
+    __print_info "Setting macOS defaults..."
+    defaults write -g NSWindowShouldDragOnGesture -bool true
+    defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+    __print_success "macOS defaults applied"
+}
+
+__start_services() {
+    if [[ "$INIT_SKIP_SERVICES" == true ]]; then
+        __print_info "Skipping background services (--skip-services)"
+        return 0
+    fi
+
+    if __command_exists skhd; then
+        __print_info "Installing and starting skhd service..."
+        skhd --install-service 2>/dev/null || true
+        skhd --start-service 2>/dev/null || true
+        __print_success "skhd service running"
+    else
+        __print_warning "skhd not installed, skipping"
+    fi
+
+    if __command_exists brew; then
+        for svc in sketchybar borders; do
+            __print_info "Starting ${svc} service..."
+            brew services start "$svc" >/dev/null 2>&1 || __print_warning "Failed to start ${svc}"
+        done
+        __print_success "Background services started"
+    fi
+}
+
+__setup_spicetify() {
+    if [[ "$INIT_SKIP_SPICETIFY" == true ]]; then
+        __print_info "Skipping Spicetify (--skip-spicetify)"
+        return 0
+    fi
+
+    if [[ ! -d "/Applications/Spotify.app" ]]; then
+        __print_info "Spotify not installed, skipping Spicetify"
+        return 0
+    fi
+
+    if ! __command_exists spicetify; then
+        __print_warning "spicetify-cli not installed, skipping"
+        return 0
+    fi
+
+    __print_info "Applying Spicetify backup..."
+    if spicetify backup apply; then
+        __print_success "Spicetify applied"
+    else
+        __print_warning "Spicetify backup apply failed"
+        return 1
+    fi
+}
+
+__install_nvim_nightly() {
+    __print_info "Installing Neovim nightly..."
+    mkdir -p "$HOME/.local"
+    local tmp
+    tmp=$(mktemp -d)
+
+    if ! curl -L --output-dir "$tmp" -O https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz; then
+        __print_error "Failed to download Neovim nightly"
+        rm -rf "$tmp"
+        return 1
+    fi
+
+    tar xzf "$tmp/nvim-macos-arm64.tar.gz" -C "$tmp"
+    rm -rf "$HOME/.local/nvim-nightly"
+    mv "$tmp/nvim-macos-arm64" "$HOME/.local/nvim-nightly"
+    rm -rf "$tmp"
+    xattr -cr "$HOME/.local/nvim-nightly"
+    __print_success "Neovim nightly installed: $("$HOME/.local/nvim-nightly/bin/nvim" --version | head -1)"
+}
+
+__install_node() {
+    if ! __command_exists fnm; then
+        __print_warning "fnm not installed, skipping Node install"
+        return 0
+    fi
+
+    __print_info "Installing Node LTS via fnm..."
+    eval "$(fnm env --shell zsh)"
+    fnm install --lts
+    fnm default lts-latest
+    __print_success "Node LTS installed via fnm"
+}
+
+__install_tmux_plugins() {
+    local tpm_install="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/tpm/share/tpm/bin/install_plugins"
+    if [[ ! -x "$tpm_install" ]]; then
+        __print_warning "tpm not installed (brew install tpm), skipping tmux plugins"
+        return 0
+    fi
+
+    __print_info "Installing tmux plugins..."
+    TMUX_PLUGIN_MANAGER_PATH="$HOME/.config/tmux/plugins" "$tpm_install"
+    __print_success "tmux plugins installed"
+}
+
+__install_yazi_packages() {
+    if ! __command_exists ya; then
+        __print_warning "yazi not installed, skipping package install"
+        return 0
+    fi
+
+    __print_info "Installing Yazi packages..."
+    ya pack -i
+    __print_success "Yazi packages installed"
+}
+
+# Ordered "Step name;;function" registry. Only Homebrew itself is fatal —
+# everything else warns and continues so a partial machine still ends up
+# mostly configured (and re-running `init` will pick up the rest).
+readonly -a INIT_STEPS=(
+    "Homebrew                ;; __install_homebrew"
+    "Homebrew packages       ;; __install_packages"
+    "Stow dotfiles           ;; __init_stow_dotfiles"
+    "macOS defaults          ;; __set_macos_defaults"
+    "Background services     ;; __start_services"
+    "Spicetify               ;; __setup_spicetify"
+    "Neovim nightly          ;; __install_nvim_nightly"
+    "Node (fnm)              ;; __install_node"
+    "tmux plugins            ;; __install_tmux_plugins"
+    "Yazi packages           ;; __install_yazi_packages"
+)
+
+__run_init_steps() {
+    TOTAL_STEPS=${#INIT_STEPS[@]}
+    CURRENT_STEP=0
+
+    local entry name fn
+    for entry in "${INIT_STEPS[@]}"; do
+        name="$(cut -d';' -f1 <<< "$entry" | xargs)"
+        fn="$(cut -d';' -f3 <<< "$entry" | xargs)"
+
+        __print_step "$name"
+
+        if "$fn"; then
+            true
+        elif [[ "$fn" == "__install_homebrew" ]]; then
+            __print_error "$name failed (fatal)"
+            return 1
+        else
+            __print_warning "$name failed (continuing)"
+        fi
+    done
+}
+
+cmd_init() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                echo -e "${BOLD}USAGE:${RESET}"
+                echo -e "    ${SCRIPT_NAME} init [--skip-services] [--skip-spicetify]"
+                echo
+                echo "Bootstrap this machine: install Homebrew, install Brewfile packages,"
+                echo "stow dotfiles, apply macOS defaults, start background services"
+                echo "(skhd/sketchybar/borders), set up Spicetify, install Neovim nightly,"
+                echo "Node LTS (via fnm), tmux plugins (TPM), and Yazi packages."
+                echo
+                echo "Safe to re-run: every step checks existing state before acting."
+                echo
+                echo -e "${BOLD}OPTIONS:${RESET}"
+                echo "    --skip-services      Skip macOS defaults + skhd/sketchybar/borders"
+                echo "    --skip-spicetify     Skip Spicetify backup apply"
+                return 0
+                ;;
+            --skip-services)
+                INIT_SKIP_SERVICES=true
+                shift
+                ;;
+            --skip-spicetify)
+                INIT_SKIP_SPICETIFY=true
+                shift
+                ;;
+            *)
+                __print_error "Unknown init option: $1"
+                __print_info "Run '${SCRIPT_NAME} init --help' for usage"
+                return 1
+                ;;
+        esac
+    done
+
+    __print_header "Initializing dotfiles"
+    __run_init_steps || return 1
+    __print_header "Initialization complete! 🎉"
+}
+
+# ─── Help ───────────────────────────────────────────────────────────────────
+cmd_help() {
+    local command_name="${1:-}"
+    if [[ -n "$command_name" ]]; then
+        if declare -F "cmd_${command_name}" >/dev/null; then
+            "cmd_${command_name}" --help
+            return
+        fi
+        __print_error "Unknown command: $command_name"
+        echo "Run '${SCRIPT_NAME} help' for the list of commands"
+        return 1
+    fi
+
+    echo -e "${BOLD}${SCRIPT_NAME}${RESET} — dotfiles manager for adriankarlen/dots"
+    echo "Version: ${VERSION}"
+    echo
+    echo -e "${BOLD}USAGE:${RESET}"
+    echo "    ${SCRIPT_NAME} [COMMAND] [ARGS]"
+    echo "    ${SCRIPT_NAME}                 # default: stow --restow"
+    echo
+    echo -e "${BOLD}COMMANDS:${RESET}"
+    echo "    init                Bootstrap this machine (Homebrew, packages, stow, ...)"
+    echo "    stow                Create/refresh symlinks (default: --restow)"
+    echo "    unstow              Remove all stow-managed symlinks"
+    echo "    restow              Alias for 'stow' (explicit refresh)"
+    echo "    doctor              Verify Homebrew/stow install and symlink health"
+    echo "    link                Symlink this script into ~/.local/bin/dot"
+    echo "    unlink              Remove the ~/.local/bin/dot symlink"
+    echo "    edit                Open the repo in \$EDITOR"
+    echo "    help [COMMAND]      Show this help, or help for a specific command"
+    echo
+    echo -e "${BOLD}GLOBAL OPTIONS:${RESET}"
+    echo "    --version           Show version and exit"
+    echo "    -h, --help          Show this help and exit"
+    echo
+    echo -e "${BOLD}EXAMPLES:${RESET}"
+    echo "    ${SCRIPT_NAME} init                        # bootstrap a fresh machine"
+    echo "    ${SCRIPT_NAME} init --skip-services         # bootstrap, no skhd/sketchybar/borders/defaults"
+    echo "    ${SCRIPT_NAME}                              # restow dotfiles (default)"
+    echo "    ${SCRIPT_NAME} doctor                       # check symlink + tool health"
+    echo "    ${SCRIPT_NAME} link                         # install 'dot' to PATH"
+    echo
+    echo -e "${BOLD}FILES:${RESET}"
+    echo "    Repo:     ${DOTFILES_DIR}"
+    echo "    Source:   ${HOME_DIR}"
+    echo "    Target:   ${STOW_TARGET}"
+    echo "    Brewfile: ${BREWFILE}"
+    echo "    Ignore:   ${HOME_DIR}/.stow-local-ignore"
+}
+
+# ─── Main ───────────────────────────────────────────────────────────────────
+main() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --version)
+                echo "${SCRIPT_NAME} version ${VERSION}"
+                exit 0
+                ;;
+            -h|--help)
+                cmd_help
+                exit 0
+                ;;
+            *)
+                break
+                ;;
+        esac
+        shift
+    done
+
+    local cmd="${1:-stow}"
+    shift || true
+
+    case "$cmd" in
+        init)    cmd_init    "$@" ;;
+        stow)    cmd_stow    "$@" ;;
+        unstow)  cmd_unstow  "$@" ;;
+        restow)  cmd_restow  "$@" ;;
+        doctor)  cmd_doctor  "$@" ;;
+        link)    cmd_link    "$@" ;;
+        unlink)  cmd_unlink  "$@" ;;
+        edit)    cmd_edit    "$@" ;;
+        help)    cmd_help    "$@" ;;
+        *)
+            __print_error "Unknown command: $cmd"
+            echo "Run '${SCRIPT_NAME} help' for usage"
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

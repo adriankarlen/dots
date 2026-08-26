@@ -1,38 +1,48 @@
 .DS_Store
-.config/acli/
-.config/gh/
-.config/github-copilot/
-.config/raycast/
-.config/sesh/spp.toml
-.config/karabiner/
-.config/opencode/
-.config/zed/prompts/
-.config/gcloud/
-.config/configstore/
-.config/openspec/
-.config/herdr/*
-!.config/herdr/config.toml
-.config/sol/*
-!.config/sol/config.json
-.config/hunk/*
-!.config/hunk/config.toml
+/home/.config/acli/
+/home/.config/gh/
+/home/.config/github-copilot/
+/home/.config/raycast/
+/home/.config/sesh/spp.toml
+/home/.config/karabiner/
+/home/.config/opencode/
+/home/.config/zed/prompts/
+/home/.config/gcloud/
+/home/.config/configstore/
+/home/.config/openspec/
+/home/.config/herdr/*
+!/home/.config/herdr/config.toml
+/home/.config/sol/*
+!/home/.config/sol/config.json
+/home/.config/hunk/*
+!/home/.config/hunk/config.toml
 restart_session_*
-.config/lazyjira/auth.json
-.config/pi/web-search-cache/
+/home/.config/lazyjira/auth.json
+/home/.config/pi/web-search-cache/
 
-.pi/agent/sessions/
-.pi/agent/npm/
-.pi/agent/trust.json
-.pi/agent/models-store.json
-.pi/agent/auth.json
-.pi/agent/claude-bridge.json
-.pi/agent/mcp-cache.json
-.pi/agent/mcp-npx-cache.json
-.pi/agent/pi-crash.log
-.pi/agent/mcp-onboarding.json
+/home/.pi/agent/sessions/
+/home/.pi/agent/npm/
+/home/.pi/agent/trust.json
+/home/.pi/agent/models-store.json
+/home/.pi/agent/auth.json
+/home/.pi/agent/claude-bridge.json
+/home/.pi/agent/mcp-cache.json
+/home/.pi/agent/mcp-npx-cache.json
+/home/.pi/agent/pi-crash.log
+/home/.pi/agent/mcp-onboarding.json
+/home/.pi/agent/skills/
+
+# pi's project-local state when working *in this repo* (CWD-relative .pi/,
+# distinct from the global ~/.pi/ symlinked from home/.pi — this is the
+# exact ambiguity the home/ restructure was meant to eliminate for every
+# other project; this repo isn't special-cased, so it needs the same rule)
+/.pi/
 
 .storecode/
 **/.claude/settings.local.json
-/.agents/.skills-meta.json
-/.agents/skills/spp*/
-/.agents/mcp.json
+/home/.agents/.skills-meta.json
+/home/.agents/skills/spp*/
+/home/.agents/mcp.json
+
+# Homebrew package install failures saved by `dot init` (see `dot`)
+/failed_packages_*.txt
