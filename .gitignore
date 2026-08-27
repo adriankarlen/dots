@@ -20,25 +20,40 @@ restart_session_*
 /home/.config/lazyjira/auth.json
 /home/.config/pi/web-search-cache/
 
-/home/.pi/agent/sessions/
-/home/.pi/agent/npm/
-/home/.pi/agent/git/
-/home/.pi/agent/trust.json
-/home/.pi/agent/models-store.json
-/home/.pi/agent/auth.json
-/home/.pi/agent/claude-bridge.json
+# pi agent runtime/state (keep settings + customization resources tracked)
+/home/.pi/agent/*
+/home/.pi/todos/*
+/home/.pi/.pi/todos/*
+/home/.pi/todos/*
+
+# pi MCP adapter runtime/secrets
+/home/.pi/agent/mcp-oauth/
 /home/.pi/agent/mcp-cache.json
 /home/.pi/agent/mcp-npx-cache.json
-/home/.pi/agent/pi-crash.log
-/home/.pi/agent/mcp-onboarding.json
-/home/.pi/agent/skills/
+/home/.pi/agent/mcp-auth.json
+/home/.local/share/pi/mcp-auth.json
 
-# pi's project-local state when working *in this repo* (CWD-relative .pi/,
-# distinct from the global ~/.pi/ symlinked from home/.pi — this is the
-# exact ambiguity the home/ restructure was meant to eliminate for every
-# other project; this repo isn't special-cased, so it needs the same rule)
+# pi extensions node_modules
+/home/.pi/agent/extensions/**/node_modules/
+
+# pi extensions log files
+/home/.pi/agent/extensions/**/logs/
+/home/.pi/agent/extensions/**/logs/**
+
+!/home/.pi/agent/tsconfig.json
+!/home/.pi/agent/package.json
+!/home/.pi/agent/themes/
+!/home/.pi/agent/themes/*.json
+!/home/.pi/agent/extensions/
+!/home/.pi/agent/extensions/**
+!/home/.pi/agent/keybindings.json
+!/home/.pi/agent/mcp.json
+# settings.json is intentionally NOT tracked: pi rewrites it on model
+# switches, changelog dismissal, etc. See scripts/install-pi-packages.sh
+# for the tracked source of truth on installed packages.
+!/home/.pi/agent/APPEND_SYSTEM.md
+
 /.pi/
-
 /.storecode/
 /.claude/
 /home/.agents/.skills-meta.json
