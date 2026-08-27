@@ -108,6 +108,24 @@
       "skillFolderHash": "6ba13fa3503e9607eed8f94828b524510d83b7ef",
       "installedAt": "2026-08-26T12:27:19.493Z",
       "updatedAt": "2026-08-26T12:27:19.493Z"
+    },
+    "review": {
+      "source": "adriankarlen/dots-fedora",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/adriankarlen/dots-fedora.git",
+      "skillPath": "home/.agents/skills/review/SKILL.md",
+      "skillFolderHash": "015084d55fa81910c91afafcc9268460b0a04b9a",
+      "installedAt": "2026-11-30T00:00:00.000Z",
+      "updatedAt": "2026-11-30T00:00:00.000Z"
+    },
+    "pair-with-magnus": {
+      "source": "adriankarlen/dots-fedora",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/adriankarlen/dots-fedora.git",
+      "skillPath": "home/.agents/skills/pair-with-magnus/SKILL.md",
+      "skillFolderHash": "a8f3b8ec16a3e5a9c3686ad73d37926410300cdd",
+      "installedAt": "2026-11-30T00:00:00.000Z",
+      "updatedAt": "2026-11-30T00:00:00.000Z"
     }
   },
   "dismissed": {
