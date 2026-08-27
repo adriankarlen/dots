@@ -19,6 +19,8 @@
 restart_session_*
 /home/.config/lazyjira/auth.json
 /home/.config/pi/web-search-cache/
+/home/.config/tmux/plugins/*
+!/home/.config/tmux/plugins/.tpack-migrate.lock
 
 # pi agent runtime/state (keep settings + customization resources tracked)
 /home/.pi/agent/*
