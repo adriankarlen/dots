@@ -1,5 +1,152 @@
 {
-  "enabled": true,
-  "debug": false,
-  "yoloMode": false
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+
+  "debugLog": false,
+  "permissionReviewLog": true,
+  "yoloMode": false,
+
+  "permission": {
+    // Default posture: let the agent work uninterrupted; only ask/deny for
+    // genuinely destructive or sensitive-data operations.
+    "*": "allow",
+
+    // Cross-cutting credential/secret guard: never silently read/write/edit
+    // secrets or keys through ANY tool (built-in file tools, bash, MCP),
+    // regardless of where they live. This is a strict upgrade over gating
+    // read/write/edit separately -- it also covers bash (cat/cp/echo>...)
+    // and MCP/extension tools that touch a path.
+    "path": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*/.ssh/*": "deny",
+      "*/.gnupg/*": "deny",
+      "*/.aws/*": "deny",
+      "*/.kube/*": "deny",
+      "*/.docker/config.json": "deny",
+      "*/.config/gcloud/*": "deny",
+      "*/.azure/*": "deny",
+      "*/.netrc": "deny",
+      "*/.npmrc": "deny",
+      "*/.pypirc": "deny",
+      "*/.config/gh/hosts.yml": "deny",
+      "*/.config/op/*": "deny",
+      "*Local State": "deny",
+      "*/Cookies": "deny",
+      "*wallet.dat": "deny",
+      "*/.electrum/*": "deny",
+      // .env.example etc. are fine to read/edit -- must come after the
+      // *.env.* deny above so last-match-wins picks the allow.
+      "*.env.example": "allow"
+    },
+
+    // Write/edit-only guards: fine to read these, but changing them should
+    // at least prompt (or, for systemd units, is flat-out denied).
+    "write": {
+      "*": "allow",
+      "/etc/systemd/system/*": "deny",
+      "*/.bashrc": "ask",
+      "*/.zshrc": "ask",
+      "*/.profile": "ask"
+    },
+    "edit": {
+      "*": "allow",
+      "/etc/systemd/system/*": "deny",
+      "*/.bashrc": "ask",
+      "*/.zshrc": "ask",
+      "*/.profile": "ask"
+    },
+
+    "bash": {
+      "*": "allow",
+
+      // Hard blocks: irreversible / system-damaging, no legitimate uninterrupted use case.
+      "rm -rf *": "deny",
+      "rm -rf /*": "deny",
+      "rm -rf ~*": "deny",
+      "rm -fr *": "deny",
+      "sudo *": "deny",
+      "mkfs*": "deny",
+      "dd of=/dev/": "deny",
+      "chmod -R 777 /*": "deny",
+      "chown -R *": "ask",
+      "🙁){ :|:& };:": "deny",
+
+      // Base64 (and similar) encoding/decoding on the command line is a
+      // near-universal marker of obfuscated exfiltration/payload-smuggling in
+      // malicious skills. Never allow it silently.
+      "base64": "deny",
+      "base32": "deny",
+      "xxd -r": "deny",
+      "openssl enc": "deny",
+
+      // Remote-code-execution / "unverifiable dependency" patterns: fetching a
+      // script and piping it straight into an interpreter, or dynamically
+      // importing/eval'ing remote content.
+      "curl * | bash": "deny",
+      "curl * | sh": "deny",
+      "curl * | zsh": "deny",
+      "curl * | python*": "deny",
+      "curl * | node": "deny",
+      "wget * | bash": "deny",
+      "wget * | sh": "deny",
+      "eval \"$(curl": "deny",
+      "eval $(curl": "deny",
+      "eval \"$(wget": "deny",
+      "source <(curl": "deny",
+      "source <(wget": "deny",
+      "* | curl *": "deny",
+      "* | nc *": "deny",
+
+      // Reverse shells / raw network backdoors.
+      "bash -i >&": "deny",
+      "/dev/tcp/": "deny",
+      "*nc -e *": "deny",
+      "*ncat -e *": "deny",
+      "*mkfifo *": "ask",
+
+      // Persistence mechanisms favored by malicious skills (systemd/cron
+      // backdoors per the report's "security disablement" category).
+      "crontab -e*": "ask",
+      "crontab -r*": "ask",
+      "*crontab *": "ask",
+      "systemctl enable *": "ask",
+      "systemctl service": "ask",
+
+      // Security-control disablement.
+      "setenforce 0": "deny",
+      "iptables -F": "ask",
+      "ufw disable": "ask",
+      "*chattr -i *": "ask",
+
+      // Anti-forensics / covering tracks.
+      "history -c*": "ask",
+      "unset HISTFILE": "ask",
+
+      // Password-protected archives are a classic scanner-evasion technique.
+      "unzip -P *": "ask",
+      "7z*-p": "ask",
+
+      // Ambiguous but potentially destructive: confirm instead of blanket allow/deny.
+      "git push --force*": "ask",
+      "git push -f *": "ask",
+      "git reset --hard*": "ask",
+      "git clean -fd*": "ask"
+    },
+
+    "mcp": "allow",
+    "skill": "allow",
+
+    // CWD-boundary gate. Kept at "ask" in general, but tmp scratch space is
+    // relaxed so agents can freely read/write temp files without a prompt on
+    // every call. Covers /tmp (and its macOS /private/tmp symlink target,
+    // though the dual-form matching means either alone would suffice) plus
+    // $TMPDIR (macOS per-user temp, e.g. /var/folders/.../T/...).
+    "external_directory": {
+      "*": "ask",
+      "/tmp/*": "allow",
+      "/private/tmp/*": "allow",
+      "/var/folders/*": "allow"
+    }
+  }
 }

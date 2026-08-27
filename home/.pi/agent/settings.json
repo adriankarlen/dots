@@ -5,7 +5,7 @@
     "npm:pi-web-access",
     "npm:@twogiants/pi-anthropic-vertex",
     "npm:@zenobius/pi-rose-pine",
-    "npm:pi-permission-system"
+    "npm:@gotgenes/pi-permission-system"
   ],
   "lastChangelogVersion": "0.84.3",
   "theme": "rose-pine",
