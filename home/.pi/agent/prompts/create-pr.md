@@ -8,7 +8,7 @@ Steps:
 
 1. **Branch**: If currently on the default branch, create a new branch with a short descriptive name (e.g. `feat/...`, `fix/...`). If already on a feature branch, use it.
 
-2. **Commit**: Group the changes into reasonable chunks by implemented sub-feature or concern. Make one commit per chunk with a clear, conventional-style message. Do not make one giant commit, and do not split trivially related changes apart.
+2. **Commit**: Group the changes into reasonable chunks by implemented sub-feature or concern. Make one commit per chunk, using the caveman-commit skill to write each commit message. Do not make one giant commit, and do not split trivially related changes apart.
 
 3. **PR**: Push the branch and create the PR with `gh pr create`.
 
@@ -22,5 +22,5 @@ PR title and body rules:
 
 Writing style:
 
-- After drafting the PR title and body, review the text using the humanizer skill (read `~/.claude/skills/humanizer/SKILL.md` and apply its guidance) to remove AI-sounding phrasing.
+- After drafting the PR title and body, review the text using the humanizer skill to remove AI-sounding phrasing.
 - Trim anything the humanizer flags; keep the final text plain and minimal.
