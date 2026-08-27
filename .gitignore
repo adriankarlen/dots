@@ -22,6 +22,7 @@ restart_session_*
 
 /home/.pi/agent/sessions/
 /home/.pi/agent/npm/
+/home/.pi/agent/git/
 /home/.pi/agent/trust.json
 /home/.pi/agent/models-store.json
 /home/.pi/agent/auth.json
