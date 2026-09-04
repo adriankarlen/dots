@@ -1,0 +1,1015 @@
+/* ==UserStyle==
+@name           Rosé Pine for Github
+@description    Soho vibes for Github
+==/UserStyle== */
+
+/* Converted from less to css */
+
+@-moz-document regexp("https:\\/\\/(gist\\.)*github\\.com(?!((\\/.+?\\/.+?\\/commit\\/[A-Fa-f0-9]+\\.(patch|diff)$)|\\/home$|\\/features($|\\/.*)|\\/marketplace($|\\?.*|\\/.*)|\\/organizations\\/plan)).*$"
+
+) {
+  @media (prefers-color-scheme: light) {
+    html[data-color-mode="auto"][data-light-theme="light"] {
+      /* dawn — light variant palette */
+      --base: #faf4ed;
+      --surface: #fffaf3;
+      --overlay: #f2e9e1;
+      --muted: #9893a5;
+      --subtle: #797593;
+      --text: #464261;
+      --love: #b4637a;
+      --gold: #ea9d34;
+      --rose: #d7827e;
+      --pine: #286983;
+      --foam: #56949f;
+      --iris: #907aa9;
+      --highlight-low: #f4ede8;
+      --highlight-med: #dfdad9;
+      --highlight-high: #cecacd;
+      --accent: var(--iris);
+      /* accent color — change this */
+      color-scheme: light !important;
+      --fgColor-white: var(--base) !important;
+      --color-ansi-black: var(--subtle);
+      --color-ansi-black-bright: var(--subtle);
+      --color-ansi-gray: var(--subtle);
+      --color-ansi-white: var(--overlay);
+      --color-ansi-white-bright: var(--overlay);
+
+      .form-select {
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23797593' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+      }
+    }
+
+    html[data-color-mode="auto"][data-light-theme="dark"] {
+      /* main — dark variant palette */
+      --base: #191724;
+      --surface: #1f1d2e;
+      --overlay: #26233a;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --love: #eb6f92;
+      --gold: #f6c177;
+      --rose: #ebbcba;
+      --pine: #31748f;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+      --highlight-low: #21202e;
+      --highlight-med: #403d52;
+      --highlight-high: #524f67;
+      --accent: var(--iris);
+      /* accent color — change this */
+      color-scheme: dark !important;
+      --fgColor-white: var(--text) !important;
+      --color-ansi-black: var(--overlay);
+      --color-ansi-black-bright: var(--overlay);
+      --color-ansi-gray: var(--overlay);
+      --color-ansi-white: var(--subtle);
+      --color-ansi-white-bright: var(--subtle);
+
+      .form-select {
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23908caa' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+      }
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html[data-color-mode="auto"][data-dark-theme="light"] {
+      /* dawn — light variant palette */
+      --base: #faf4ed;
+      --surface: #fffaf3;
+      --overlay: #f2e9e1;
+      --muted: #9893a5;
+      --subtle: #797593;
+      --text: #464261;
+      --love: #b4637a;
+      --gold: #ea9d34;
+      --rose: #d7827e;
+      --pine: #286983;
+      --foam: #56949f;
+      --iris: #907aa9;
+      --highlight-low: #f4ede8;
+      --highlight-med: #dfdad9;
+      --highlight-high: #cecacd;
+      --accent: var(--love);
+      /* accent color — change this */
+      color-scheme: light !important;
+      --fgColor-white: var(--base) !important;
+      --color-ansi-black: var(--subtle);
+      --color-ansi-black-bright: var(--subtle);
+      --color-ansi-gray: var(--subtle);
+      --color-ansi-white: var(--overlay);
+      --color-ansi-white-bright: var(--overlay);
+
+      .form-select {
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23797593' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+      }
+    }
+
+    html[data-color-mode="auto"][data-dark-theme="dark"] {
+      /* main — dark variant palette */
+      --base: #191724;
+      --surface: #1f1d2e;
+      --overlay: #26233a;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --love: #eb6f92;
+      --gold: #f6c177;
+      --rose: #ebbcba;
+      --pine: #31748f;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+      --highlight-low: #21202e;
+      --highlight-med: #403d52;
+      --highlight-high: #524f67;
+      --accent: var(--iris);
+      /* accent color — change this */
+      color-scheme: dark !important;
+      --fgColor-white: var(--text) !important;
+      --color-ansi-black: var(--overlay);
+      --color-ansi-black-bright: var(--overlay);
+      --color-ansi-gray: var(--overlay);
+      --color-ansi-white: var(--subtle);
+      --color-ansi-white-bright: var(--subtle);
+
+      .form-select {
+        background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23908caa' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+      }
+    }
+  }
+
+  html[data-color-mode="light"][data-light-theme="dark"],
+  html[data-color-mode="dark"][data-dark-theme="dark"] {
+    /* main — dark variant palette */
+    --base: #191724;
+    --surface: #1f1d2e;
+    --overlay: #26233a;
+    --muted: #6e6a86;
+    --subtle: #908caa;
+    --text: #e0def4;
+    --love: #eb6f92;
+    --gold: #f6c177;
+    --rose: #ebbcba;
+    --pine: #31748f;
+    --foam: #9ccfd8;
+    --iris: #c4a7e7;
+    --highlight-low: #21202e;
+    --highlight-med: #403d52;
+    --highlight-high: #524f67;
+    --accent: var(--iris);
+    /* accent color — change this */
+    color-scheme: dark !important;
+    --fgColor-white: var(--text) !important;
+    --color-ansi-black: var(--overlay);
+    --color-ansi-black-bright: var(--overlay);
+    --color-ansi-gray: var(--overlay);
+    --color-ansi-white: var(--subtle);
+    --color-ansi-white-bright: var(--subtle);
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23908caa' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+    }
+  }
+
+  html[data-color-mode="light"][data-light-theme="light"],
+  html[data-color-mode="dark"][data-dark-theme="light"] {
+    /* dawn — light variant palette */
+    --base: #faf4ed;
+    --surface: #fffaf3;
+    --overlay: #f2e9e1;
+    --muted: #9893a5;
+    --subtle: #797593;
+    --text: #464261;
+    --love: #b4637a;
+    --gold: #ea9d34;
+    --rose: #d7827e;
+    --pine: #286983;
+    --foam: #56949f;
+    --iris: #907aa9;
+    --highlight-low: #f4ede8;
+    --highlight-med: #dfdad9;
+    --highlight-high: #cecacd;
+    --accent: var(--iris);
+    /* accent color — change this */
+    color-scheme: light !important;
+    --fgColor-white: var(--base) !important;
+    --color-ansi-black: var(--subtle);
+    --color-ansi-black-bright: var(--subtle);
+    --color-ansi-gray: var(--subtle);
+    --color-ansi-white: var(--overlay);
+    --color-ansi-white-bright: var(--overlay);
+
+    .form-select {
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='%23797593' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m4.427 9.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 9H4.604a.25.25 0 0 0-.177.427M4.423 6.47 7.82 3.072a.25.25 0 0 1 .354 0L11.57 6.47a.25.25 0 0 1-.177.427H4.6a.25.25 0 0 1-.177-.427'/%3E%3C/svg%3E");
+    }
+  }
+
+  html:not([data-light-theme="light"], [data-light-theme="dark"]) body:not(.logged-out)::after,
+  html:not([data-dark-theme="dark"], [data-dark-theme="light"]) body:not(.logged-out)::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    max-width: 40ch;
+    background-color: var(--color-danger-fg);
+    color: var(--color-header-bg);
+    content: "Unsupported GitHub theme detected! Please switch to the default light/dark theme via the GitHub Appearance settings to get the best experience for the Rosé Pine GitHub userstyle.";
+    z-index: 9999;
+  }
+
+  /* Everything below reads the palette custom properties set above per
+	   matched theme state instead of resolving them away — this is the
+	   former #rose-pine(@lookup, @accent) mixin body, applied once here
+	   since none of it depends on which of the states above matched. */
+  html {
+    ::selection {
+      background-color: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+    }
+
+    input,
+    textarea {
+      &::placeholder {
+        color: var(--subtle) !important;
+      }
+    }
+
+    .cm-placeholder {
+      color: var(--subtle) !important;
+    }
+
+    accent-color: var(--accent) !important;
+    color: var(--text) !important;
+    --color-social-reaction-bg-reacted-hover: color-mix(in srgb,
+      var(--accent) 30%,
+      transparent) !important;
+    --color-notifications-button-hover-bg: color-mix(in srgb, var(--accent) 60%, transparent) !important;
+    --color-workflow-card-header-shadow: rgba(27, 31, 35, 0.04);
+    --color-icon-directory: var(--fgColor-muted, var(--color-fg-muted));
+    --color-calendar-halloween-graph-day-L1-bg: color-mix(in srgb,
+      var(--accent) 40%,
+      transparent) !important;
+    --color-calendar-halloween-graph-day-L2-bg: color-mix(in srgb,
+      var(--accent) 60%,
+      transparent) !important;
+    --color-calendar-halloween-graph-day-L3-bg: color-mix(in srgb,
+      var(--accent) 80%,
+      transparent) !important;
+    --color-calendar-halloween-graph-day-L4-bg: var(--accent) !important;
+    --color-calendar-winter-graph-day-L1-bg: color-mix(in srgb,
+      var(--accent) 40%,
+      transparent) !important;
+    --color-calendar-winter-graph-day-L2-bg: color-mix(in srgb,
+      var(--accent) 60%,
+      transparent) !important;
+    --color-calendar-winter-graph-day-L3-bg: color-mix(in srgb,
+      var(--accent) 80%,
+      transparent) !important;
+    --color-calendar-winter-graph-day-L4-bg: var(--accent) !important;
+    --color-calendar-graph-day-bg: var(--overlay) !important;
+    --color-calendar-graph-day-border: transparent !important;
+    --color-calendar-graph-day-L1-bg: color-mix(in srgb, var(--pine) 40%, transparent) !important;
+    --color-calendar-graph-day-L2-bg: color-mix(in srgb, var(--pine) 60%, transparent) !important;
+    --color-calendar-graph-day-L3-bg: color-mix(in srgb, var(--pine) 80%, transparent) !important;
+    --color-calendar-graph-day-L4-bg: var(--pine) !important;
+    --color-calendar-graph-day-L2-border: transparent !important;
+    --color-calendar-graph-day-L3-border: transparent !important;
+    --color-calendar-graph-day-L4-border: transparent !important;
+    --color-user-mention-fg: var(--accent) !important;
+    --color-user-mention-bg: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+    --color-dashboard-feed-bg: var(--color-scale-gray-9);
+    --color-mktg-btn-shadow-outline: rgba(255, 255, 255, 0.25) 0 0 0 1px inset;
+    --color-marketing-icon-secondary: var(--color-scale-pine-5);
+    --color-project-header-bg: var(--color-scale-gray-9);
+    --color-project-sidebar-bg: var(--color-scale-gray-8);
+    --color-project-gradient-in: var(--color-scale-gray-8);
+    --color-project-gradient-out: rgba(22, 27, 34, 0);
+    --color-diff-blob-selected-line-highlight-mix-blend-mode: screen;
+    --topicTag-borderColor: #0000;
+    --highlight-neutral-bgColor: color-mix(in srgb, var(--gold) 30%, transparent);
+    --page-header-bgColor: var(--base) !important;
+    --diffBlob-addition-fgColor-text: var(--text);
+    --diffBlob-addition-fgColor-num: var(--text);
+    --diffBlob-addition-bgColor-num: color-mix(in srgb, var(--foam) 30%, transparent);
+    --diffBlob-addition-bgColor-line: color-mix(in srgb, var(--foam) 15%, transparent);
+    --diffBlob-addition-bgColor-word: color-mix(in srgb, var(--foam) 30%, transparent);
+    --diffBlob-deletion-fgColor-text: var(--text);
+    --diffBlob-deletion-fgColor-num: var(--text);
+    --diffBlob-deletion-bgColor-num: color-mix(in srgb, var(--love) 30%, transparent);
+    --diffBlob-deletion-bgColor-line: color-mix(in srgb, var(--love) 15%, transparent);
+    --diffBlob-deletion-bgColor-word: color-mix(in srgb, var(--love) 30%, transparent);
+    --diffBlob-hunk-bgColor-num: color-mix(in srgb, var(--accent) 40%, transparent) !important;
+    --diffBlob-expander-iconColor: #848d97;
+    --codeMirror-fgColor: var(--text);
+    --codeMirror-bgColor: var(--surface);
+    --codeMirror-gutters-bgColor: var(--surface);
+    --codeMirror-gutterMarker-fgColor-default: var(--surface);
+    --codeMirror-gutterMarker-fgColor-muted: var(--muted);
+    --codeMirror-lineNumber-fgColor: var(--subtle);
+    --codeMirror-cursor-fgColor: var(--text);
+    --codeMirror-selection-bgColor: #388bfd66;
+    --codeMirror-activeline-bgColor: #6e768166;
+    --codeMirror-matchingBracket-fgColor: var(--text);
+    --codeMirror-lines-bgColor: var(--surface);
+    --codeMirror-syntax-fgColor-comment: var(--muted);
+    --codeMirror-syntax-fgColor-constant: var(--pine);
+    --codeMirror-syntax-fgColor-entity: var(--pine);
+    --codeMirror-syntax-fgColor-keyword: var(--iris);
+    --codeMirror-syntax-fgColor-storage: var(--rose);
+    --codeMirror-syntax-fgColor-string: var(--foam);
+    --codeMirror-syntax-fgColor-support: #79c0ff;
+    --codeMirror-syntax-fgColor-variable: var(--rose);
+    --header-fgColor-default: var(--text) !important;
+    --header-fgColor-logo: var(--text) !important;
+    --header-bgColor: var(--base) !important;
+    --header-borderColor-divider: #8b949e !important;
+    --headerSearch-bgColor: var(--surface) !important;
+    --headerSearch-borderColor: var(--overlay) !important;
+    --avatar-bgColor: color-mix(in srgb, var(--text) 26%, transparent);
+    --avatar-borderColor: var(--overlay);
+    --avatar-shadow: 0px 0px 0px 2px #0d1117;
+    --avatarStack-fade-bgColor-default: var(--overlay);
+    --avatarStack-fade-bgColor-muted: #21262d;
+    --control-bgColor-rest: var(--love) !important;
+    --control-bgColor-hover: #292e36 !important;
+    --control-bgColor-active: var(--overlay) !important;
+    --control-bgColor-disabled: color-mix(in srgb, var(--surface) 60%, transparent) !important;
+    --control-bgColor-selected: #161b22 !important;
+    --control-fgColor-rest: var(--text) !important;
+    --control-fgColor-placeholder: #484f58 !important;
+    --control-fgColor-disabled: var(--muted) !important;
+    --control-borderColor-rest: var(--overlay) !important;
+    --control-borderColor-emphasis: #666e79 !important;
+    --control-borderColor-disabled: color-mix(in srgb, var(--overlay) 75%, transparent) !important;
+    --control-borderColor-selected: #f0f6fc !important;
+    --control-borderColor-success: var(--foam) !important;
+    --control-borderColor-danger: var(--love) !important;
+    --control-borderColor-warning: var(--gold) !important;
+    --control-iconColor-rest: #848d97;
+    --control-transparent-bgColor-rest: #0000;
+    --control-transparent-bgColor-hover: color-mix(in srgb, var(--overlay) 20%, transparent);
+    --control-transparent-bgColor-active: color-mix(in srgb, var(--muted) 50%, transparent);
+    --control-transparent-bgColor-disabled: #21262db3;
+    --control-transparent-bgColor-selected: #b1bac414;
+    --control-transparent-borderColor-rest: #0000;
+    --control-transparent-borderColor-hover: #0000;
+    --control-transparent-borderColor-active: #0000;
+    --control-danger-fgColor-rest: var(--love);
+    --control-danger-fgColor-hover: var(--base);
+    --control-danger-bgColor-hover: color-mix(in srgb, var(--love) 80%, transparent);
+    --control-danger-bgColor-active: var(--love);
+    --control-checked-bgColor-rest: var(--accent) !important;
+    --control-checked-bgColor-hover: color-mix(in srgb, var(--accent) 95%, white) !important;
+    --control-checked-bgColor-active: color-mix(in srgb, var(--accent) 95%, white) !important;
+    --control-checked-bgColor-disabled: #6e7681;
+    --control-checked-fgColor-rest: var(--base);
+    --control-checked-fgColor-disabled: #010409;
+    --control-checked-borderColor-rest: var(--accent) !important;
+    --control-checked-borderColor-hover: var(--accent) !important;
+    --control-checked-borderColor-active: var(--accent) !important;
+    --control-checked-borderColor-disabled: var(--overlay);
+    --controlTrack-bgColor-rest: var(--overlay);
+    --controlTrack-bgColor-hover: var(--overlay);
+    --controlTrack-bgColor-active: var(--overlay);
+    --controlTrack-bgColor-disabled: #6e7681;
+    --controlTrack-fgColor-rest: #848d97;
+    --controlTrack-fgColor-disabled: var(--text);
+    --controlTrack-borderColor-rest: #0000;
+    --controlTrack-borderColor-disabled: #6e7681;
+    --controlKnob-bgColor-rest: var(--surface);
+    --controlKnob-bgColor-disabled: #21262db3;
+    --controlKnob-bgColor-checked: var(--text);
+    --controlKnob-borderColor-rest: var(--overlay);
+    --controlKnob-borderColor-disabled: #21262db3;
+    --controlKnob-borderColor-checked: var(--pine);
+    --button-default-fgColor-rest: var(--text) !important;
+    --button-default-bgColor-rest: var(--overlay) !important;
+    --button-default-bgColor-hover: var(--overlay) !important;
+    --button-default-bgColor-active: var(--overlay) !important;
+    --button-default-bgColor-selected: var(--overlay) !important;
+    --button-default-bgColor-disabled: var(--surface) !important;
+    --button-default-borderColor-rest: var(--overlay) !important;
+    --button-default-borderColor-hover: var(--overlay) !important;
+    --button-default-borderColor-active: var(--overlay) !important;
+    --button-default-borderColor-disabled: var(--highlight-med) !important;
+    --button-default-fgColor-disabled: var(--muted) !important;
+    --button-default-shadow-resting: 0px 0px 0px 0px #000;
+    --button-primary-fgColor-rest: var(--surface) !important;
+    --button-primary-fgColor-disabled: color-mix(in srgb, var(--surface) 60%, transparent) !important;
+    --button-primary-iconColor-rest: var(--surface) !important;
+    --button-primary-bgColor-rest: var(--foam) !important;
+    --button-primary-bgColor-hover: color-mix(in srgb, var(--foam) 95%, white) !important;
+    /* TODO: saturate(@foam, 5%) has no faithful color-mix() form; approximated via relative color syntax */
+    --button-primary-bgColor-active: hsl(from var(--foam) h calc(s + 5%) l) !important;
+    --button-primary-bgColor-disabled: color-mix(in srgb, var(--foam) 70%, transparent) !important;
+    --button-primary-borderColor-rest: var(--foam) !important;
+    --button-primary-borderColor-hover: var(--foam) !important;
+    --button-primary-borderColor-active: var(--foam) !important;
+    --button-primary-borderColor-disabled: color-mix(in srgb, var(--foam) 70%, transparent) !important;
+    --button-primary-shadow-selected: 0px 0px 0px 0px #000;
+    --button-invisible-fgColor-rest: var(--accent) !important;
+    --button-invisible-fgColor-hover: color-mix(in srgb, var(--accent) 90%, white) !important;
+    --button-invisible-fgColor-disabled: #6e7681;
+    --button-invisible-iconColor-rest: var(--muted);
+    --button-invisible-iconColor-hover: #e6edf3;
+    --button-invisible-iconColor-disabled: #6e7681;
+    --button-invisible-bgColor-rest: #0000;
+    --button-invisible-bgColor-hover: #b1bac41f;
+    --button-invisible-bgColor-active: #b1bac433;
+    --button-invisible-bgColor-disabled: color-mix(in srgb, var(--overlay) 70%, transparent);
+    --button-invisible-borderColor-rest: #0000;
+    --button-invisible-borderColor-hover: #0000;
+    --button-invisible-borderColor-disabled: color-mix(in srgb, var(--overlay) 70%, transparent);
+    --button-outline-fgColor-rest: #388bfd;
+    --button-outline-fgColor-hover: #58a6ff;
+    --button-outline-fgColor-active: var(--text);
+    --button-outline-fgColor-disabled: #4493f880;
+    --button-outline-bgColor-rest: #f0f6fc;
+    --button-outline-bgColor-hover: var(--overlay);
+    --button-outline-bgColor-active: #0d419d;
+    --button-outline-bgColor-disabled: #0d1117;
+    --button-outline-borderColor-hover: #f0f6fc1a;
+    --button-outline-borderColor-selected: #f0f6fc1a;
+    --button-outline-shadow-selected: 0px 0px 0px 0px #000;
+    --button-danger-fgColor-rest: var(--love) !important;
+    --button-danger-fgColor-hover: var(--surface) !important;
+    --button-danger-fgColor-active: var(--surface) !important;
+    --button-danger-fgColor-disabled: color-mix(in srgb, var(--love) 50%, transparent) !important;
+    --button-danger-iconColor-rest: var(--love) !important;
+    --button-danger-iconColor-hover: var(--base) !important;
+    --button-danger-bgColor-rest: var(--overlay) !important;
+    --button-danger-bgColor-hover: var(--love) !important;
+    --button-danger-bgColor-active: color-mix(in srgb, var(--love) 95%, black) !important;
+    --button-danger-bgColor-disabled: var(--surface) !important;
+    --button-danger-borderColor-rest: var(--overlay) !important;
+    --button-danger-borderColor-hover: var(--love) !important;
+    --button-danger-borderColor-active: color-mix(in srgb, var(--love) 95%, black) !important;
+    --button-danger-shadow-selected: 0px 0px 0px 0px #000;
+    --button-inactive-fgColor: #8b949e;
+    --button-inactive-bgColor: #21262d;
+    --button-star-iconColor: var(--gold) !important;
+    --buttonCounter-default-bgColor-rest: var(--overlay);
+    --buttonCounter-invisible-bgColor-rest: var(--overlay);
+    --buttonCounter-primary-bgColor-rest: #04260f33;
+    --buttonCounter-outline-bgColor-rest: #051d4d33;
+    --buttonCounter-outline-bgColor-hover: #051d4d33;
+    --buttonCounter-outline-bgColor-disabled: #1f6feb0d;
+    --buttonCounter-outline-fgColor-rest: #388bfd;
+    --buttonCounter-outline-fgColor-hover: #58a6ff;
+    --buttonCounter-outline-fgColor-disabled: #4493f880;
+    --buttonCounter-danger-bgColor-hover: color-mix(in srgb, var(--text) 20%, transparent);
+    --buttonCounter-danger-bgColor-disabled: #da36330d;
+    --buttonCounter-danger-bgColor-rest: #49020233;
+    --buttonCounter-danger-fgColor-rest: var(--love);
+    --buttonCounter-danger-fgColor-hover: var(--text);
+    --buttonCounter-danger-fgColor-disabled: color-mix(in srgb, var(--love) 50%, transparent);
+    --focus-outlineColor: var(--accent) !important;
+    --menu-bgColor-active: var(--surface);
+    --overlay-bgColor: var(--surface) !important;
+    --overlay-borderColor: var(--overlay) !important;
+    --overlay-backdrop-bgColor: #161b2266 !important;
+    --tooltip-bgColor: var(--overlay) !important;
+    --tooltip-fgColor: var(--text) !important;
+    --selectMenu-borderColor: #484f58;
+    --selectMenu-bgColor-active: #0c2d6b;
+    --sideNav-bgColor-selected: #21262d;
+    --skeletonLoader-bgColor: #161b22;
+    --timelineBadge-bgColor: var(--surface);
+    --treeViewItem-leadingVisual-iconColor-rest: #848d97;
+    --underlineNav-borderColor-active: var(--accent) !important;
+    --underlineNav-borderColor-hover: #6e768166;
+    --underlineNav-iconColor-rest: #848d97;
+    --selection-bgColor: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+    --reactionButton-selected-bgColor-rest: color-mix(in srgb, var(--accent) 20%, transparent) !important;
+    --reactionButton-selected-bgColor-hover: color-mix(in srgb,
+      var(--accent) 35%,
+      transparent) !important;
+    --reactionButton-selected-fgColor-rest: var(--accent) !important;
+    --reactionButton-selected-fgColor-hover: var(--accent) !important;
+    --fgColor-default: var(--text) !important;
+    --fgColor-muted: var(--subtle) !important;
+    --fgColor-onEmphasis: var(--surface) !important;
+    --fgColor-disabled: var(--muted) !important;
+    --fgColor-link: var(--accent) !important;
+    --fgColor-neutral: #6e7681 !important;
+    --fgColor-accent: var(--accent) !important;
+    --fgColor-success: var(--foam) !important;
+    --fgColor-attention: var(--gold) !important;
+    --fgColor-severe: var(--rose) !important;
+    --fgColor-danger: var(--love) !important;
+    --fgColor-open: var(--foam) !important;
+    --fgColor-closed: var(--love) !important;
+    --fgColor-done: var(--iris) !important;
+    --fgColor-sponsors: var(--iris) !important;
+    --bgColor-default: var(--surface) !important;
+    --bgColor-muted: var(--overlay) !important;
+    --bgColor-inset: var(--base) !important;
+    --bgColor-emphasis: var(--muted) !important;
+    --bgColor-inverse: var(--text) !important;
+    --bgColor-disabled: #21262db3 !important;
+    --bgColor-transparent: #0000 !important;
+    --bgColor-neutral-muted: color-mix(in srgb, var(--overlay) 40%, transparent) !important;
+    --bgColor-neutral-emphasis: var(--subtle) !important;
+    --bgColor-accent-muted: color-mix(in srgb, var(--accent) 20%, transparent) !important;
+    --bgColor-accent-emphasis: var(--accent) !important;
+    --bgColor-success-muted: #2ea04326 !important;
+    --bgColor-success-emphasis: var(--foam) !important;
+    --bgColor-attention-muted: color-mix(in srgb, var(--gold) 15%, transparent) !important;
+    --bgColor-attention-emphasis: var(--gold) !important;
+    --bgColor-severe-muted: color-mix(in srgb, var(--rose) 26%, transparent) !important;
+    --bgColor-severe-emphasis: var(--rose) !important;
+    --bgColor-danger-muted: color-mix(in srgb, var(--love) 26%, transparent) !important;
+    --bgColor-danger-emphasis: var(--love) !important;
+    --bgColor-open-muted: #2ea0431a !important;
+    --bgColor-open-emphasis: var(--foam) !important;
+    --bgColor-closed-muted: color-mix(in srgb, var(--love) 15%, transparent) !important;
+    --bgColor-closed-emphasis: var(--love) !important;
+    --bgColor-done-muted: #a371f726 !important;
+    --bgColor-done-emphasis: var(--iris) !important;
+    --bgColor-sponsors-muted: #db61a21a !important;
+    --bgColor-sponsors-emphasis: var(--iris) !important;
+    --borderColor-default: var(--overlay) !important;
+    --borderColor-muted: var(--overlay) !important;
+    --borderColor-emphasis: #484f58 !important;
+    --borderColor-disabled: #21262db3 !important;
+    --borderColor-transparent: #0000 !important;
+    --borderColor-neutral-muted: #6e768166 !important;
+    --borderColor-neutral-emphasis: #6e7681 !important;
+    --borderColor-accent-muted: color-mix(in srgb, var(--accent) 50%, transparent) !important;
+    --borderColor-accent-emphasis: var(--accent) !important;
+    --borderColor-success-muted: color-mix(in srgb, var(--foam) 95%, black) !important;
+    --borderColor-success-emphasis: var(--foam) !important;
+    --borderColor-attention-muted: color-mix(in srgb, var(--rose) 30%, transparent) !important;
+    --borderColor-attention-emphasis: var(--rose) !important;
+    --borderColor-severe-muted: var(--rose) !important;
+    --borderColor-severe-emphasis: #bd561d !important;
+    --borderColor-danger-muted: var(--love) !important;
+    --borderColor-danger-emphasis: var(--love) !important;
+    --borderColor-open-muted: color-mix(in srgb, var(--foam) 95%, black) !important;
+    --borderColor-open-emphasis: var(--foam) !important;
+    --borderColor-closed-muted: var(--love) !important;
+    --borderColor-closed-emphasis: var(--love) !important;
+    --borderColor-done-muted: var(--iris) !important;
+    --borderColor-done-emphasis: var(--iris) !important;
+    --borderColor-sponsors-muted: #db61a266 !important;
+    --borderColor-sponsors-emphasis: var(--iris) !important;
+    --color-ansi-love: var(--love);
+    --color-ansi-love-bright: var(--love);
+    --color-ansi-foam: var(--foam);
+    --color-ansi-foam-bright: var(--foam);
+    --color-ansi-gold: var(--gold);
+    --color-ansi-gold-bright: var(--gold);
+    --color-ansi-pine: var(--pine);
+    --color-ansi-pine-bright: var(--pine);
+    --color-ansi-magenta: var(--iris);
+    --color-ansi-magenta-bright: var(--iris);
+    --color-ansi-cyan: var(--foam);
+    --color-ansi-cyan-bright: var(--foam);
+    --color-prettylights-syntax-comment: var(--muted);
+    --color-prettylights-syntax-constant: var(--pine);
+    --color-prettylights-syntax-entity: var(--pine);
+    --color-prettylights-syntax-storage-modifier-import: var(--rose);
+    --color-prettylights-syntax-entity-tag: var(--foam);
+    --color-prettylights-syntax-keyword: var(--iris);
+    --color-prettylights-syntax-string: var(--foam);
+    --color-prettylights-syntax-variable: var(--rose);
+    --color-prettylights-syntax-invalid-illegal-text: var(--love);
+    --color-prettylights-syntax-invalid-illegal-bg: color-mix(in srgb, var(--love) 15%, transparent);
+    --color-prettylights-syntax-markup-heading: var(--foam);
+    --color-prettylights-syntax-markup-italic: var(--gold);
+    --color-prettylights-syntax-markup-bold: var(--gold);
+    --color-prettylights-syntax-markup-deleted-text: var(--text);
+    --color-prettylights-syntax-markup-deleted-bg: color-mix(in srgb, var(--love) 40%, transparent);
+    --color-prettylights-syntax-markup-inserted-text: var(--text);
+    --color-prettylights-syntax-markup-inserted-bg: color-mix(in srgb, var(--foam) 40%, transparent);
+    --color-prettylights-syntax-markup-changed-text: var(--text);
+    --color-prettylights-syntax-markup-changed-bg: color-mix(in srgb, var(--gold) 40%, transparent);
+    --color-prettylights-syntax-markup-ignolove-text: var(--text);
+    --bgColor-white: var(--surface);
+    --color-scale-white: var(--surface);
+    --color-scale-gray-3: var(--muted);
+    --color-scale-gray-5: var(--muted);
+    --color-scale-gray-6: var(--overlay);
+    --color-scale-gray-7: var(--overlay);
+    --color-scale-pine-2: var(--foam);
+    --color-scale-pine-5: var(--pine);
+    --color-scale-foam-3: var(--foam);
+    --color-scale-foam-4: var(--foam);
+    --color-scale-gold-3: var(--rose);
+    --color-scale-orange-4: var(--rose);
+    --color-scale-love-4: var(--love);
+    --shadow-inset: inset 0px 1px 0px 0px var(--base);
+    --shadow-resting-xsmall: 0px 1px 0px 0px var(--base);
+    --shadow-resting-small: 0px 1px 0px 0px var(--base),
+    0px 1px 3px 0px var(--base);
+    --shadow-resting-medium: 0px 3px 6px 0px var(--base);
+    --shadow-floating-small: 0px 0px 0px 1px var(--surface),
+    0px 6px 12px -3px var(--base),
+    0px 6px 18px 0px var(--base);
+    --shadow-floating-medium: 0px 0px 0px 1px var(--overlay),
+    0px 8px 16px -4px var(--base),
+    0px 4px 32px -4px var(--base),
+    0px 24px 48px -12px var(--base),
+    0px 48px 96px -24px var(--base);
+    --shadow-floating-large: 0px 0px 0px 1px var(--overlay),
+    0px 24px 48px 0px #010409;
+    --shadow-floating-xlarge: 0px 0px 0px 1px var(--overlay),
+    0px 32px 64px 0px #010409;
+    --shadow-floating-legacy: 0px 6px 12px -3px var(--base),
+    0px 6px 18px 0px var(--base);
+    --outline-focus: var(--pine) solid 2px;
+
+    .turbo-progress-bar {
+      background-color: var(--accent);
+    }
+
+    img[src="https://github.githubassets.com/assets/mona-loading-default-c3c7aad1282f.gif"] {
+      content: url("https://giscus.rose-pine.com/assets/loading_48x48.gif");
+    }
+
+    /* Header when logged out */
+    .HeaderMenu-link {
+      color: var(--fgColor-default);
+
+      &:hover {
+        color: var(--fgColor-default);
+      }
+    }
+
+    .header-search-button.placeholder {
+      color: var(--subtle);
+    }
+
+    .HeaderMenu-toggle-bar {
+      background-color: var(--text);
+    }
+
+    .notification-indicator .mail-status {
+      background-image: linear-gradient(var(--accent),
+          color-mix(in srgb, var(--accent) 95%, black));
+    }
+
+    .CheckStep {
+      .ansifg-r {
+        color: var(--color-ansi-love);
+      }
+
+      .ansifg-y {
+        color: var(--color-ansi-gold);
+      }
+
+      .ansifg-g {
+        color: var(--color-ansi-foam);
+      }
+
+      .ansifg-b {
+        color: var(--color-ansi-pine);
+      }
+
+      .ansifg-c {
+        color: var(--color-ansi-cyan);
+      }
+
+      .ansifg-m {
+        color: var(--color-ansi-magenta);
+      }
+
+      .ansifg-gr {
+        color: var(--color-ansi-gray);
+      }
+    }
+
+    .js-activity-overview-graph .js-highlight-blob {
+      fill: var(--accent);
+      stroke: var(--accent);
+    }
+  }
+}
+
+@-moz-document url-prefix("https://viewscreen.githubusercontent.com/markdown/mermaid"
+
+) {
+  @media (prefers-color-scheme: light) {
+    html[data-color-mode="auto"][data-light-theme="light"] {
+      /* dawn — light variant palette */
+      --base: #faf4ed;
+      --surface: #fffaf3;
+      --overlay: #f2e9e1;
+      --muted: #9893a5;
+      --subtle: #797593;
+      --text: #464261;
+      --love: #b4637a;
+      --gold: #ea9d34;
+      --rose: #d7827e;
+      --pine: #286983;
+      --foam: #56949f;
+      --iris: #907aa9;
+      --highlight-low: #f4ede8;
+      --highlight-med: #dfdad9;
+      --highlight-high: #cecacd;
+      --accent: var(--love);
+      /* accent color — change this */
+    }
+
+    html[data-color-mode="auto"][data-light-theme="dark"] {
+      /* main — dark variant palette */
+      --base: #191724;
+      --surface: #1f1d2e;
+      --overlay: #26233a;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --love: #eb6f92;
+      --gold: #f6c177;
+      --rose: #ebbcba;
+      --pine: #31748f;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+      --highlight-low: #21202e;
+      --highlight-med: #403d52;
+      --highlight-high: #524f67;
+      --accent: var(--love);
+      /* accent color — change this */
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html[data-color-mode="auto"][data-dark-theme="light"] {
+      /* dawn — light variant palette */
+      --base: #faf4ed;
+      --surface: #fffaf3;
+      --overlay: #f2e9e1;
+      --muted: #9893a5;
+      --subtle: #797593;
+      --text: #464261;
+      --love: #b4637a;
+      --gold: #ea9d34;
+      --rose: #d7827e;
+      --pine: #286983;
+      --foam: #56949f;
+      --iris: #907aa9;
+      --highlight-low: #f4ede8;
+      --highlight-med: #dfdad9;
+      --highlight-high: #cecacd;
+      --accent: var(--love);
+      /* accent color — change this */
+    }
+
+    html[data-color-mode="auto"][data-dark-theme="dark"] {
+      /* main — dark variant palette */
+      --base: #191724;
+      --surface: #1f1d2e;
+      --overlay: #26233a;
+      --muted: #6e6a86;
+      --subtle: #908caa;
+      --text: #e0def4;
+      --love: #eb6f92;
+      --gold: #f6c177;
+      --rose: #ebbcba;
+      --pine: #31748f;
+      --foam: #9ccfd8;
+      --iris: #c4a7e7;
+      --highlight-low: #21202e;
+      --highlight-med: #403d52;
+      --highlight-high: #524f67;
+      --accent: var(--love);
+      /* accent color — change this */
+    }
+  }
+
+  html[data-color-mode="light"][data-light-theme="dark"],
+  html[data-color-mode="dark"][data-dark-theme="dark"] {
+    /* main — dark variant palette */
+    --base: #191724;
+    --surface: #1f1d2e;
+    --overlay: #26233a;
+    --muted: #6e6a86;
+    --subtle: #908caa;
+    --text: #e0def4;
+    --love: #eb6f92;
+    --gold: #f6c177;
+    --rose: #ebbcba;
+    --pine: #31748f;
+    --foam: #9ccfd8;
+    --iris: #c4a7e7;
+    --highlight-low: #21202e;
+    --highlight-med: #403d52;
+    --highlight-high: #524f67;
+    --accent: var(--love);
+    /* accent color — change this */
+  }
+
+  html[data-color-mode="light"][data-light-theme="light"],
+  html[data-color-mode="dark"][data-dark-theme="light"] {
+    /* dawn — light variant palette */
+    --base: #faf4ed;
+    --surface: #fffaf3;
+    --overlay: #f2e9e1;
+    --muted: #9893a5;
+    --subtle: #797593;
+    --text: #464261;
+    --love: #b4637a;
+    --gold: #ea9d34;
+    --rose: #d7827e;
+    --pine: #286983;
+    --foam: #56949f;
+    --iris: #907aa9;
+    --highlight-low: #f4ede8;
+    --highlight-med: #dfdad9;
+    --highlight-high: #cecacd;
+    --accent: var(--love);
+    /* accent color — change this */
+  }
+
+  /* Former #rose-pine(@lookup, @accent) mixin body — applied once here,
+	   reading whichever palette custom properties matched above. */
+  html {
+    ::selection {
+      background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    background-color: var(--surface);
+    --color-btn-text: var(--text);
+    --color-btn-bg: var(--overlay);
+    --color-btn-border: var(--overlay);
+    --color-btn-hover-bg: var(--overlay);
+    --color-btn-hover-border: var(--overlay);
+    --color-btn-active-bg: var(--overlay);
+    --color-btn-selected-bg: var(--overlay);
+    --color-btn-counter-bg: var(--overlay);
+    --color-btn-outline-text: var(--accent);
+    --color-fg-muted: var(--subtle);
+
+    #diagram {
+
+      .node rect,
+      .node circle,
+      .node ellipse,
+      .node polygon,
+      .node path {
+        fill: color-mix(in srgb, var(--accent) 10%, transparent);
+        stroke: var(--accent);
+      }
+
+      .label text,
+      span,
+      p {
+        fill: var(--text);
+        color: var(--text);
+      }
+
+      .flowchart-link,
+      .marker {
+        stroke: var(--subtle);
+        fill: var(--subtle);
+      }
+
+      .edgeLabel {
+        background-color: var(--base);
+      }
+    }
+
+    .octicon {
+      fill: var(--color-fg-muted) !important;
+    }
+  }
+}
+
+@-moz-document regexp("https:\\/\\/notebooks\\.githubusercontent\\.com\\/view\\/ipynb.*"
+
+) {
+  :root {
+    /* main — dark variant palette (this page never switches variant) */
+    --base: #191724;
+    --surface: #1f1d2e;
+    --overlay: #26233a;
+    --muted: #6e6a86;
+    --subtle: #908caa;
+    --text: #e0def4;
+    --love: #eb6f92;
+    --gold: #f6c177;
+    --rose: #ebbcba;
+    --pine: #31748f;
+    --foam: #9ccfd8;
+    --iris: #c4a7e7;
+    --highlight-low: #21202e;
+    --highlight-med: #403d52;
+    --highlight-high: #524f67;
+    --accent: var(--love);
+    /* accent color — change this */
+    color-scheme: dark;
+
+    ::selection {
+      background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    input,
+    textarea {
+      &::placeholder {
+        color: var(--subtle) !important;
+      }
+    }
+
+    --jp-border-color0: var(--color-scale-gray-7);
+    --jp-border-color1: var(--color-scale-gray-7);
+    --jp-border-color2: var(--color-scale-gray-8);
+    --jp-border-color3: var(--color-scale-gray-9);
+    --jp-ui-font-color0: var(--text);
+    --jp-ui-font-color1: color-mix(in srgb, var(--text) 87%, transparent);
+    --jp-ui-font-color2: color-mix(in srgb, var(--text) 54%, transparent);
+    --jp-ui-font-color3: color-mix(in srgb, var(--text) 28%, transparent);
+    --jp-ui-inverse-font-color0: var(--base);
+    --jp-ui-inverse-font-color1: color-mix(in srgb, var(--base) 80%, transparent);
+    --jp-ui-inverse-font-color2: color-mix(in srgb, var(--base) 50%, transparent);
+    --jp-ui-inverse-font-color3: color-mix(in srgb, var(--base) 30%, transparent);
+    --jp-content-font-color0: var(--text);
+    --jp-content-font-color1: var(--text);
+    --jp-content-font-color2: color-mix(in srgb, var(--text) 70%, transparent);
+    --jp-content-font-color3: color-mix(in srgb, var(--text) 50%, transparent);
+    --jp-content-link-color: var(--foam);
+    --jp-layout-color0: var(--surface) !important;
+    --jp-layout-color1: var(--color-scale-gray-9);
+    --jp-layout-color2: var(--color-scale-gray-8);
+    --jp-layout-color3: var(--color-scale-gray-7);
+    --jp-layout-color4: var(--color-scale-gray-6);
+    --jp-inverse-layout-color0: var(--color-scale-white);
+    --jp-inverse-layout-color1: var(--color-scale-white);
+    --jp-inverse-layout-color2: var(--color-scale-gray-2);
+    --jp-inverse-layout-color3: var(--color-scale-gray-4);
+    --jp-inverse-layout-color4: var(--color-scale-gray-6);
+    --jp-brand-color0: var(--color-scale-pine-7);
+    --jp-brand-color1: var(--color-scale-pine-5);
+    --jp-brand-color2: var(--color-scale-pine-3);
+    --jp-brand-color3: var(--color-scale-pine-1);
+    --jp-brand-color4: var(--color-scale-pine-0);
+    --jp-accent-color0: var(--color-scale-foam-7);
+    --jp-accent-color1: var(--color-scale-foam-5);
+    --jp-accent-color2: var(--color-scale-foam-3);
+    --jp-accent-color3: var(--color-scale-foam-1);
+    --jp-warn-color0: var(--color-scale-orange-7);
+    --jp-warn-color1: var(--color-scale-orange-5);
+    --jp-warn-color2: var(--color-scale-orange-3);
+    --jp-warn-color3: var(--color-scale-orange-1);
+    --jp-error-color0: var(--color-scale-love-7);
+    --jp-error-color1: var(--color-scale-love-5);
+    --jp-error-color2: var(--color-scale-love-3);
+    --jp-error-color3: var(--color-scale-love-1);
+    --jp-success-color0: var(--color-scale-foam-7);
+    --jp-success-color1: var(--color-scale-foam-5);
+    --jp-success-color2: var(--color-scale-foam-3);
+    --jp-success-color3: var(--color-scale-foam-1);
+    --jp-info-color0: var(--color-scale-pine-7);
+    --jp-info-color1: var(--color-scale-pine-5);
+    --jp-info-color2: var(--color-scale-pine-3);
+    --jp-info-color3: var(--color-scale-pine-1);
+    --jp-cell-editor-border-color: var(--color-scale-gray-7);
+    --jp-cell-editor-box-shadow: inset 0 0 2px var(--color-scale-pine-3);
+    --jp-cell-prompt-not-active-font-color: color-mix(in srgb, var(--text) 50%, transparent);
+    --jp-cell-inprompt-font-color: var(--color-scale-pine-6);
+    --jp-cell-outprompt-font-color: var(--color-scale-coral-6);
+    --jp-notebook-multiselected-color: color-mix(in srgb, var(--muted) 14%, transparent);
+    --jp-rendermime-error-background: color-mix(in srgb, var(--love) 18%, transparent);
+    --jp-rendermime-table-row-background: var(--color-scale-gray-9);
+    --jp-rendermime-table-row-hover-background: color-mix(in srgb, var(--overlay) 14%, transparent);
+    --jp-dialog-background: color-mix(in srgb, var(--base) 60%, transparent);
+    --jp-toolbar-box-shadow: 0px 0px 2px 0px color-mix(in srgb, var(--base) 80%, transparent);
+    --jp-input-box-shadow: inset 0 0 2px var(--color-scale-pine-3);
+    --jp-input-background: var(--color-scale-gray-8);
+    --jp-input-active-box-shadow-color: color-mix(in srgb, var(--pine) 30%, transparent);
+    --jp-editor-selected-focused-background: color-mix(in srgb, var(--pine) 14%, transparent);
+    --jp-mirror-editor-keyword-color: var(--color-scale-foam-5);
+    --jp-mirror-editor-atom-color: var(--color-scale-pine-3);
+    --jp-mirror-editor-number-color: var(--color-scale-foam-4);
+    --jp-mirror-editor-def-color: var(--color-scale-pine-6);
+    --jp-mirror-editor-variable-color: var(--color-scale-gray-3);
+    --jp-mirror-editor-variable-2-color: var(--color-scale-pine-4);
+    --jp-mirror-editor-variable-3-color: var(--color-scale-foam-6);
+    --jp-mirror-editor-punctuation-color: var(--color-scale-pine-4);
+    --jp-mirror-editor-property-color: var(--color-scale-pine-4);
+    --jp-mirror-editor-operator-color: var(--iris);
+    --jp-mirror-editor-comment-color: var(--subtle);
+    --jp-mirror-editor-string-color: var(--rose);
+    --jp-mirror-editor-string-2-color: var(--color-scale-purple-3);
+    --jp-mirror-editor-meta-color: var(--iris);
+    --jp-mirror-editor-qualifier-color: var(--color-scale-gray-5);
+    --jp-mirror-editor-builtin-color: var(--color-scale-foam-6);
+    --jp-mirror-editor-bracket-color: var(--color-scale-gray-2);
+    --jp-mirror-editor-tag-color: var(--color-scale-pine-7);
+    --jp-mirror-editor-attribute-color: var(--color-scale-pine-7);
+    --jp-mirror-editor-header-color: var(--color-scale-pine-5);
+    --jp-mirror-editor-quote-color: var(--color-scale-foam-3);
+    --jp-mirror-editor-link-color: var(--color-scale-pine-7);
+    --jp-mirror-editor-error-color: var(--love);
+    --jp-mirror-editor-hr-color: var(--color-scale-gray-8);
+    --jp-vega-background: var(--color-scale-gray-4);
+    --jp-search-selected-match-background-color: var(--gold);
+    --jp-search-selected-match-color: var(--base);
+    --jp-icon-contrast-color0: var(--color-scale-purple-6);
+    --jp-icon-contrast-color1: var(--color-scale-foam-6);
+    --jp-icon-contrast-color2: var(--color-scale-iris-6);
+    --jp-icon-contrast-color3: var(--color-scale-pine-6);
+  }
+}
