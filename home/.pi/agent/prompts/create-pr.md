@@ -8,7 +8,14 @@ Steps:
 
 1. **Branch**: If currently on the default branch, create a new branch with a short descriptive name (e.g. `feat/...`, `fix/...`). If already on a feature branch, use it.
 
-2. **Commit**: Group the changes into reasonable chunks by implemented sub-feature or concern. Make one commit per chunk using /skill:caveman-commit Do not make one giant commit, and do not split trivially related changes apart.
+2. **Commit**: Group the changes into reasonable chunks by implemented sub-feature or concern. Make one commit per chunk using conventional commits. Do not make one giant commit, and do not split trivially related changes apart.
+
+   Commit message rules:
+   - Subject: `<type>(<scope>): <imperative summary>` — scope optional, imperative mood ("add" not "added"), ≤50 chars where possible, no trailing period.
+   - Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `chore`, `build`, `ci`, `style`, `revert`.
+   - Body only when needed: non-obvious *why*, breaking changes, migration notes, or linked issues. Wrap at 72 chars, use `-` bullets.
+   - Always add a body for breaking changes, security fixes, data migrations, or reverts.
+   - Never write "this commit does X", first-person narration, or AI attribution. State intent, not the diff.
 
 3. **PR**: Push the branch and create the PR with `gh pr create`.
 
@@ -22,5 +29,5 @@ PR title and body rules:
 
 Writing style:
 
-- After drafting the PR title and body, review the text using skill/humanizer.
-- Trim anything the humanizer flags; keep the final text plain and minimal.
+- Write commit messages and the PR title/body in plain language per ISO-24495-1:2023: short sentences, common words, active voice, one idea per sentence.
+- Keep the final text plain and minimal.
