@@ -36,3 +36,10 @@ gui:
 keybinding:
   files:
     viewResetOptions: <disabled>
+customCommands:
+  - key: "U"
+    command: "git submodule update --init --recursive"
+    context: "global"
+    description: "Update submodules"
+    loadingText: "Updating Submodules..."
+    output: log
