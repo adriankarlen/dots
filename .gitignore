@@ -35,13 +35,6 @@ restart_session_*
 /home/.pi/agent/mcp-auth.json
 /home/.local/share/pi/mcp-auth.json
 
-# pi extensions node_modules
-/home/.pi/agent/extensions/**/node_modules/
-
-# pi extensions log files
-/home/.pi/agent/extensions/**/logs/
-/home/.pi/agent/extensions/**/logs/**
-
 !/home/.pi/agent/tsconfig.json
 !/home/.pi/agent/package.json
 !/home/.pi/agent/themes/
@@ -50,6 +43,14 @@ restart_session_*
 !/home/.pi/agent/extensions/**
 !/home/.pi/agent/keybindings.json
 !/home/.pi/agent/mcp.json
+
+# pi extensions node_modules (must come after the extensions re-include
+# above, since gitignore rules are last-match-wins)
+/home/.pi/agent/extensions/**/node_modules/
+
+# pi extensions log files (same reasoning as node_modules above)
+/home/.pi/agent/extensions/**/logs/
+/home/.pi/agent/extensions/**/logs/**
 # settings.json is intentionally NOT tracked: pi rewrites it on model
 # switches, changelog dismissal, etc. See scripts/install-pi-packages.sh
 # for the tracked source of truth on installed packages.
