@@ -15,6 +15,8 @@ dots/
 ├── dot                 # CLI: stow management + machine bootstrap
 ├── packages/
 │   └── Brewfile        # Homebrew formulae/casks (not stowed)
+├── scripts/
+│   └── install-pi-packages.sh  # tracked source of truth for `pi install` packages
 ├── home/               # stow package — symlinked into $HOME
 │   ├── .stow-local-ignore
 │   ├── .zshrc
@@ -47,7 +49,15 @@ submodule gets synced the first time you run `dot stow`.
 
 `dot init` is safe to re-run — every step checks existing state before doing
 work. Useful flags: `--skip-services` (skip macOS defaults + skhd/sketchybar/
-borders) and `--skip-spicetify`.
+borders) and `--skip-spicetify`. As one of its steps, it also runs
+`scripts/install-pi-packages.sh`, which installs the global `pi` packages
+listed there via `pi install`.
+
+`~/.pi/agent/settings.json` is intentionally gitignored: pi rewrites its
+`packages` array on model switches, changelog dismissals, etc., which is
+noise we don't want to track. `scripts/install-pi-packages.sh` is the
+tracked source of truth instead — edit it when you add/remove a global pi
+package, then re-run it (or `./dot init`) to reconcile.
 
 On a fresh machine:
 

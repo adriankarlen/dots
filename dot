@@ -39,6 +39,7 @@ readonly LINK_DIR="${HOME}/.local/bin"
 readonly LINK_PATH="${LINK_DIR}/${SCRIPT_NAME}"
 readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly BREWFILE="${PACKAGES_DIR}/Brewfile"
+readonly PI_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-pi-packages.sh"
 
 # Representative paths to spot-check in `doctor`. Mix of top-level files
 # (stow'd as individual symlinks) and nested entries under .config
@@ -657,6 +658,22 @@ __install_yazi_packages() {
     __print_success "Yazi packages installed"
 }
 
+__install_pi_packages() {
+    if ! __command_exists pi; then
+        __print_warning "pi not installed, skipping pi package install"
+        return 0
+    fi
+
+    if [[ ! -x "$PI_PACKAGES_SCRIPT" ]]; then
+        __print_error "Script not found or not executable: ${PI_PACKAGES_SCRIPT}"
+        return 1
+    fi
+
+    __print_info "Installing pi packages..."
+    "$PI_PACKAGES_SCRIPT"
+    __print_success "pi packages installed"
+}
+
 # Ordered "Step name;;function" registry. Only Homebrew itself is fatal —
 # everything else warns and continues so a partial machine still ends up
 # mostly configured (and re-running `init` will pick up the rest).
@@ -671,6 +688,7 @@ readonly -a INIT_STEPS=(
     "Node (fnm)              ;; __install_node"
     "tmux plugins            ;; __install_tmux_plugins"
     "Yazi packages           ;; __install_yazi_packages"
+    "pi packages             ;; __install_pi_packages"
 )
 
 __run_init_steps() {
@@ -705,7 +723,8 @@ cmd_init() {
                 echo "Bootstrap this machine: install Homebrew, install Brewfile packages,"
                 echo "stow dotfiles, apply macOS defaults, start background services"
                 echo "(skhd/sketchybar/borders), set up Spicetify, install Neovim nightly,"
-                echo "Node LTS (via fnm), tmux plugins (TPM), and Yazi packages."
+                echo "Node LTS (via fnm), tmux plugins (TPM), Yazi packages, and pi"
+                echo "packages (see scripts/install-pi-packages.sh)."
                 echo
                 echo "Safe to re-run: every step checks existing state before acting."
                 echo
@@ -782,6 +801,7 @@ cmd_help() {
     echo "    Source:   ${HOME_DIR}"
     echo "    Target:   ${STOW_TARGET}"
     echo "    Brewfile: ${BREWFILE}"
+    echo "    Pi pkgs:  ${PI_PACKAGES_SCRIPT}"
     echo "    Ignore:   ${HOME_DIR}/.stow-local-ignore"
 }
 
