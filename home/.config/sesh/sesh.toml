@@ -2,6 +2,9 @@ import = ["~/.config/sesh/spp.toml"]
 
 blacklist = ["^scratch$", "^_"]
 
+[default_session]
+preview_command = "eza --all --git --icons=always --group-directories-first --color=always {}"
+
 [[wildcard]]
 pattern = "~/repos/**"
 startup_command = "nvim"

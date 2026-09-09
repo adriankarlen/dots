@@ -51,7 +51,6 @@ restart_session_*
 # pi extensions log files (same reasoning as node_modules above)
 /home/.pi/agent/extensions/**/logs/
 /home/.pi/agent/extensions/**/logs/**
-/home/.pi/agent/extensions/herdr**
 # settings.json is intentionally NOT tracked: pi rewrites it on model
 # switches, changelog dismissal, etc. See scripts/install-pi-packages.sh
 # for the tracked source of truth on installed packages.

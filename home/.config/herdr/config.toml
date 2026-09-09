@@ -4,13 +4,8 @@ name = "rose-pine"
 
 [keys]
 prefix = "ctrl+a"
-# navigate_workspace_up = "ctrl+p"
-# navigate_workspace_down = "ctrl+n"
-# settings = ""
-# next_tab = ""
-# previous_tab = ""
-# new_worktree = ""
-# goto = "prefix+t"
+previous_workspace = "prefix+shift+k"
+next_workspace = "prefix+shift+j"
 rename_tab = "prefix+shift+,"
 
 [[keys.command]]
@@ -36,9 +31,6 @@ type = "shell"
 command = "herdr-tab-dev"
 
 [ui]
-# sidebar_width = 20
-# sidebar_min_width = 18
-# sidebar_max_width = 30
 mobile_width_threshold = 64
 mouse_capture = true
 redraw_on_focus_gained = true
@@ -47,3 +39,7 @@ confirm_close = true
 prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true
 accent = "cyan"
+
+status_indicators = "dots"
+[ui.toast]
+delivery = "herdr"
