@@ -40,49 +40,39 @@
       "*.env.example": "allow"
     },
 
-    // Write/edit-only guards: fine to read these, but changing them should
-    // at least prompt (or, for systemd units, is flat-out denied).
+    // Write/edit: only secrets (via the "path" map above) are blocked;
+    // everything else, including shell rc files, is approved without asking.
     "write": {
-      "*": "allow",
-      "/etc/systemd/system/*": "deny",
-      "*/.bashrc": "ask",
-      "*/.zshrc": "ask",
-      "*/.profile": "ask"
+      "*": "allow"
     },
     "edit": {
-      "*": "allow",
-      "/etc/systemd/system/*": "deny",
-      "*/.bashrc": "ask",
-      "*/.zshrc": "ask",
-      "*/.profile": "ask"
+      "*": "allow"
     },
 
     "bash": {
       "*": "allow",
 
-      // Hard blocks: irreversible / system-damaging, no legitimate uninterrupted use case.
+      // Hard blocks only: irreversible whole-filesystem/home destruction,
+      // disk-level wipes, fork bombs, reverse shells, and remote-code-
+      // execution-by-pipe. Everything else (sudo, crontab, git push --force,
+      // chown -R, archive passwords, etc.) is approved without asking.
       "rm -rf *": "deny",
       "rm -rf /*": "deny",
       "rm -rf ~*": "deny",
       "rm -fr *": "deny",
-      "sudo *": "deny",
+      "sudo rm -rf*": "deny",
       "mkfs*": "deny",
+      "sudo mkfs*": "deny",
       "dd of=/dev/": "deny",
+      "sudo dd of=/dev/": "deny",
       "chmod -R 777 /*": "deny",
-      "chown -R *": "ask",
+      "sudo chmod -R 777 /*": "deny",
       "🙁){ :|:& };:": "deny",
 
-      // Base64 (and similar) encoding/decoding on the command line is a
-      // near-universal marker of obfuscated exfiltration/payload-smuggling in
-      // malicious skills. Never allow it silently.
-      "base64": "deny",
-      "base32": "deny",
-      "xxd -r": "deny",
-      "openssl enc": "deny",
-
-      // Remote-code-execution / "unverifiable dependency" patterns: fetching a
-      // script and piping it straight into an interpreter, or dynamically
-      // importing/eval'ing remote content.
+      // Remote-code-execution patterns: fetching a script and piping it
+      // straight into an interpreter, or eval'ing remote content. This is
+      // as "obviously malicious" as filesystem wipes -- it hands over full
+      // code execution to whatever the remote URL happens to serve.
       "curl * | bash": "deny",
       "curl * | sh": "deny",
       "curl * | zsh": "deny",
@@ -102,51 +92,17 @@
       "bash -i >&": "deny",
       "/dev/tcp/": "deny",
       "*nc -e *": "deny",
-      "*ncat -e *": "deny",
-      "*mkfifo *": "ask",
-
-      // Persistence mechanisms favored by malicious skills (systemd/cron
-      // backdoors per the report's "security disablement" category).
-      "crontab -e*": "ask",
-      "crontab -r*": "ask",
-      "*crontab *": "ask",
-      "systemctl enable *": "ask",
-      "systemctl service": "ask",
-
-      // Security-control disablement.
-      "setenforce 0": "deny",
-      "iptables -F": "ask",
-      "ufw disable": "ask",
-      "*chattr -i *": "ask",
-
-      // Anti-forensics / covering tracks.
-      "history -c*": "ask",
-      "unset HISTFILE": "ask",
-
-      // Password-protected archives are a classic scanner-evasion technique.
-      "unzip -P *": "ask",
-      "7z*-p": "ask",
-
-      // Ambiguous but potentially destructive: confirm instead of blanket allow/deny.
-      "git push --force*": "ask",
-      "git push -f *": "ask",
-      "git reset --hard*": "ask",
-      "git clean -fd*": "ask"
+      "*ncat -e *": "deny"
     },
 
     "mcp": "allow",
     "skill": "allow",
 
-    // CWD-boundary gate. Kept at "ask" in general, but tmp scratch space is
-    // relaxed so agents can freely read/write temp files without a prompt on
-    // every call. Covers /tmp (and its macOS /private/tmp symlink target,
-    // though the dual-form matching means either alone would suffice) plus
-    // $TMPDIR (macOS per-user temp, e.g. /var/folders/.../T/...).
+    // CWD-boundary gate: also approved by default now. The "path" secret
+    // guard above still applies regardless of whether a path is inside or
+    // outside the working directory.
     "external_directory": {
-      "*": "ask",
-      "/tmp/*": "allow",
-      "/private/tmp/*": "allow",
-      "/var/folders/*": "allow"
+      "*": "allow"
     }
   }
 }
