@@ -713,6 +713,140 @@ __run_init_steps() {
     done
 }
 
+# ─── Update: refresh everything already installed ─────────────────────────
+# Companion to `init`, but for machines that are already bootstrapped.
+# Reuses several init step functions directly (they're written to be safe
+# to re-run and effectively double as "update" steps): __install_nvim_nightly
+# re-downloads whatever the nightly tag currently points at, __install_node
+# re-resolves and installs the current LTS via fnm, and __setup_spicetify
+# reapplies the backup (needed again after spicetify-cli itself is upgraded).
+
+__update_homebrew() {
+    if ! __command_exists brew; then
+        __print_warning "Homebrew not installed, skipping"
+        return 0
+    fi
+
+    __print_info "Updating Homebrew..."
+    brew update
+
+    __print_info "Upgrading installed formulae and casks..."
+    brew upgrade
+
+    if [[ -f "$BREWFILE" ]]; then
+        __print_info "Reconciling Brewfile (brew/cask/go/npm/vscode entries)..."
+        brew bundle install --file="$BREWFILE" || __print_warning "brew bundle install reported issues"
+    fi
+
+    __print_info "Cleaning up old versions..."
+    brew cleanup
+
+    __print_success "Homebrew packages updated"
+}
+
+__update_pi_packages() {
+    if ! __command_exists pi; then
+        __print_warning "pi not installed, skipping pi package update"
+        return 0
+    fi
+
+    if [[ -x "$PI_PACKAGES_SCRIPT" ]]; then
+        __print_info "Reconciling tracked pi package list..."
+        "$PI_PACKAGES_SCRIPT" || __print_warning "install-pi-packages.sh reported issues"
+    fi
+
+    __print_info "Updating pi itself and installed packages..."
+    pi update --all
+    __print_success "pi packages updated"
+}
+
+__update_tmux_plugins() {
+    local tpm_update="${HOMEBREW_PREFIX:-/opt/homebrew}/opt/tpm/share/tpm/bin/update_plugins"
+    if [[ ! -x "$tpm_update" ]]; then
+        __print_warning "tpm not installed (brew install tpm), skipping tmux plugin update"
+        return 0
+    fi
+
+    __print_info "Updating tmux plugins..."
+    TMUX_PLUGIN_MANAGER_PATH="$HOME/.config/tmux/plugins" "$tpm_update" all
+    __print_success "tmux plugins updated"
+}
+
+__update_yazi_packages() {
+    if ! __command_exists ya; then
+        __print_warning "yazi not installed, skipping package update"
+        return 0
+    fi
+
+    __print_info "Upgrading Yazi packages..."
+    ya pkg upgrade
+    __print_success "Yazi packages upgraded"
+}
+
+readonly -a UPDATE_STEPS=(
+    "Homebrew packages       ;; __update_homebrew"
+    "pi packages             ;; __update_pi_packages"
+    "tmux plugins            ;; __update_tmux_plugins"
+    "Yazi packages           ;; __update_yazi_packages"
+    "Neovim nightly          ;; __install_nvim_nightly"
+    "Node (fnm)              ;; __install_node"
+    "Spicetify               ;; __setup_spicetify"
+)
+
+__run_update_steps() {
+    TOTAL_STEPS=${#UPDATE_STEPS[@]}
+    CURRENT_STEP=0
+
+    local entry name fn
+    for entry in "${UPDATE_STEPS[@]}"; do
+        name="$(cut -d';' -f1 <<< "$entry" | xargs)"
+        fn="$(cut -d';' -f3 <<< "$entry" | xargs)"
+
+        __print_step "$name"
+
+        if "$fn"; then
+            true
+        else
+            __print_warning "$name failed (continuing)"
+        fi
+    done
+}
+
+cmd_update() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                echo -e "${BOLD}USAGE:${RESET}"
+                echo -e "    ${SCRIPT_NAME} update [--skip-spicetify]"
+                echo
+                echo "Update everything this machine has installed: Homebrew itself plus"
+                echo "every formula/cask/go/npm/vscode entry in the Brewfile, pi itself and"
+                echo "its installed packages, tmux plugins (TPM), Yazi packages, Neovim"
+                echo "nightly, Node LTS (via fnm), and the Spicetify backup."
+                echo
+                echo "Safe to re-run: every step just refreshes whatever is already there."
+                echo
+                echo -e "${BOLD}OPTIONS:${RESET}"
+                echo "    --skip-spicetify     Skip reapplying the Spicetify backup"
+                return 0
+                ;;
+            --skip-spicetify)
+                INIT_SKIP_SPICETIFY=true
+                shift
+                ;;
+            *)
+                __print_error "Unknown update option: $1"
+                __print_info "Run '${SCRIPT_NAME} update --help' for usage"
+                return 1
+                ;;
+        esac
+    done
+
+    __print_header "Updating installed tools"
+    __run_update_steps
+    __print_header "Update complete! 🎉"
+}
+
 cmd_init() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -776,6 +910,7 @@ cmd_help() {
     echo
     echo -e "${BOLD}COMMANDS:${RESET}"
     echo "    init                Bootstrap this machine (Homebrew, packages, stow, ...)"
+    echo "    update              Update everything installed (Homebrew, pi, tmux, Yazi, ...)"
     echo "    stow                Create/refresh symlinks (default: --restow)"
     echo "    unstow              Remove all stow-managed symlinks"
     echo "    restow              Alias for 'stow' (explicit refresh)"
@@ -792,6 +927,7 @@ cmd_help() {
     echo -e "${BOLD}EXAMPLES:${RESET}"
     echo "    ${SCRIPT_NAME} init                        # bootstrap a fresh machine"
     echo "    ${SCRIPT_NAME} init --skip-services         # bootstrap, no skhd/sketchybar/borders/defaults"
+    echo "    ${SCRIPT_NAME} update                       # update everything already installed"
     echo "    ${SCRIPT_NAME}                              # restow dotfiles (default)"
     echo "    ${SCRIPT_NAME} doctor                       # check symlink + tool health"
     echo "    ${SCRIPT_NAME} link                         # install 'dot' to PATH"
@@ -829,6 +965,7 @@ main() {
 
     case "$cmd" in
         init)    cmd_init    "$@" ;;
+        update)  cmd_update  "$@" ;;
         stow)    cmd_stow    "$@" ;;
         unstow)  cmd_unstow  "$@" ;;
         restow)  cmd_restow  "$@" ;;

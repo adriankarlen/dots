@@ -39,6 +39,7 @@ submodule gets synced the first time you run `dot stow`.
 
 ```sh
 ./dot init      # bootstrap a fresh machine (Homebrew, packages, stow, ...)
+./dot update    # update everything already installed on this machine
 ./dot stow      # (re)create symlinks from home/ into $HOME — default command
 ./dot unstow    # remove all stow-managed symlinks
 ./dot doctor    # verify Homebrew/stow install + symlink health
@@ -52,6 +53,13 @@ work. Useful flags: `--skip-services` (skip macOS defaults + skhd/sketchybar/
 borders) and `--skip-spicetify`. As one of its steps, it also runs
 `scripts/install-pi-packages.sh`, which installs the global `pi` packages
 listed there via `pi install`.
+
+`dot update` refreshes everything `init` set up, without repeating the
+one-time bootstrap steps: `brew update` + `brew upgrade` + `brew bundle` (so
+every formula, cask, go, npm, and VS Code extension entry in the Brewfile
+is brought up to date), pi itself and its installed packages, tmux plugins
+(TPM), Yazi packages, Neovim nightly, Node LTS (via fnm), and the Spicetify
+backup. Same `--skip-spicetify` flag as `init`.
 
 `~/.pi/agent/settings.json` is intentionally gitignored: pi rewrites its
 `packages` array on model switches, changelog dismissals, etc., which is
