@@ -1,9 +1,6 @@
 [plugin]
 deps = []
 
-[flavor]
-dark = "rose-pine"
-
 [[flavor.deps]]
 use = "Mintass/rose-pine"
 rev = "d91f8f2"
