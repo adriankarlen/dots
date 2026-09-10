@@ -11,13 +11,13 @@ rename_tab = "prefix+shift+,"
 [[keys.command]]
 key = "prefix+t"
 type = "plugin_action"
-command = "fullerzz.sesh.open-picker"
+command = "adriankarlen.sesh-minimal.open-picker"
 description = "open Sesh picker"
 
 [[keys.command]]
 key = "prefix+shift+b"
 type = "plugin_action"
-command = "fullerzz.sesh.last"
+command = "adriankarlen.sesh-minimal.last"
 description = "switch to previous Sesh workspace"
 
 [[keys.command]]
