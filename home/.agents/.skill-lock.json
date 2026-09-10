@@ -64,15 +64,6 @@
       "installedAt": "2026-04-13T13:21:37.008Z",
       "updatedAt": "2026-08-11T09:54:55.557Z"
     },
-    "caveman": {
-      "source": "juliusbrussee/caveman",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
-      "skillPath": "skills/caveman/SKILL.md",
-      "skillFolderHash": "bdf0c87a2bdd47fc7fe9008c40cc6491ee801b81",
-      "installedAt": "2026-04-16T10:37:16.370Z",
-      "updatedAt": "2026-08-21T09:10:26.075Z"
-    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
