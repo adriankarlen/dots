@@ -3,7 +3,7 @@ animate = true
 animation_duration = 0.1
 animation_fps = 60
 
-auto_focus_blacklist = ["com.monarch.macos"]
+focus_follows_mouse = false
 run_on_start = []
 hot_reload = true
 
@@ -105,6 +105,18 @@ secondary = "AltLeft + Shift"
 "secondary + J" = { move_node = "down" }
 "secondary + K" = { move_node = "up" }
 "secondary + L" = { move_node = "right" }
+
+"main + 1" = { switch_to_workspace = 0 }
+"main + 2" = { switch_to_workspace = 1 }
+"main + 3" = { switch_to_workspace = 2 }
+"main + 4" = { switch_to_workspace = 3 }
+"main + 5" = { switch_to_workspace = 4 }
+
+"secondary + 1" = { move_window_to_workspace = 0 }
+"secondary + 2" = { move_window_to_workspace = 1 }
+"secondary + 3" = { move_window_to_workspace = 2 }
+"secondary + 4" = { move_window_to_workspace = 3 }
+"secondary + 5" = { move_window_to_workspace = 4 }
 
 # workspace bindings handled by skhd (lalt + 1-5) for proper left/right alt distinction
 
