@@ -134,8 +134,6 @@ alias x="exit"
 # shell integrations
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
-eval "$(fnm env --use-on-cd --shell zsh)"
-
 # secrets (skip on SSH sessions)
 secret_set() {
   security add-generic-password -a "$USER" -s "shell:$1" -w "$2" -U
@@ -158,5 +156,5 @@ if [[ -z "$SSH_CONNECTION" ]]; then
   secret_load GOOGLE_CLOUD_PROJECT
 fi
 
-# Pi
-export PATH="/Users/adriankarlen/.local/share/fnm/node-versions/v24.19.0/installation/bin:$PATH"
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.config/vite-plus/env"

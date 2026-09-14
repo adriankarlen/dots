@@ -35,7 +35,6 @@ brew "yazi"
 # Development Languages & Runtimes
 brew "deno"
 brew "dotnet", link: false
-brew "fnm"
 brew "go"
 brew "lua"
 brew "luajit"
@@ -140,13 +139,4 @@ vscode "ravenothere.rose-pine-symbols"
 # Go Packages
 go "github.com/adriankarlen/det-blir-nog-regn"
 
-# npm Packages
-npm "@fission-ai/openspec"
-npm "@gsd-build/sdk"
-npm "@spp-technology/client-tracking"
-npm "@spp-technology/intl"
-npm "@spp-technology/sppackel"
-npm "@th0rgal/ralph-wiggum"
-npm "corepack"
-npm "npm-check-updates"
-npm "react-starter"
+# npm Packages: managed via vp instead (see scripts/install-vp-packages.sh)

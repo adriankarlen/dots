@@ -1,0 +1,9 @@
+{
+  "defaultNodeVersion": "lts",
+  "packageManagerShimModes": {
+    "bun": "managed",
+    "npm": "managed",
+    "pnpm": "managed",
+    "yarn": "managed"
+  }
+}

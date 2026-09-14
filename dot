@@ -40,6 +40,7 @@ readonly LINK_PATH="${LINK_DIR}/${SCRIPT_NAME}"
 readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly BREWFILE="${PACKAGES_DIR}/Brewfile"
 readonly PI_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-pi-packages.sh"
+readonly VP_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-vp-packages.sh"
 
 # Representative paths to spot-check in `doctor`. Mix of top-level files
 # (stow'd as individual symlinks) and nested entries under .config
@@ -623,16 +624,15 @@ __install_nvim_nightly() {
 }
 
 __install_node() {
-    if ! __command_exists fnm; then
-        __print_warning "fnm not installed, skipping Node install"
+    if ! __command_exists vp; then
+        __print_warning "vp (Vite+) not installed, skipping Node install"
         return 0
     fi
 
-    __print_info "Installing Node LTS via fnm..."
-    eval "$(fnm env --shell zsh)"
-    fnm install --lts
-    fnm default lts-latest
-    __print_success "Node LTS installed via fnm"
+    __print_info "Installing Node LTS via vp..."
+    vp env install lts
+    vp env default lts
+    __print_success "Node LTS installed via vp"
 }
 
 __install_tmux_plugins() {
@@ -674,6 +674,22 @@ __install_pi_packages() {
     __print_success "pi packages installed"
 }
 
+__install_vp_packages() {
+    if ! __command_exists vp; then
+        __print_warning "vp not installed, skipping vp global package install"
+        return 0
+    fi
+
+    if [[ ! -x "$VP_PACKAGES_SCRIPT" ]]; then
+        __print_error "Script not found or not executable: ${VP_PACKAGES_SCRIPT}"
+        return 1
+    fi
+
+    __print_info "Installing vp global packages..."
+    "$VP_PACKAGES_SCRIPT"
+    __print_success "vp global packages installed"
+}
+
 # Ordered "Step name;;function" registry. Only Homebrew itself is fatal —
 # everything else warns and continues so a partial machine still ends up
 # mostly configured (and re-running `init` will pick up the rest).
@@ -685,10 +701,11 @@ readonly -a INIT_STEPS=(
     "Background services     ;; __start_services"
     "Spicetify               ;; __setup_spicetify"
     "Neovim nightly          ;; __install_nvim_nightly"
-    "Node (fnm)              ;; __install_node"
+    "Node (vp)               ;; __install_node"
     "tmux plugins            ;; __install_tmux_plugins"
     "Yazi packages           ;; __install_yazi_packages"
     "pi packages             ;; __install_pi_packages"
+    "vp global packages      ;; __install_vp_packages"
 )
 
 __run_init_steps() {
@@ -718,7 +735,7 @@ __run_init_steps() {
 # Reuses several init step functions directly (they're written to be safe
 # to re-run and effectively double as "update" steps): __install_nvim_nightly
 # re-downloads whatever the nightly tag currently points at, __install_node
-# re-resolves and installs the current LTS via fnm, and __setup_spicetify
+# re-resolves and installs the current LTS via vp, and __setup_spicetify
 # reapplies the backup (needed again after spicetify-cli itself is upgraded).
 
 __update_homebrew() {
@@ -734,7 +751,7 @@ __update_homebrew() {
     brew upgrade
 
     if [[ -f "$BREWFILE" ]]; then
-        __print_info "Reconciling Brewfile (brew/cask/go/npm/vscode entries)..."
+        __print_info "Reconciling Brewfile (brew/cask/go/vscode entries)..."
         brew bundle install --file="$BREWFILE" || __print_warning "brew bundle install reported issues"
     fi
 
@@ -758,6 +775,22 @@ __update_pi_packages() {
     __print_info "Updating pi itself and installed packages..."
     pi update --all
     __print_success "pi packages updated"
+}
+
+__update_vp_packages() {
+    if ! __command_exists vp; then
+        __print_warning "vp not installed, skipping vp global package update"
+        return 0
+    fi
+
+    if [[ -x "$VP_PACKAGES_SCRIPT" ]]; then
+        __print_info "Reconciling tracked vp global package list..."
+        "$VP_PACKAGES_SCRIPT" || __print_warning "install-vp-packages.sh reported issues"
+    fi
+
+    __print_info "Updating vp global packages..."
+    vp update -g --latest
+    __print_success "vp global packages updated"
 }
 
 __update_tmux_plugins() {
@@ -786,10 +819,11 @@ __update_yazi_packages() {
 readonly -a UPDATE_STEPS=(
     "Homebrew packages       ;; __update_homebrew"
     "pi packages             ;; __update_pi_packages"
+    "vp global packages      ;; __update_vp_packages"
     "tmux plugins            ;; __update_tmux_plugins"
     "Yazi packages           ;; __update_yazi_packages"
     "Neovim nightly          ;; __install_nvim_nightly"
-    "Node (fnm)              ;; __install_node"
+    "Node (vp)               ;; __install_node"
     "Spicetify               ;; __setup_spicetify"
 )
 
@@ -820,9 +854,9 @@ cmd_update() {
                 echo -e "    ${SCRIPT_NAME} update [--skip-spicetify]"
                 echo
                 echo "Update everything this machine has installed: Homebrew itself plus"
-                echo "every formula/cask/go/npm/vscode entry in the Brewfile, pi itself and"
-                echo "its installed packages, tmux plugins (TPM), Yazi packages, Neovim"
-                echo "nightly, Node LTS (via fnm), and the Spicetify backup."
+                echo "every formula/cask/go entry in the Brewfile, pi itself and"
+                echo "its installed packages, vp global npm packages, tmux plugins (TPM),"
+                echo "Yazi packages, Neovim nightly, Node LTS (via vp), and the Spicetify backup."
                 echo
                 echo "Safe to re-run: every step just refreshes whatever is already there."
                 echo
@@ -857,8 +891,9 @@ cmd_init() {
                 echo "Bootstrap this machine: install Homebrew, install Brewfile packages,"
                 echo "stow dotfiles, apply macOS defaults, start background services"
                 echo "(skhd/sketchybar/borders), set up Spicetify, install Neovim nightly,"
-                echo "Node LTS (via fnm), tmux plugins (TPM), Yazi packages, and pi"
-                echo "packages (see scripts/install-pi-packages.sh)."
+                echo "Node LTS (via vp), tmux plugins (TPM), Yazi packages, pi"
+                echo "packages (see scripts/install-pi-packages.sh), and vp global npm"
+                echo "packages (see scripts/install-vp-packages.sh)."
                 echo
                 echo "Safe to re-run: every step checks existing state before acting."
                 echo
@@ -938,6 +973,7 @@ cmd_help() {
     echo "    Target:   ${STOW_TARGET}"
     echo "    Brewfile: ${BREWFILE}"
     echo "    Pi pkgs:  ${PI_PACKAGES_SCRIPT}"
+    echo "    Vp pkgs:  ${VP_PACKAGES_SCRIPT}"
     echo "    Ignore:   ${HOME_DIR}/.stow-local-ignore"
 }
 
