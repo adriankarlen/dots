@@ -881,6 +881,172 @@ cmd_update() {
     __print_header "Update complete! 🎉"
 }
 
+# ─── Outdated: read-only report across every package manager in play ──────
+__outdated_section() {
+    # $1=section title  $2=header row (tab-separated)  $3=body (tab-separated rows, one per line)
+    local title="$1" header="$2" body="$3"
+    local count=0
+    if [[ -n "$body" ]]; then
+        count=$(wc -l <<< "$body")
+    fi
+
+    if [[ "$count" -eq 0 ]]; then
+        __print_success "${title}: up to date"
+        return 0
+    fi
+
+    __print_warning "${title}: ${count} outdated"
+    { echo -e "$header"; echo -e "$body"; } | column -t -s $'\t' | sed 's/^/    /'
+    echo
+    return 0
+}
+
+cmd_outdated() {
+    if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+        echo -e "${BOLD}USAGE:${RESET}"
+        echo -e "    ${SCRIPT_NAME} outdated"
+        echo
+        echo "Check every package manager and tool this machine tracks for available"
+        echo "updates: Homebrew formulae/casks (including auto-updating casks, via"
+        echo "--greedy), pi packages, vp-managed global npm packages and Node.js"
+        echo "itself, tmux plugins (TPM), and Yazi packages/flavors. Prints one"
+        echo "combined, easy-to-scan report per source. Refreshes Homebrew's package"
+        echo "index first. Spicetify isn't checked separately: its only versioned"
+        echo "part, spicetify-cli, already shows up under Homebrew formulae."
+        echo
+        echo "Read-only: this only checks, it never installs anything. Run"
+        echo "'${SCRIPT_NAME} update' to actually update what's reported here."
+        return 0
+    fi
+
+    if ! __command_exists jq; then
+        __print_error "jq is required for '${SCRIPT_NAME} outdated' (brew install jq)"
+        return 1
+    fi
+
+    __print_header "Checking for outdated packages"
+    local grand_total=0 count
+
+    if __command_exists brew; then
+        __print_info "Refreshing Homebrew's package index..."
+        brew update --quiet >/dev/null 2>&1 || __print_warning "brew update failed, results may be stale"
+
+        local brew_json formulae casks
+        brew_json="$(brew outdated --greedy --json=v2 2>/dev/null || echo '{"formulae":[],"casks":[]}')"
+
+        formulae="$(jq -r '.formulae[] | "\(.name)\t\(.installed_versions[0])\t\(.current_version)"' <<< "$brew_json")"
+        __outdated_section "Homebrew formulae" "NAME\tINSTALLED\tLATEST" "$formulae"
+        count=$(jq '.formulae | length' <<< "$brew_json"); ((grand_total += count))
+
+        casks="$(jq -r '.casks[] | "\(.name)\t\(.installed_versions[0])\t\(.current_version)"' <<< "$brew_json")"
+        __outdated_section "Homebrew casks" "NAME\tINSTALLED\tLATEST" "$casks"
+        count=$(jq '.casks | length' <<< "$brew_json"); ((grand_total += count))
+    else
+        __print_warning "Homebrew not installed, skipping"
+    fi
+
+    if __command_exists vp; then
+        local vp_json vp_rows
+        vp_json="$(vp outdated -g --format json 2>/dev/null || echo '{}')"
+
+        vp_rows="$(jq -r 'to_entries[] | "\(.key)\t\(.value.current)\t\(.value.latest)"' <<< "$vp_json")"
+        __outdated_section "vp global packages" "NAME\tCURRENT\tLATEST" "$vp_rows"
+        count=$(jq 'keys | length' <<< "$vp_json"); ((grand_total += count))
+
+        local vp_node_current vp_node_latest_lts
+        vp_node_current="$(vp env current --json 2>/dev/null | jq -r '.node.version // empty')"
+        vp_node_latest_lts="$(vp env list-remote --lts --json 2>/dev/null | jq -r '.node[] | select(.latest_lts==true) | .version' | tail -1)"
+        if [[ -n "$vp_node_current" && -n "$vp_node_latest_lts" && "$vp_node_current" != "$vp_node_latest_lts" ]]; then
+            __outdated_section "Node.js (vp)" "CURRENT\tLATEST_LTS" "${vp_node_current}\t${vp_node_latest_lts}"
+            ((grand_total++))
+        else
+            __print_success "Node.js (vp): up to date${vp_node_current:+ (${vp_node_current})}"
+        fi
+    else
+        __print_warning "vp not installed, skipping"
+    fi
+
+    if __command_exists pi; then
+        local pi_rows="" pi_count=0 pi_name pi_path pi_installed pi_latest
+        while IFS=$'\t' read -r pi_name pi_path; do
+            [[ -z "$pi_name" ]] && continue
+            pi_installed="$(jq -r '.version // empty' "${pi_path}/package.json" 2>/dev/null)"
+            pi_latest="$(npm view "$pi_name" version 2>/dev/null)"
+            if [[ -n "$pi_installed" && -n "$pi_latest" && "$pi_installed" != "$pi_latest" ]]; then
+                pi_rows+="${pi_name}"$'\t'"${pi_installed}"$'\t'"${pi_latest}"$'\n'
+                ((++pi_count))
+            fi
+        done < <(pi list 2>/dev/null | awk '
+            /^  npm:/ { name=$0; sub(/^  npm:/,"",name); next }
+            /^    / { path=$0; gsub(/^ +/,"",path); print name "\t" path }
+        ')
+        pi_rows="${pi_rows%$'\n'}"
+        __outdated_section "pi packages" "NAME\tINSTALLED\tLATEST" "$pi_rows"
+        ((grand_total += pi_count))
+    else
+        __print_warning "pi not installed, skipping"
+    fi
+
+    if __command_exists git && [[ -d "$HOME/.config/tmux/plugins" ]]; then
+        local tmux_rows="" tmux_count=0 dir tmux_name branch local_hash remote_hash
+        for dir in "$HOME/.config/tmux/plugins"/*/; do
+            [[ -d "${dir}/.git" ]] || continue
+            tmux_name="$(basename "$dir")"
+            branch="$(git -C "$dir" symbolic-ref --short -q HEAD 2>/dev/null)"
+            [[ -z "$branch" ]] && continue
+            local_hash="$(git -C "$dir" rev-parse HEAD 2>/dev/null)"
+            remote_hash="$(git -C "$dir" ls-remote origin "refs/heads/${branch}" 2>/dev/null | cut -f1)"
+            if [[ -n "$remote_hash" && "$local_hash" != "$remote_hash" ]]; then
+                tmux_rows+="${tmux_name}"$'\t'"${local_hash:0:7}"$'\t'"${remote_hash:0:7}"$'\n'
+                ((++tmux_count))
+            fi
+        done
+        tmux_rows="${tmux_rows%$'\n'}"
+        __outdated_section "tmux plugins" "NAME\tLOCAL\tREMOTE" "$tmux_rows"
+        ((grand_total += tmux_count))
+    else
+        __print_warning "tmux plugins not found, skipping"
+    fi
+
+    if __command_exists ya && [[ -f "$HOME/.config/yazi/package.toml" ]]; then
+        local yazi_rows="" yazi_count=0 use rev remote_hash
+        while IFS=$'\t' read -r use rev; do
+            [[ -z "$use" || -z "$rev" ]] && continue
+            remote_hash="$(git ls-remote "https://github.com/${use}.yazi" HEAD 2>/dev/null | cut -f1)"
+            if [[ -n "$remote_hash" && "$remote_hash" != "$rev"* ]]; then
+                yazi_rows+="${use}"$'\t'"${rev}"$'\t'"${remote_hash:0:7}"$'\n'
+                ((++yazi_count))
+            fi
+        done < <(awk -F'"' '/^use = / {u=$2} /^rev = / {print u "\t" $2}' "$HOME/.config/yazi/package.toml")
+        yazi_rows="${yazi_rows%$'\n'}"
+        __outdated_section "Yazi packages" "NAME\tPINNED\tLATEST" "$yazi_rows"
+        ((grand_total += yazi_count))
+    else
+        __print_warning "Yazi packages not found, skipping"
+    fi
+
+    if __command_exists git && [[ -x "$HOME/.local/nvim-nightly/bin/nvim" ]]; then
+        local nvim_ver local_hash remote_hash
+        nvim_ver="$("$HOME/.local/nvim-nightly/bin/nvim" --version 2>/dev/null | head -1)"
+        local_hash="$(grep -oE '\+g[0-9a-f]+' <<< "$nvim_ver" | sed 's/^+g//')"
+        remote_hash="$(git ls-remote https://github.com/neovim/neovim nightly 2>/dev/null | cut -f1)"
+        if [[ -n "$local_hash" && -n "$remote_hash" && "$remote_hash" != "$local_hash"* ]]; then
+            __outdated_section "Neovim nightly" "LOCAL\tREMOTE" "${local_hash}\t${remote_hash:0:7}"
+            ((grand_total++))
+        else
+            __print_success "Neovim nightly: up to date"
+        fi
+    else
+        __print_warning "Neovim nightly not installed, skipping"
+    fi
+
+    if [[ $grand_total -eq 0 ]]; then
+        __print_success "Everything is up to date"
+    else
+        __print_warning "${grand_total} package(s) outdated total — run '${SCRIPT_NAME} update' to update them"
+    fi
+}
+
 cmd_init() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -946,6 +1112,7 @@ cmd_help() {
     echo -e "${BOLD}COMMANDS:${RESET}"
     echo "    init                Bootstrap this machine (Homebrew, packages, stow, ...)"
     echo "    update              Update everything installed (Homebrew, pi, tmux, Yazi, ...)"
+    echo "    outdated            Report outdated packages across every package manager (read-only)"
     echo "    stow                Create/refresh symlinks (default: --restow)"
     echo "    unstow              Remove all stow-managed symlinks"
     echo "    restow              Alias for 'stow' (explicit refresh)"
@@ -963,6 +1130,7 @@ cmd_help() {
     echo "    ${SCRIPT_NAME} init                        # bootstrap a fresh machine"
     echo "    ${SCRIPT_NAME} init --skip-services         # bootstrap, no skhd/sketchybar/borders/defaults"
     echo "    ${SCRIPT_NAME} update                       # update everything already installed"
+    echo "    ${SCRIPT_NAME} outdated                     # check what's outdated without updating"
     echo "    ${SCRIPT_NAME}                              # restow dotfiles (default)"
     echo "    ${SCRIPT_NAME} doctor                       # check symlink + tool health"
     echo "    ${SCRIPT_NAME} link                         # install 'dot' to PATH"
@@ -1002,6 +1170,7 @@ main() {
     case "$cmd" in
         init)    cmd_init    "$@" ;;
         update)  cmd_update  "$@" ;;
+        outdated) cmd_outdated "$@" ;;
         stow)    cmd_stow    "$@" ;;
         unstow)  cmd_unstow  "$@" ;;
         restow)  cmd_restow  "$@" ;;
