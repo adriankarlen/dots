@@ -92,7 +92,6 @@ brew "switchaudio-osx"
 
 # Custom Taps
 brew "acsandmann/tap/rift"
-brew "asmvik/formulae/skhd"
 brew "atlassian/acli/acli"
 brew "felixkratz/formulae/borders"
 brew "felixkratz/formulae/sketchybar"
