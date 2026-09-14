@@ -7,8 +7,7 @@
     "felixkratz/formulae",
     "gromgit/brewtils",
     "isen-ng/dotnet-sdk-versions",
-    "jandedobbeleer/oh-my-posh",
-    "sst/tap"
+    "jandedobbeleer/oh-my-posh"
   ],
   "trustedcasks": [
     "tmuxpack/tpack/tpack"
