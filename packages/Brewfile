@@ -40,7 +40,6 @@ brew "lua"
 brew "luajit"
 brew "luarocks"
 brew "pkgconf"
-brew "pnpm"
 brew "powershell", link: false
 
 # Development Tools
