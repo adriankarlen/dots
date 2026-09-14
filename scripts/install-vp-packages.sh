@@ -26,7 +26,6 @@ packages=(
   "@vtsls/language-server"
   "yaml-language-server"
   "@tailwindcss/language-server"
-  "oxfmt"
 )
 
 if ! command -v vp >/dev/null 2>&1; then
