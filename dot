@@ -604,6 +604,16 @@ __setup_spicetify() {
 }
 
 __install_nvim_nightly() {
+    local nvim_status local_hash remote_hash
+    if nvim_status="$(__nvim_nightly_status)"; then
+        local_hash="${nvim_status%%$'\t'*}"
+        remote_hash="${nvim_status##*$'\t'}"
+        if [[ "$remote_hash" == "$local_hash"* ]]; then
+            __print_success "Neovim nightly already up to date: $("$HOME/.local/nvim-nightly/bin/nvim" --version | head -1)"
+            return 0
+        fi
+    fi
+
     __print_info "Installing Neovim nightly..."
     mkdir -p "$HOME/.local"
     local tmp
@@ -621,6 +631,26 @@ __install_nvim_nightly() {
     rm -rf "$tmp"
     xattr -cr "$HOME/.local/nvim-nightly"
     __print_success "Neovim nightly installed: $("$HOME/.local/nvim-nightly/bin/nvim" --version | head -1)"
+}
+
+# Prints "<local_short_hash>\t<remote_full_hash>" for the installed Neovim
+# nightly build vs the current neovim/neovim `nightly` tag. Single source of
+# truth for this comparison — used by both `dot outdated` and anything else
+# that needs to know if the nightly build is current. Returns 1 (no output)
+# if Neovim nightly isn't installed, git is unavailable, or either hash
+# can't be determined.
+__nvim_nightly_status() {
+    __command_exists git || return 1
+    [[ -x "$HOME/.local/nvim-nightly/bin/nvim" ]] || return 1
+
+    local nvim_ver local_hash remote_hash
+    nvim_ver="$("$HOME/.local/nvim-nightly/bin/nvim" --version 2>/dev/null | head -1)"
+    local_hash="$(grep -oE '\+g[0-9a-f]+' <<< "$nvim_ver" | sed 's/^+g//')"
+    remote_hash="$(git ls-remote https://github.com/neovim/neovim nightly 2>/dev/null | cut -f1)"
+
+    [[ -n "$local_hash" && -n "$remote_hash" ]] || return 1
+
+    echo -e "${local_hash}\t${remote_hash}"
 }
 
 __install_node() {
@@ -984,11 +1014,11 @@ cmd_outdated() {
 
         formulae="$(jq -r '.formulae[] | "\(.name)\t\(.installed_versions[0])\t\(.current_version)"' <<< "$brew_json")"
         __outdated_section "Homebrew formulae" "NAME\tINSTALLED\tLATEST" "$formulae"
-        count=$(jq '.formulae | length' <<< "$brew_json"); ((grand_total += count))
+        count=$(jq '.formulae | length' <<< "$brew_json"); grand_total=$((grand_total + count))
 
         casks="$(jq -r '.casks[] | "\(.name)\t\(.installed_versions[0])\t\(.current_version)"' <<< "$brew_json")"
         __outdated_section "Homebrew casks" "NAME\tINSTALLED\tLATEST" "$casks"
-        count=$(jq '.casks | length' <<< "$brew_json"); ((grand_total += count))
+        count=$(jq '.casks | length' <<< "$brew_json"); grand_total=$((grand_total + count))
     else
         __print_warning "Homebrew not installed, skipping"
     fi
@@ -999,14 +1029,14 @@ cmd_outdated() {
 
         vp_rows="$(jq -r 'to_entries[] | "\(.key)\t\(.value.current)\t\(.value.latest)"' <<< "$vp_json")"
         __outdated_section "vp global packages" "NAME\tCURRENT\tLATEST" "$vp_rows"
-        count=$(jq 'keys | length' <<< "$vp_json"); ((grand_total += count))
+        count=$(jq 'keys | length' <<< "$vp_json"); grand_total=$((grand_total + count))
 
         local vp_node_current vp_node_latest_lts
         vp_node_current="$(vp env current --json 2>/dev/null | jq -r '.node.version // empty')"
         vp_node_latest_lts="$(vp env list-remote --lts --json 2>/dev/null | jq -r '.node[] | select(.latest_lts==true) | .version' | tail -1)"
         if [[ -n "$vp_node_current" && -n "$vp_node_latest_lts" && "$vp_node_current" != "$vp_node_latest_lts" ]]; then
             __outdated_section "Node.js (vp)" "CURRENT\tLATEST_LTS" "${vp_node_current}\t${vp_node_latest_lts}"
-            ((grand_total++))
+            ((++grand_total))
         else
             __print_success "Node.js (vp): up to date${vp_node_current:+ (${vp_node_current})}"
         fi
@@ -1030,7 +1060,7 @@ cmd_outdated() {
         ')
         pi_rows="${pi_rows%$'\n'}"
         __outdated_section "pi packages" "NAME\tINSTALLED\tLATEST" "$pi_rows"
-        ((grand_total += pi_count))
+        grand_total=$((grand_total + pi_count))
     else
         __print_warning "pi not installed, skipping"
     fi
@@ -1051,7 +1081,7 @@ cmd_outdated() {
         done
         tmux_rows="${tmux_rows%$'\n'}"
         __outdated_section "tmux plugins" "NAME\tLOCAL\tREMOTE" "$tmux_rows"
-        ((grand_total += tmux_count))
+        grand_total=$((grand_total + tmux_count))
     else
         __print_warning "tmux plugins not found, skipping"
     fi
@@ -1068,19 +1098,18 @@ cmd_outdated() {
         done < <(awk -F'"' '/^use = / {u=$2} /^rev = / {print u "\t" $2}' "$HOME/.config/yazi/package.toml")
         yazi_rows="${yazi_rows%$'\n'}"
         __outdated_section "Yazi packages" "NAME\tPINNED\tLATEST" "$yazi_rows"
-        ((grand_total += yazi_count))
+        grand_total=$((grand_total + yazi_count))
     else
         __print_warning "Yazi packages not found, skipping"
     fi
 
-    if __command_exists git && [[ -x "$HOME/.local/nvim-nightly/bin/nvim" ]]; then
-        local nvim_ver local_hash remote_hash
-        nvim_ver="$("$HOME/.local/nvim-nightly/bin/nvim" --version 2>/dev/null | head -1)"
-        local_hash="$(grep -oE '\+g[0-9a-f]+' <<< "$nvim_ver" | sed 's/^+g//')"
-        remote_hash="$(git ls-remote https://github.com/neovim/neovim nightly 2>/dev/null | cut -f1)"
-        if [[ -n "$local_hash" && -n "$remote_hash" && "$remote_hash" != "$local_hash"* ]]; then
+    local nvim_status local_hash remote_hash
+    if nvim_status="$(__nvim_nightly_status)"; then
+        local_hash="${nvim_status%%$'\t'*}"
+        remote_hash="${nvim_status##*$'\t'}"
+        if [[ "$remote_hash" != "$local_hash"* ]]; then
             __outdated_section "Neovim nightly" "LOCAL\tREMOTE" "${local_hash}\t${remote_hash:0:7}"
-            ((grand_total++))
+            ((++grand_total))
         else
             __print_success "Neovim nightly: up to date"
         fi
