@@ -817,22 +817,49 @@ __update_yazi_packages() {
 }
 
 readonly -a UPDATE_STEPS=(
-    "Homebrew packages       ;; __update_homebrew"
-    "pi packages             ;; __update_pi_packages"
-    "vp global packages      ;; __update_vp_packages"
-    "tmux plugins            ;; __update_tmux_plugins"
-    "Yazi packages           ;; __update_yazi_packages"
-    "Neovim nightly          ;; __install_nvim_nightly"
-    "Node (vp)               ;; __install_node"
-    "Spicetify               ;; __setup_spicetify"
+    "Homebrew packages       ;; __update_homebrew       ;; homebrew"
+    "pi packages             ;; __update_pi_packages    ;; pi"
+    "vp global packages      ;; __update_vp_packages    ;; vp"
+    "tmux plugins            ;; __update_tmux_plugins   ;; tmux"
+    "Yazi packages           ;; __update_yazi_packages  ;; yazi"
+    "Neovim nightly          ;; __install_nvim_nightly  ;; nvim"
+    "Node (vp)               ;; __install_node          ;; node"
+    "Spicetify               ;; __setup_spicetify       ;; spicetify"
 )
 
+__update_step_targets() {
+    local entry keyword joined=""
+    for entry in "${UPDATE_STEPS[@]}"; do
+        keyword="$(cut -d';' -f5 <<< "$entry" | xargs)"
+        joined+="${keyword}, "
+    done
+    echo "${joined%, }"
+}
+
 __run_update_steps() {
-    TOTAL_STEPS=${#UPDATE_STEPS[@]}
+    local target="${1:-}"
+    local -a steps=()
+    local entry keyword
+
+    if [[ -n "$target" ]]; then
+        for entry in "${UPDATE_STEPS[@]}"; do
+            keyword="$(cut -d';' -f5 <<< "$entry" | xargs)"
+            [[ "$keyword" == "$target" ]] && steps+=("$entry")
+        done
+        if [[ ${#steps[@]} -eq 0 ]]; then
+            __print_error "Unknown update target: ${target}"
+            __print_info "Valid targets: $(__update_step_targets)"
+            return 1
+        fi
+    else
+        steps=("${UPDATE_STEPS[@]}")
+    fi
+
+    TOTAL_STEPS=${#steps[@]}
     CURRENT_STEP=0
 
-    local entry name fn
-    for entry in "${UPDATE_STEPS[@]}"; do
+    local name fn
+    for entry in "${steps[@]}"; do
         name="$(cut -d';' -f1 <<< "$entry" | xargs)"
         fn="$(cut -d';' -f3 <<< "$entry" | xargs)"
 
@@ -847,37 +874,58 @@ __run_update_steps() {
 }
 
 cmd_update() {
+    local target=""
     while [[ $# -gt 0 ]]; do
         case "$1" in
             -h|--help)
                 echo -e "${BOLD}USAGE:${RESET}"
-                echo -e "    ${SCRIPT_NAME} update [--skip-spicetify]"
+                echo -e "    ${SCRIPT_NAME} update [TARGET] [--skip-spicetify]"
                 echo
                 echo "Update everything this machine has installed: Homebrew itself plus"
                 echo "every formula/cask/go entry in the Brewfile, pi itself and"
                 echo "its installed packages, vp global npm packages, tmux plugins (TPM),"
                 echo "Yazi packages, Neovim nightly, Node LTS (via vp), and the Spicetify backup."
                 echo
+                echo "Give TARGET to update just one of these instead of everything."
+                echo "Valid targets: $(__update_step_targets)"
+                echo
                 echo "Safe to re-run: every step just refreshes whatever is already there."
                 echo
                 echo -e "${BOLD}OPTIONS:${RESET}"
                 echo "    --skip-spicetify     Skip reapplying the Spicetify backup"
+                echo
+                echo -e "${BOLD}EXAMPLES:${RESET}"
+                echo "    ${SCRIPT_NAME} update              # update everything"
+                echo "    ${SCRIPT_NAME} update nvim         # update Neovim nightly only"
                 return 0
                 ;;
             --skip-spicetify)
                 INIT_SKIP_SPICETIFY=true
                 shift
                 ;;
-            *)
+            -*)
                 __print_error "Unknown update option: $1"
                 __print_info "Run '${SCRIPT_NAME} update --help' for usage"
                 return 1
                 ;;
+            *)
+                if [[ -n "$target" ]]; then
+                    __print_error "Only one update target can be given at a time"
+                    __print_info "Run '${SCRIPT_NAME} update --help' for usage"
+                    return 1
+                fi
+                target="$1"
+                shift
+                ;;
         esac
     done
 
-    __print_header "Updating installed tools"
-    __run_update_steps
+    if [[ -n "$target" ]]; then
+        __print_header "Updating: ${target}"
+    else
+        __print_header "Updating installed tools"
+    fi
+    __run_update_steps "$target" || return 1
     __print_header "Update complete! 🎉"
 }
 
@@ -1130,6 +1178,7 @@ cmd_help() {
     echo "    ${SCRIPT_NAME} init                        # bootstrap a fresh machine"
     echo "    ${SCRIPT_NAME} init --skip-services         # bootstrap, no skhd/sketchybar/borders/defaults"
     echo "    ${SCRIPT_NAME} update                       # update everything already installed"
+    echo "    ${SCRIPT_NAME} update nvim                  # update just one target (see 'dot help update')"
     echo "    ${SCRIPT_NAME} outdated                     # check what's outdated without updating"
     echo "    ${SCRIPT_NAME}                              # restow dotfiles (default)"
     echo "    ${SCRIPT_NAME} doctor                       # check symlink + tool health"
