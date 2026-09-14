@@ -1,6 +1,5 @@
 {
   "trustedtaps": [
-    "acsandman/tap",
     "acsandmann/tap",
     "asmvik/formulae",
     "atlassian/acli",
