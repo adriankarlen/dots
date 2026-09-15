@@ -19,6 +19,8 @@ Steps:
 
 3. **PR**: Push the branch and create the PR with `gh pr create`.
 
+4. **Jira ticket**: Look for a Jira ticket key (e.g. `PROJ-123`) in the branch name, commit messages, or conversation context. If one exists, use `acli` to move it to "In Code Review" (or the closest matching status in its workflow) with `acli jira workitem transition --key KEY-123 --status "In Code Review" --yes`. If no ticket is referenced, skip this step.
+
 PR title and body rules:
 
 - Title: `<type>(<scope>): <imperative summary>` — same conventional commit style as commit subjects (scope optional, imperative mood, ≤50 chars where possible, no trailing period).
