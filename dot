@@ -797,11 +797,6 @@ __update_pi_packages() {
         return 0
     fi
 
-    if [[ -x "$PI_PACKAGES_SCRIPT" ]]; then
-        __print_info "Reconciling tracked pi package list..."
-        "$PI_PACKAGES_SCRIPT" || __print_warning "install-pi-packages.sh reported issues"
-    fi
-
     __print_info "Updating pi itself and installed packages..."
     pi update --all
     __print_success "pi packages updated"
