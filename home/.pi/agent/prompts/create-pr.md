@@ -21,6 +21,7 @@ Steps:
 
 PR title and body rules:
 
+- Title: `<type>(<scope>): <imperative summary>` — same conventional commit style as commit subjects (scope optional, imperative mood, ≤50 chars where possible, no trailing period).
 - Keep it short-worded. No novel about the change.
 - Include only:
   - The key feature or fix (what changed, in a sentence or short bullet list).
