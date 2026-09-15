@@ -41,6 +41,8 @@ restart_session_*
 !/home/.pi/agent/themes/*.json
 !/home/.pi/agent/extensions/
 !/home/.pi/agent/extensions/**
+!/home/.pi/agent/prompts/
+!/home/.pi/agent/prompts/**
 !/home/.pi/agent/keybindings.json
 !/home/.pi/agent/mcp.json
 
