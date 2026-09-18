@@ -25,10 +25,12 @@ PR title and body rules:
 
 - Title: `<type>(<scope>): <imperative summary>` — same conventional commit style as commit subjects (scope optional, imperative mood, ≤50 chars where possible, no trailing period).
 - Keep it short-worded. No novel about the change.
+- Write for an external reviewer who has no memory of the conversation that produced this PR. Only what is visible in the diff and repo counts as context.
 - Include only:
   - The key feature or fix (what changed, in a sentence or short bullet list).
-  - Any discrepancies or notable deviations found while implementing.
+  - Deviations from the repo's established conventions or patterns (e.g. an existing lint rule was bypassed, a different pattern than the rest of the codebase was used, a dependency was added against usual practice) — and why that deviation was necessary.
 - Do NOT explain why the change was made or how it works. The code is sufficient to see the changes.
+- Do NOT include: alternatives considered and rejected, back-and-forth about approach, or any other detail that only makes sense as a recap of the discussion with the agent. If it wasn't a deviation from repo praxis, it doesn't belong in the PR.
 
 Writing style:
 
