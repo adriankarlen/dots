@@ -13,15 +13,19 @@ BUNDLE=$(printf '%s' "$DATA" | jq -r '.bundleIdentifier // empty')
 
 # Pick icon based on app
 case "$BUNDLE" in
-  com.spotify.client) ICON="󰓇" ;;
-  com.apple.Music)    ICON="󰎆" ;;
-  *)                  ICON="󰎈" ;;
+com.spotify.client) ICON="󰓇" ;;
+com.apple.Music) ICON="󰎆" ;;
+*) ICON="󰎈" ;;
 esac
 
 if [ -z "$TITLE" ]; then
   sketchybar -m --set media.name label="Not Playing" icon="$ICON" drawing=on
 else
-  LABEL="${ARTIST} - ${TITLE}"
+  if [ -z "$ARTIST" ]; then
+    LABEL="${TITLE}"
+  else
+    LABEL="${ARTIST} - ${TITLE}"
+  fi
   if [ ${#LABEL} -gt 50 ]; then
     LABEL="$(printf '%.47s' "$LABEL")..."
   fi
