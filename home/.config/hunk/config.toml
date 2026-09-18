@@ -1,18 +1,13 @@
-theme = "custom"
+theme = "rose-pine"
 mode = "auto"
-line_numbers = false
+line_numbers = true
 wrap_lines = false
 hunk_headers = true
-menu_bar = true
+menu_bar = false
 agent_notes = false
 copy_decorations = false
 cursor_line = "row"
-
-[custom_theme]
-base = "rose-pine"
-background = "#191724"
-panel = "#191724"
-panelAlt = "#1f1d2e"
+transparent_background = true
 
 [keybindings]
 "hunk.review.previousHunk" = "ö"
