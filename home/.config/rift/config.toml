@@ -84,6 +84,7 @@ app_rules = [
   { app_id = "com.visualstudio.code", workspace = 1 },
   { app_id = "com.microsoft.teams", workspace = 2 },
   { app_id = "com.microsoft.teams2", workspace = 2 },
+  { app_id = "com.microsoft.Outlook", workspace = 2 },
   { app_id = "com.tinyspeck.slackmacgap", workspace = 2 },
   { app_id = "com.spotify.client", workspace = 3 },
 
