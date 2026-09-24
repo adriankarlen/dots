@@ -57,8 +57,8 @@ listed there via `pi install`.
 `dot update` refreshes everything `init` set up, without repeating the
 one-time bootstrap steps: `brew update` + `brew upgrade` + `brew bundle` (so
 every formula, cask, go, npm, and VS Code extension entry in the Brewfile
-is brought up to date), pi itself and its installed packages, tmux plugins
-(TPM), Yazi packages, Neovim nightly, Node LTS (via fnm), and the Spicetify
+is brought up to date), pi itself and its installed packages, Yazi
+packages, Neovim nightly, Node LTS (via vite+), and the Spicetify
 backup. Same `--skip-spicetify` flag as `init`.
 
 `~/.pi/agent/settings.json` is intentionally gitignored: pi rewrites its
