@@ -33,9 +33,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/deckardger/tanstack-agent-skills.git",
       "skillPath": "skills/tanstack-router/SKILL.md",
-      "skillFolderHash": "0f076dd09acf3e8e7c2ef80e654ad253e25c6eec",
+      "skillFolderHash": "d755c19a627159a8dcc6e76ef8ba41da8a8d2398",
       "installedAt": "2026-03-24T12:37:08.352Z",
-      "updatedAt": "2026-03-24T12:37:08.352Z"
+      "updatedAt": "2026-09-24T13:33:55.648Z"
     },
     "skill-creator": {
       "source": "anthropics/skills",
@@ -69,9 +69,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/anthropics/skills.git",
       "skillPath": "skills/frontend-design/SKILL.md",
-      "skillFolderHash": "0d5b74a14bdf3ebcd64f352d06376a2ef05ed296",
+      "skillFolderHash": "d79e2a5bb4df4a386c2adcdd9ab8709bba28c3f6",
       "installedAt": "2026-04-29T11:05:45.599Z",
-      "updatedAt": "2026-08-11T09:54:34.822Z"
+      "updatedAt": "2026-09-24T13:33:57.767Z"
     },
     "no-use-effect": {
       "source": "factory-ai/factory-plugins",
@@ -96,46 +96,64 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
       "skillPath": "skills/caveman-commit/SKILL.md",
-      "skillFolderHash": "6ba13fa3503e9607eed8f94828b524510d83b7ef",
+      "skillFolderHash": "7b600195c1d3cdd277dc608c56384c86afb7ec11",
       "installedAt": "2026-08-26T12:27:19.493Z",
-      "updatedAt": "2026-08-26T12:27:19.493Z"
+      "updatedAt": "2026-09-24T13:34:01.106Z"
     },
     "review": {
       "source": "adriankarlen/dots-fedora",
       "sourceType": "github",
       "sourceUrl": "https://github.com/adriankarlen/dots-fedora.git",
       "skillPath": "home/.agents/skills/review/SKILL.md",
-      "skillFolderHash": "015084d55fa81910c91afafcc9268460b0a04b9a",
+      "skillFolderHash": "444985952d248a38e66f550ecc2dd7c9ad48c255",
       "installedAt": "2026-11-30T00:00:00.000Z",
-      "updatedAt": "2026-11-30T00:00:00.000Z"
+      "updatedAt": "2026-09-24T13:34:04.838Z"
     },
     "pair-with-magnus": {
       "source": "adriankarlen/dots-fedora",
       "sourceType": "github",
       "sourceUrl": "https://github.com/adriankarlen/dots-fedora.git",
       "skillPath": "home/.agents/skills/pair-with-magnus/SKILL.md",
-      "skillFolderHash": "a8f3b8ec16a3e5a9c3686ad73d37926410300cdd",
+      "skillFolderHash": "739d522cfddea265dd6c00e6d8c1d3b068e49563",
       "installedAt": "2026-11-30T00:00:00.000Z",
-      "updatedAt": "2026-11-30T00:00:00.000Z"
+      "updatedAt": "2026-09-24T13:34:08.346Z"
     },
     "humanizer": {
       "source": "blader/humanizer",
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "e2e92e7b4b8229253ed5c8e81dc65463fdeddda5",
+      "skillFolderHash": "9862685f575c65a8247f90369951df1b3416e3d6",
       "pluginName": "humanizer",
       "installedAt": "2026-08-27T09:08:54.003Z",
-      "updatedAt": "2026-08-27T09:08:54.003Z"
+      "updatedAt": "2026-09-24T13:34:10.184Z"
     },
     "herdr": {
       "source": "herdrdev/herdr",
       "sourceType": "github",
       "sourceUrl": "https://github.com/herdrdev/herdr.git",
       "skillPath": "skills/herdr/SKILL.md",
-      "skillFolderHash": "b9dcfddcfa7ce43e2e4cf60e724c519be553f149",
+      "skillFolderHash": "6985a5e8418d43171c45c2a9e04b02de7308e1d8",
       "installedAt": "2026-09-09T08:26:19.083Z",
-      "updatedAt": "2026-09-09T08:26:19.083Z"
+      "updatedAt": "2026-09-24T13:34:13.879Z"
+    },
+    "ketch": {
+      "source": "1broseidon/ketch",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/1broseidon/ketch.git",
+      "skillPath": "skills/ketch/SKILL.md",
+      "skillFolderHash": "a5217b4da07913bfd68f83e07302c93ee24a0981",
+      "installedAt": "2026-09-24T13:33:28.582Z",
+      "updatedAt": "2026-09-24T13:33:28.582Z"
+    },
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
+      "skillPath": "skills/agent-browser/SKILL.md",
+      "skillFolderHash": "82def67855a0d2aad7794207951820fa5422fdb0",
+      "installedAt": "2026-09-24T13:35:12.236Z",
+      "updatedAt": "2026-09-24T13:35:12.236Z"
     }
   },
   "dismissed": {

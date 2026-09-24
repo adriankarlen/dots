@@ -12,7 +12,7 @@
       "source": "./",
       "description": "Rewrite AI-sounding text so it reads naturally without changing what it says.",
       "license": "MIT",
-      "keywords": ["writing", "editing", "ai-detection", "humanize", "prose", "style"]
+      "keywords": ["writing", "editing", "humanize", "prose", "style"]
     }
   ]
 }
