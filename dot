@@ -795,11 +795,6 @@ __update_vp_packages() {
     return 0
   fi
 
-  if [[ -x "$VP_PACKAGES_SCRIPT" ]]; then
-    __print_info "Reconciling tracked vp global package list..."
-    "$VP_PACKAGES_SCRIPT" || __print_warning "install-vp-packages.sh reported issues"
-  fi
-
   __print_info "Updating vp global packages..."
   vp update -g --latest
   __print_success "vp global packages updated"
