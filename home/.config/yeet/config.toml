@@ -1,0 +1,30 @@
+version = 1
+
+[list]
+blacklist = ['^scratch$', '^_']
+
+[naming]
+[picker]
+show_icons = true
+herdr_theme_inherit = true
+replace_worktree_icon = true
+show_last_workspace = true
+show_last_workspace_path = true
+workspace_sort = 'workspace'
+
+[workspace_defaults]
+preview = 'eza --all --git --icons=always --group-directories-first --color=always {}'
+
+[[workspace]]
+name = 'dots'
+path = '~/dots'
+startup = 'nvim'
+
+[[workspace]]
+name = 'downloads'
+path = '~/Downloads'
+startup = 'yazi'
+
+[[rule]]
+path_glob = '~/repos/**'
+startup = 'nvim'
