@@ -42,7 +42,6 @@ brew "pkgconf"
 brew "powershell", link: false
 
 # Development Tools
-brew "biome"
 brew "gh"
 brew "git-delta"
 brew "lazydocker"
@@ -51,25 +50,18 @@ brew "openapi-tui"
 brew "zizmor"
 
 # Formatters
-brew "prettier"
-brew "prettierd"
-brew "rustywind"
 brew "shfmt"
 brew "stylua"
 brew "taplo"
 
 # Language Servers
-brew "bash-language-server"
 brew "emmylua_ls"
 brew "gopls"
 brew "marksman"
-brew "vscode-langservers-extracted"
-brew "yaml-language-server"
 
 # Cloud & Infrastructure
 brew "azure-cli"
 brew "mole"
-brew "sesh"
 brew "sst/tap/opencode"
 
 # Media & Graphics
@@ -106,7 +98,6 @@ cask "karabiner-elements"
 cask "sf-symbols"
 cask "slack"
 cask "spotify"
-cask "wezterm"
 cask "zed"
 
 # Microsoft
@@ -121,16 +112,6 @@ cask "visual-studio-code"
 cask "dotnet-sdk"
 cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8"
 cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-400"
-
-# VS Code Extensions
-vscode "biomejs.biome"
-vscode "esbenp.prettier-vscode"
-vscode "github.copilot-chat"
-vscode "ms-dotnettools.csdevkit"
-vscode "ms-dotnettools.csharp"
-vscode "ms-dotnettools.vscode-dotnet-runtime"
-vscode "mvllow.rose-pine"
-vscode "ravenothere.rose-pine-symbols"
 
 # Go Packages
 go "github.com/adriankarlen/det-blir-nog-regn"

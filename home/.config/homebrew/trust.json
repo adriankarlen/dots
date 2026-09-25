@@ -12,6 +12,7 @@
     "tmuxpack/tpack/tpack"
   ],
   "trustedformulae": [
+    "acsandmann/tap/rift",
     "https://github.com/anomalyco/homebrew-tap.git/opencode",
     "textfuel/tap/lazyjira"
   ]

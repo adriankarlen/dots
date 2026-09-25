@@ -14,18 +14,16 @@
 set -euo pipefail
 
 packages=(
-  "agent-browser"
+  "@biomejs/biome"
   "@spp-technology/sppackel-cli"
+  "agent-browser"
+  "bash-language-server"
+  "oxfmt"
   "storyquery"
   "svelte-language-server"
-  "bash-language-server"
-  "prettier"
-  "@fsouza/prettierd"
   "typescript"
   "vscode-langservers-extracted"
-  "@vtsls/language-server"
   "yaml-language-server"
-  "@tailwindcss/language-server"
 )
 
 if ! command -v vp >/dev/null 2>&1; then
