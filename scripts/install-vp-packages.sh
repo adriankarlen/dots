@@ -19,6 +19,7 @@ packages=(
   "agent-browser"
   "bash-language-server"
   "oxfmt"
+  "oxlint"
   "storyquery"
   "svelte-language-server"
   "typescript"
