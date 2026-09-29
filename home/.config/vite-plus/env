@@ -1,16 +1,20 @@
 #!/bin/sh
 # Vite+ environment setup (https://viteplus.dev)
 __vp_bin="$HOME/.local/share/vite-plus/bin"
-while case ":${PATH}:" in *":${__vp_bin}:"*) true ;; *) false ;; esac; do
-    __vp_tmp=":${PATH}:"
-    __vp_before="${__vp_tmp%%":${__vp_bin}:"*}"
-    __vp_before="${__vp_before#:}"
-    __vp_after="${__vp_tmp#*":${__vp_bin}:"}"
-    __vp_after="${__vp_after%:}"
-    PATH="${__vp_before}${__vp_before:+${__vp_after:+:}}${__vp_after}"
+__vp_fallback="$HOME/.local/share/vite-plus/fallback-bin"
+for __vp_dir in "$__vp_bin" "$__vp_fallback"; do
+    while case ":${PATH}:" in *":${__vp_dir}:"*) true ;; *) false ;; esac; do
+        __vp_tmp=":${PATH}:"
+        __vp_before="${__vp_tmp%%":${__vp_dir}:"*}"
+        __vp_before="${__vp_before#:}"
+        __vp_after="${__vp_tmp#*":${__vp_dir}:"}"
+        __vp_after="${__vp_after%:}"
+        PATH="${__vp_before}${__vp_before:+${__vp_after:+:}}${__vp_after}"
+    done
 done
-export PATH="${__vp_bin}${PATH:+:${PATH}}"
-unset __vp_bin __vp_tmp __vp_before __vp_after
+export PATH="${__vp_bin}${PATH:+:${PATH}}:${__vp_fallback}"
+unset __vp_bin __vp_fallback __vp_dir __vp_tmp __vp_before __vp_after
+hash -r 2>/dev/null || true
 
 # Shell function wrapper: intercepts `vp env use` to eval its stdout,
 # which sets/unsets VP_NODE_VERSION in the current shell session.
@@ -37,7 +41,9 @@ vp() {
         eval "$__vp_out"
     else
         unset __vp_env_use
-        command vp "$@"
+        command vp "$@" || return $?
+        # Mode changes move executables between directories; discard cached command paths.
+        hash -r 2>/dev/null || true
     fi
 }
 

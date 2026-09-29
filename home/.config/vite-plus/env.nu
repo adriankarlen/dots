@@ -1,5 +1,5 @@
 # Vite+ environment setup (https://viteplus.dev)
-$env.PATH = ($env.PATH | where { $in != "~/.local/share/vite-plus/bin" } | prepend "~/.local/share/vite-plus/bin")
+$env.PATH = ($env.PATH | where { $in != "~/.local/share/vite-plus/bin" and $in != "~/.local/share/vite-plus/fallback-bin" } | prepend "~/.local/share/vite-plus/bin" | append "~/.local/share/vite-plus/fallback-bin")
 
 # Shell function wrapper: intercepts `vp env use` to parse its stdout,
 # which sets/unsets VP_NODE_VERSION in the current shell session.

@@ -2,7 +2,10 @@
 while set -l __vp_idx (contains -i -- "$HOME/.local/share/vite-plus/bin" $PATH)
     set -e PATH[$__vp_idx]
 end
-set -gx PATH "$HOME/.local/share/vite-plus/bin" $PATH
+while set -l __vp_idx (contains -i -- "$HOME/.local/share/vite-plus/fallback-bin" $PATH)
+    set -e PATH[$__vp_idx]
+end
+set -gx PATH "$HOME/.local/share/vite-plus/bin" $PATH "$HOME/.local/share/vite-plus/fallback-bin"
 
 # Shell function wrapper: intercepts `vp env use` to eval its stdout,
 # which sets/unsets VP_NODE_VERSION in the current shell session.
