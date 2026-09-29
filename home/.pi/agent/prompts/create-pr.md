@@ -19,7 +19,7 @@ Steps:
 
 3. **PR**: Push the branch and create the PR with `gh pr create`.
 
-4. **Issue tracker**: Look for a ticket or issue reference (e.g. a Jira/Linear key like `PROJ-123`, or a GitHub issue like `#123`) in the branch name, commit messages, or conversation context. If one exists, update it to reflect that a PR is now open, moving it to the closest matching "in review" status if the tracker supports one. If no ticket or issue is referenced, skip this step.
+4. **Issue tracker**: Look for a ticket or issue reference (e.g. a Jira/Linear key like `PROJ-123`, or a GitHub issue like `#123`) in the branch name, commit messages, or conversation context. If one exists, update it to reflect that a PR is now open, moving it to the closest matching "in code review" status if the tracker supports one. If no ticket or issue is referenced, skip this step.
 
 PR title and body rules:
 
