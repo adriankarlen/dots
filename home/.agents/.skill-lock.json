@@ -123,28 +123,28 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "9862685f575c65a8247f90369951df1b3416e3d6",
+      "skillFolderHash": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
       "pluginName": "humanizer",
       "installedAt": "2026-08-27T09:08:54.003Z",
-      "updatedAt": "2026-09-24T13:34:10.184Z"
+      "updatedAt": "2026-10-01T09:16:31.490Z"
     },
     "herdr": {
       "source": "herdrdev/herdr",
       "sourceType": "github",
       "sourceUrl": "https://github.com/herdrdev/herdr.git",
       "skillPath": "skills/herdr/SKILL.md",
-      "skillFolderHash": "6985a5e8418d43171c45c2a9e04b02de7308e1d8",
+      "skillFolderHash": "67042ed7910d4177a9000e0679e78b0346060927",
       "installedAt": "2026-09-09T08:26:19.083Z",
-      "updatedAt": "2026-09-24T13:34:13.879Z"
+      "updatedAt": "2026-10-01T09:16:35.018Z"
     },
     "ketch": {
       "source": "1broseidon/ketch",
       "sourceType": "github",
       "sourceUrl": "https://github.com/1broseidon/ketch.git",
       "skillPath": "skills/ketch/SKILL.md",
-      "skillFolderHash": "a5217b4da07913bfd68f83e07302c93ee24a0981",
+      "skillFolderHash": "11e3644d7fdc24d3d0ff37172af91c88861dd294",
       "installedAt": "2026-09-24T13:33:28.582Z",
-      "updatedAt": "2026-09-24T13:33:28.582Z"
+      "updatedAt": "2026-10-01T09:16:37.202Z"
     },
     "agent-browser": {
       "source": "vercel-labs/agent-browser",
@@ -154,6 +154,33 @@
       "skillFolderHash": "82def67855a0d2aad7794207951820fa5422fdb0",
       "installedAt": "2026-09-24T13:35:12.236Z",
       "updatedAt": "2026-09-24T13:35:12.236Z"
+    },
+    "spp-jira-troubleshoot": {
+      "source": "spp-technology/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/spp-technology/skills.git",
+      "skillPath": "registry/shared/general/spp-jira-troubleshoot/SKILL.md",
+      "skillFolderHash": "aa71bef6dc3a5ee5bc9b6d4551f88d5d435762cd",
+      "installedAt": "2026-10-01T09:07:13.948Z",
+      "updatedAt": "2026-10-01T09:07:13.948Z"
+    },
+    "spp-no-use-effect": {
+      "source": "spp-technology/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/spp-technology/skills.git",
+      "skillPath": "registry/frontend/react/spp-no-use-effect/SKILL.md",
+      "skillFolderHash": "a6273c357dd8bc5030fceaed4f5ebd41b1255f25",
+      "installedAt": "2026-10-01T09:09:17.365Z",
+      "updatedAt": "2026-10-01T09:09:17.365Z"
+    },
+    "spp-sppackel": {
+      "source": "spp-technology/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/spp-technology/skills.git",
+      "skillPath": "registry/frontend/react/spp-sppackel/SKILL.md",
+      "skillFolderHash": "7ce5c98c5660f143f06e96bce7ce647f550d390f",
+      "installedAt": "2026-10-01T09:09:28.907Z",
+      "updatedAt": "2026-10-01T09:09:28.907Z"
     }
   },
   "dismissed": {
@@ -171,6 +198,7 @@
     "kimi-code-cli",
     "opencode",
     "warp",
-    "zed"
+    "zed",
+    "claude-code"
   ]
 }

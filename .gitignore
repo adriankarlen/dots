@@ -62,7 +62,6 @@ restart_session_*
 /.pi/
 /.storecode/
 /.claude/
-/home/.agents/.skills-meta.json
 /home/.agents/skills/spp*/
 /home/.agents/mcp.json
 
