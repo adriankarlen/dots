@@ -17,6 +17,7 @@ packages=(
   "npm:@twogiants/pi-anthropic-vertex"
   "npm:@zenobius/pi-rose-pine"
   "npm:@gotgenes/pi-permission-system"
+  "npm:@juicesharp/rpiv-ask-user-question"
 )
 
 for pkg in "${packages[@]}"; do
