@@ -13,7 +13,6 @@ set -euo pipefail
 
 packages=(
   "npm:pi-zentui"
-  "npm:pi-mcp-adapter"
   "npm:@twogiants/pi-anthropic-vertex"
   "npm:@zenobius/pi-rose-pine"
   "npm:@gotgenes/pi-permission-system"

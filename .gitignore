@@ -29,12 +29,11 @@ restart_session_*
 /home/.pi/.pi/todos/*
 /home/.pi/todos/*
 
-# pi MCP adapter runtime/secrets
-/home/.pi/agent/mcp-oauth/
-/home/.pi/agent/mcp-cache.json
-/home/.pi/agent/mcp-npx-cache.json
+# pi built-in MCP: config holds an OAuth client secret, plus tokens and logs.
+# Already covered by /home/.pi/agent/*; listed so nobody re-includes them.
+/home/.pi/agent/mcp.json
 /home/.pi/agent/mcp-auth.json
-/home/.local/share/pi/mcp-auth.json
+/home/.pi/agent/mcp.log*
 
 !/home/.pi/agent/tsconfig.json
 !/home/.pi/agent/package.json
@@ -45,7 +44,6 @@ restart_session_*
 !/home/.pi/agent/prompts/
 !/home/.pi/agent/prompts/**
 !/home/.pi/agent/keybindings.json
-!/home/.pi/agent/mcp.json
 
 # pi extensions node_modules (must come after the extensions re-include
 # above, since gitignore rules are last-match-wins)
