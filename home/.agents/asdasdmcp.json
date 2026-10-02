@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "figma": {
+      "url": "https://mcp.figma.com/mcp",
+      "auth": "oauth",
+      "oauth": {
+        "clientId": "YCmuxq3n1famyGXbks5oma",
+        "clientSecret": "TuMPPyQCCAaOZY2UCDgOnGKYYqkMGq"
+      }
+    }
+  }
+}
