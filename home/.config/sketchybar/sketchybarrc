@@ -224,6 +224,7 @@ sketchybar --add item clock right \
   label.padding_left=8 \
   label.padding_right=0 \
   update_freq=1 \
+  click_script="open -a Calendar" \
   script="$PLUGIN_DIR/clock.sh"
 
 sketchybar --add item teams right \
