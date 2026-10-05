@@ -1,2 +1,9 @@
 --hidden
---glob=!.git/*
+--no-ignore-vcs
+# Exclude the obvious junk
+--glob=!.git/
+--glob=!node_modules/
+--glob=!dist/
+--glob=!build/
+--glob=!target/
+--glob=!vendor/
