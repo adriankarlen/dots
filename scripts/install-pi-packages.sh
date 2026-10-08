@@ -15,7 +15,7 @@ packages=(
   "npm:pi-zentui"
   "npm:@twogiants/pi-anthropic-vertex"
   "npm:@zenobius/pi-rose-pine"
-  "npm:@gotgenes/pi-permission-system"
+  "npm:@czottmann/pi-automode"
   "npm:@juicesharp/rpiv-ask-user-question"
 )
 
