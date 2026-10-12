@@ -12,8 +12,8 @@
 /home/.config/openspec/
 /home/.config/herdr/*
 !/home/.config/herdr/config.toml
-/home/.config/sol/*
-!/home/.config/sol/config.json
+/home/.config/vicinae/*
+!/home/.config/vicinae/settings.json
 /home/.config/hunk/*
 !/home/.config/hunk/config.toml
 restart_session_*
