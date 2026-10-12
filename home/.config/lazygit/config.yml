@@ -1,8 +1,6 @@
 git:
   overrideGpg: true
 gui:
-  authorColors:
-    "*": magenta
   showNumstatInFilesView: true
   skipRewordInEditorWarning: true
   tabWidth: 2
@@ -18,6 +16,8 @@ gui:
       - bold
     selectedLineBgColor:
       - black
+    authorColors:
+      "*": magenta
   border: single
   nerdFontsVersion: "3"
   spinner:
