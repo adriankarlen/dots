@@ -1,10 +1,17 @@
 ---
-description: Branch, commit in logical chunks, and open a PR
-argument-hint: "[base-branch]"
+name: create-pr
+description: >
+  Branch, commit the current work in logical conventional-commit chunks, push,
+  open a GitHub pull request with `gh`, and move any linked Jira/Linear ticket
+  to code review. Use when the user asks to open, create, make or raise a PR or
+  pull request, ship or submit the work, or push it up for review.
 ---
-Create a pull request for the current work. Base branch: ${1:-the repo's default branch}.
 
-Steps:
+Create a pull request for the current work.
+
+**Base branch:** use the branch the user names. If they name none, use the repo's default branch.
+
+## Steps
 
 1. **Branch**: If currently on the default branch, create a new branch with a short descriptive name (e.g. `feat/...`, `fix/...`). If already on a feature branch, use it.
 
@@ -21,7 +28,7 @@ Steps:
 
 4. **Issue tracker**: Look for a ticket or issue reference (e.g. a Jira/Linear key like `PROJ-123`, or a GitHub issue like `#123`) in the branch name, commit messages, or conversation context. If one exists, update it to reflect that a PR is now open, moving it to the closest matching "in code review" status if the tracker supports one. If no ticket or issue is referenced, skip this step.
 
-PR title and body rules:
+## PR title and body rules
 
 - Title: `<type>(<scope>): <imperative summary>` — same conventional commit style as commit subjects (scope optional, imperative mood, ≤50 chars where possible, no trailing period).
 - Keep it short-worded. No novel about the change.
@@ -32,7 +39,7 @@ PR title and body rules:
 - Do NOT explain why the change was made or how it works. The code is sufficient to see the changes.
 - Do NOT include: alternatives considered and rejected, back-and-forth about approach, or any other detail that only makes sense as a recap of the discussion with the agent. If it wasn't a deviation from repo praxis, it doesn't belong in the PR.
 
-Writing style:
+## Writing style
 
 - Write commit messages and the PR title/body in plain language per ISO-24495-1:2023: short sentences, common words, active voice, one idea per sentence.
 - Keep the final text plain and minimal.
