@@ -1,0 +1,21 @@
+{
+  "autoMode": {
+    "classifierModel": "github-copilot/gemini-3.8-flash",
+    "allowInsideWorkingDirectory": true,
+    "deniedPaths": [
+      "**/.env",
+      "**/.env.*"
+    ],
+    "allow": [
+      "$defaults",
+      "Creating, modifying, and deleting local files within the Git repository or worktree. This includes pre-existing source code, migrations, CLI code, tests, and project documentation. This permission applies only to local implementation work and excludes files outside the assigned repository or worktree, external systems, credentials, safety controls, and Git history changes."
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "bash(git status*)",
+      "bash(npm test*)",
+      "bash(timeout *npm test*)"
+    ]
+  }
+}
