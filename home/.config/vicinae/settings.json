@@ -38,9 +38,9 @@
             }
          }
       },
-      "macos-settings": {
+      "power": {
          "entrypoints": {
-            "com.apple.Lock-Screen-Settings.extension": {
+            "lock": {
                "shortcut": "alt+ESCAPE"
             }
          }
