@@ -12,26 +12,26 @@ close_workspace = "prefix+shift+x"
 [[keys.command]]
 key = "ctrl+h"
 type = "plugin_action"
-command = "smart-splits.nvim.left"
-description = "navigate left (vim/herdr)"
+command = "smart-splits-backend-herdr.left"
+description = "navigate left (neovim/herdr)"
 
 [[keys.command]]
 key = "ctrl+j"
 type = "plugin_action"
-command = "smart-splits.nvim.down"
-description = "navigate down (vim/herdr)"
+command = "smart-splits-backend-herdr.down"
+description = "navigate down (neovim/herdr)"
 
 [[keys.command]]
 key = "ctrl+k"
 type = "plugin_action"
-command = "smart-splits.nvim.up"
-description = "navigate up (vim/herdr)"
+command = "smart-splits-backend-herdr.up"
+description = "navigate up (neovim/herdr)"
 
 [[keys.command]]
 key = "ctrl+l"
 type = "plugin_action"
-command = "smart-splits.nvim.right"
-description = "navigate right (vim/herdr)"
+command = "smart-splits-backend-herdr.right"
+description = "navigate right (neovim/herdr)"
 
 [[keys.command]]
 key = "prefix+t"
