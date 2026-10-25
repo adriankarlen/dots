@@ -15,9 +15,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sickn33/antigravity-awesome-skills.git",
       "skillPath": "skills/docker-expert/SKILL.md",
-      "skillFolderHash": "ac8fbe7507377c5dc8ae7eb56a790ae36edf44ff",
+      "skillFolderHash": "095d8eb2208b4853aa2d6ed829680c5e8943c0af",
       "installedAt": "2026-04-13T13:21:37.008Z",
-      "updatedAt": "2026-08-11T09:54:55.557Z"
+      "updatedAt": "2026-10-22T20:53:05.918Z"
     },
     "frontend-design": {
       "source": "anthropics/skills",
@@ -69,28 +69,28 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8",
+      "skillFolderHash": "8c307f367c91bd974002f10f2be2965d642c13df",
       "pluginName": "humanizer",
       "installedAt": "2026-08-27T09:08:54.003Z",
-      "updatedAt": "2026-10-01T09:16:31.490Z"
+      "updatedAt": "2026-10-22T20:53:12.673Z"
     },
     "herdr": {
       "source": "herdrdev/herdr",
       "sourceType": "github",
       "sourceUrl": "https://github.com/herdrdev/herdr.git",
       "skillPath": "skills/herdr/SKILL.md",
-      "skillFolderHash": "67042ed7910d4177a9000e0679e78b0346060927",
+      "skillFolderHash": "2be0d86d481d1bb29c62e11ef37b78d27d01b478",
       "installedAt": "2026-09-09T08:26:19.083Z",
-      "updatedAt": "2026-10-01T09:16:35.018Z"
+      "updatedAt": "2026-10-22T20:53:16.554Z"
     },
     "ketch": {
       "source": "1broseidon/ketch",
       "sourceType": "github",
       "sourceUrl": "https://github.com/1broseidon/ketch.git",
       "skillPath": "skills/ketch/SKILL.md",
-      "skillFolderHash": "11e3644d7fdc24d3d0ff37172af91c88861dd294",
+      "skillFolderHash": "515cc368de47740d82b632ff7f37383ade10b471",
       "installedAt": "2026-09-24T13:33:28.582Z",
-      "updatedAt": "2026-10-01T09:16:37.202Z"
+      "updatedAt": "2026-10-22T20:53:18.520Z"
     },
     "agent-browser": {
       "source": "vercel-labs/agent-browser",
@@ -120,11 +120,13 @@
     "codex",
     "cursor",
     "droid",
+    "fx",
     "gemini-cli",
     "github-copilot",
     "kilo",
     "kimi-code-cli",
     "opencode",
+    "pi",
     "warp",
     "zed",
     "claude-code"
