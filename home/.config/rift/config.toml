@@ -68,11 +68,11 @@ workspace_rules = []
 workspace_names = ["browse", "code", "coms", "music", "misc"]
 
 app_rules = [
-  { title_regex = "Preferences", floating = true },
-  { title_regex = "Settings", floating = true },
-  { title_regex = "Bitwarden", floating = true },
-  { title_regex = "Copy", floating = true },
-  { title_regex = "Update", floating = true },
+  # { title_regex = "Preferences", floating = true },
+  # { title_regex = "Settings", floating = true },
+  # { title_regex = "Bitwarden", floating = true },
+  # { title_regex = "Copy", floating = true },
+  # { title_regex = "Update", floating = true },
   { app_id = "org.mozilla.firefox", workspace = 0 },
   { app_id = "com.google.Chrome", workspace = 0 },
   { app_id = "net.imput.helium", workspace = 0 },
