@@ -21,7 +21,9 @@ dots/
 │   └── install-uv-tools.sh     # Python CLI tools, installed via `uv tool install`
 ├── home/               # stow package — symlinked into $HOME
 │   ├── .stow-local-ignore
-│   ├── .zshrc
+│   ├── .zshenv         # env vars + PATH (every zsh, incl. scripts)
+│   ├── .zprofile       # re-applies PATH after macOS path_helper
+│   ├── .zshrc          # interactive-only setup
 │   ├── .agents/
 │   ├── .config/
 │   │   └── nvim/       # git submodule → adriankarlen/nvim

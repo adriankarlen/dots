@@ -47,6 +47,8 @@ readonly UV_TOOLS_SCRIPT="${DOTFILES_DIR}/scripts/install-uv-tools.sh"
 # (stow'd as individual symlinks) and nested entries under .config
 # (reachable via the tree-fold symlink at ~/.config → home/.config).
 readonly -a DOCTOR_PATHS=(
+  ".zshenv"
+  ".zprofile"
   ".zshrc"
   ".config"
   ".config/ohmyposh"

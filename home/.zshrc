@@ -1,36 +1,6 @@
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-# env vars
-export XDG_CONFIG_HOME="$HOME/.config"
-export EZA_CONFIG_DIR="$HOME/.config/eza"
-export LAZYJIRA_CONFIG_DIR="$HOME/.config/lazyjira"
-export VERTEX_LOCATION="global"
-export GOOGLE_CLOUD_LOCATION="global"
-# Claude on Vertex: same EU multi-region endpoint as storecode (CLOUD_ML_REGION=eu).
-# The Vertex SDK can't derive the eu URL itself, so set it explicitly.
-export CLOUD_ML_REGION="eu"
-export ANTHROPIC_VERTEX_BASE_URL="https://aiplatform.eu.rep.googleapis.com/v1"
-export EDITOR=nvim
-
-# PATH
-export PATH="$HOME/.local/nvim-nightly/bin:$PATH"
-export PATH="$HOME/.bun/bin:$PATH"
-export PATH="$PATH:$HOME/.spicetify"
-export PATH="$PATH:$HOME/.dotnet/tools"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:$HOME/go/bin"
-
-# dotnet
-export DOTNET_ENVIRONMENT=Development
-export ASPNETCORE_ENVIRONMENT=Development
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-
-# ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+# ~/.zshrc
+# Env vars and PATH live in ~/.zshenv so non-interactive shells inherit
+# them too. This file is interactive-only setup.
 
 # zinit setup
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -160,5 +130,6 @@ if [[ -z "$SSH_CONNECTION" ]]; then
   secret_load GOOGLE_CLOUD_PROJECT
 fi
 
-# Vite+ bin (https://viteplus.dev)
+# Vite+ (https://viteplus.dev): PATH is set in ~/.zshenv; re-source here,
+# after compinit, so its `vp`/`vpr` completions get registered.
 . "$HOME/.config/vite-plus/env"
