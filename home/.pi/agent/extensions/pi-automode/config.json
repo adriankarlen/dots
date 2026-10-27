@@ -1,6 +1,7 @@
 {
   "autoMode": {
-    "classifierModel": "github-copilot/gemini-3.8-flash",
+    "classifierModel": "anthropic-vertex/claude-haiku-5-5",
+    "classifierReasoningLevel": "low",
     "allowInsideWorkingDirectory": true,
     "deniedPaths": [
       "**/.env",
