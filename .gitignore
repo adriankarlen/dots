@@ -68,3 +68,6 @@ restart_session_*
 
 # Homebrew package install failures saved by `dot init` (see `dot`)
 /packages/failed_packages_*.txt
+
+# company-only scripts (kept local, not committed)
+/home/.local/bin/storepi

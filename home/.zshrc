@@ -96,15 +96,6 @@ alias x="exit"
 # at openssl@3 instead; DYLD_LIBRARY_PATH wins over the hardcoded path.
 alias sqlit="DYLD_LIBRARY_PATH=/opt/homebrew/opt/openssl@3/lib sqlit"
 
-# storepi: pi with storecode guardrails (~/.pi/agent/storecode/storecode-guard.ts)
-# STOREPI_AUDIT=remote storepi  -> send hook audit events to storecode's Cloud Logging
-storepi() {
-  CLOUD_ML_REGION="eu" ANTHROPIC_VERTEX_BASE_URL="https://aiplatform.eu.rep.googleapis.com/v1" \
-  PI_OFFLINE=1 PI_SKIP_VERSION_CHECK=1 PI_TELEMETRY=0 \
-  STOREPI_AUDIT="${STOREPI_AUDIT:-local}" \
-    pi -e "$HOME/.pi/agent/storecode/storecode-guard.ts" --models 'anthropic-vertex/*' "$@"
-}
-
 # shell integrations
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
