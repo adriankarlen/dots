@@ -14,6 +14,9 @@
 !/home/.config/herdr/config.toml
 /home/.config/vicinae/*
 !/home/.config/vicinae/settings.json
+/home/.config/sqlit/*
+!/home/.config/sqlit/settings.json
+!/home/.config/sqlit/keymap.json
 /home/.config/hunk/*
 !/home/.config/hunk/config.toml
 restart_session_*

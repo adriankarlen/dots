@@ -41,6 +41,7 @@ readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly BREWFILE="${PACKAGES_DIR}/Brewfile"
 readonly PI_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-pi-packages.sh"
 readonly VP_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-vp-packages.sh"
+readonly UV_TOOLS_SCRIPT="${DOTFILES_DIR}/scripts/install-uv-tools.sh"
 
 # Representative paths to spot-check in `doctor`. Mix of top-level files
 # (stow'd as individual symlinks) and nested entries under .config
@@ -708,6 +709,22 @@ __install_vp_packages() {
   __print_success "vp global packages installed"
 }
 
+__install_uv_tools() {
+  if ! __command_exists uv; then
+    __print_warning "uv not installed, skipping uv tool install"
+    return 0
+  fi
+
+  if [[ ! -x "$UV_TOOLS_SCRIPT" ]]; then
+    __print_error "Script not found or not executable: ${UV_TOOLS_SCRIPT}"
+    return 1
+  fi
+
+  __print_info "Installing uv tools..."
+  "$UV_TOOLS_SCRIPT"
+  __print_success "uv tools installed"
+}
+
 # Ordered "Step name;;function" registry. Only Homebrew itself is fatal —
 # everything else warns and continues so a partial machine still ends up
 # mostly configured (and re-running `init` will pick up the rest).
@@ -723,6 +740,7 @@ readonly -a INIT_STEPS=(
   "Yazi packages           ;; __install_yazi_packages"
   "pi packages             ;; __install_pi_packages"
   "vp global packages      ;; __install_vp_packages"
+  "uv tools                ;; __install_uv_tools"
 )
 
 __run_init_steps() {
@@ -800,6 +818,25 @@ __update_vp_packages() {
   __print_success "vp global packages updated"
 }
 
+__update_uv_tools() {
+  if ! __command_exists uv; then
+    __print_warning "uv not installed, skipping uv tool update"
+    return 0
+  fi
+
+  # Install first so tools newly added to scripts/install-uv-tools.sh show
+  # up, then upgrade everything uv manages (including anything installed
+  # ad hoc outside the script).
+  if [[ -x "$UV_TOOLS_SCRIPT" ]]; then
+    __print_info "Reconciling uv tools list..."
+    "$UV_TOOLS_SCRIPT" || __print_warning "install-uv-tools.sh reported issues"
+  fi
+
+  __print_info "Upgrading uv tools..."
+  uv tool upgrade --all
+  __print_success "uv tools updated"
+}
+
 __update_yazi_packages() {
   if ! __command_exists ya; then
     __print_warning "yazi not installed, skipping package update"
@@ -815,6 +852,7 @@ readonly -a UPDATE_STEPS=(
   "Homebrew packages       ;; __update_homebrew       ;; homebrew"
   "pi packages             ;; __update_pi_packages    ;; pi"
   "vp global packages      ;; __update_vp_packages    ;; vp"
+  "uv tools                ;; __update_uv_tools       ;; uv"
   "Yazi packages           ;; __update_yazi_packages  ;; yazi"
   "Neovim nightly          ;; __install_nvim_nightly  ;; nvim"
   "Node (vp)               ;; __install_node          ;; node"
@@ -877,8 +915,8 @@ cmd_update() {
       echo
       echo "Update everything this machine has installed: Homebrew itself plus"
       echo "every formula/cask/go entry in the Brewfile, pi itself and"
-      echo "its installed packages, vp global npm packages, Yazi packages,"
-      echo "Neovim nightly, Node LTS (via vp), and the Spicetify backup."
+      echo "its installed packages, vp global npm packages, uv tools, Yazi"
+      echo "packages, Neovim nightly, Node LTS (via vp), and the Spicetify backup."
       echo
       echo "Give TARGET to update just one of these instead of everything."
       echo "Valid targets: $(__update_step_targets)"
@@ -954,7 +992,7 @@ cmd_outdated() {
     echo "Check every package manager and tool this machine tracks for available"
     echo "updates: Homebrew formulae/casks (including auto-updating casks, via"
     echo "--greedy), pi packages, vp-managed global npm packages and Node.js"
-    echo "itself, and Yazi packages/flavors. Prints one"
+    echo "itself, uv tools, and Yazi packages/flavors. Prints one"
     echo "combined, easy-to-scan report per source. Refreshes Homebrew's package"
     echo "index first. Spicetify isn't checked separately: its only versioned"
     echo "part, spicetify-cli, already shows up under Homebrew formulae."
@@ -994,7 +1032,10 @@ cmd_outdated() {
 
   if __command_exists vp; then
     local vp_json vp_rows
-    vp_json="$(vp outdated -g --format json 2>/dev/null || echo '{}')"
+    # `vp outdated` exits non-zero when anything is outdated, so don't use
+    # `|| echo '{}'` here — that would append a second JSON document.
+    vp_json="$(vp outdated -g --format json 2>/dev/null)" || true
+    [[ -n "$vp_json" ]] || vp_json='{}'
 
     vp_rows="$(jq -r 'to_entries[] | "\(.key)\t\(.value.current)\t\(.value.latest)"' <<<"$vp_json")"
     __outdated_section "vp global packages" "NAME\tCURRENT\tLATEST" "$vp_rows"
@@ -1012,6 +1053,23 @@ cmd_outdated() {
     fi
   else
     __print_warning "vp not installed, skipping"
+  fi
+
+  if __command_exists uv; then
+    local uv_rows uv_count=0
+    # `uv tool list --outdated` prints "<name> v<installed> [...] [latest: <ver>]"
+    # per tool, followed by "- <executable>" lines we skip.
+    uv_rows="$(uv tool list --outdated 2>/dev/null | awk '
+            /^[^-[:space:]]/ {
+              latest=$0; sub(/.*\[latest: /,"",latest); sub(/\].*/,"",latest)
+              v=$2; sub(/^v/,"",v)
+              print $1 "\t" v "\t" latest
+            }')"
+    [[ -n "$uv_rows" ]] && uv_count=$(wc -l <<<"$uv_rows")
+    __outdated_section "uv tools" "NAME\tINSTALLED\tLATEST" "$uv_rows"
+    grand_total=$((grand_total + uv_count))
+  else
+    __print_warning "uv not installed, skipping"
   fi
 
   if __command_exists pi; then
@@ -1084,8 +1142,9 @@ cmd_init() {
       echo "stow dotfiles, apply macOS defaults, start background services"
       echo "(skhd/sketchybar/borders), set up Spicetify, install Neovim nightly,"
       echo "Node LTS (via vp), Yazi packages, pi"
-      echo "packages (see scripts/install-pi-packages.sh), and vp global npm"
-      echo "packages (see scripts/install-vp-packages.sh)."
+      echo "packages (see scripts/install-pi-packages.sh), vp global npm"
+      echo "packages (see scripts/install-vp-packages.sh), and uv tools"
+      echo "(see scripts/install-uv-tools.sh)."
       echo
       echo "Safe to re-run: every step checks existing state before acting."
       echo
@@ -1169,6 +1228,7 @@ cmd_help() {
   echo "    Brewfile: ${BREWFILE}"
   echo "    Pi pkgs:  ${PI_PACKAGES_SCRIPT}"
   echo "    Vp pkgs:  ${VP_PACKAGES_SCRIPT}"
+  echo "    Uv tools: ${UV_TOOLS_SCRIPT}"
   echo "    Ignore:   ${HOME_DIR}/.stow-local-ignore"
 }
 

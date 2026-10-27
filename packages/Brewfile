@@ -16,6 +16,7 @@ brew "fd"
 brew "fzf"
 brew "jq"
 brew "ketch"
+brew "openssl@3" # sqlit's MS ODBC driver can't load OpenSSL 4 (see .zshrc alias)
 brew "ripgrep"
 brew "stow"
 brew "tree-sitter-cli"
@@ -40,6 +41,7 @@ brew "luajit"
 brew "luarocks"
 brew "pkgconf"
 brew "powershell", link: false
+brew "uv"
 
 # Development Tools
 brew "gh"
@@ -117,3 +119,4 @@ cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-400"
 go "github.com/adriankarlen/det-blir-nog-regn"
 
 # npm Packages: managed via vp instead (see scripts/install-vp-packages.sh)
+# Python CLI tools: managed via uv instead (see scripts/install-uv-tools.sh)

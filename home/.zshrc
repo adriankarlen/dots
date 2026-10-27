@@ -8,6 +8,10 @@ export EZA_CONFIG_DIR="$HOME/.config/eza"
 export LAZYJIRA_CONFIG_DIR="$HOME/.config/lazyjira"
 export VERTEX_LOCATION="global"
 export GOOGLE_CLOUD_LOCATION="global"
+# Claude on Vertex: same EU multi-region endpoint as storecode (CLOUD_ML_REGION=eu).
+# The Vertex SDK can't derive the eu URL itself, so set it explicitly.
+export CLOUD_ML_REGION="eu"
+export ANTHROPIC_VERTEX_BASE_URL="https://aiplatform.eu.rep.googleapis.com/v1"
 export EDITOR=nvim
 
 # PATH
@@ -116,6 +120,20 @@ alias .3="cd ../../.."
 alias .4="cd ../../../.."
 alias .5="cd ../../../../.."
 alias x="exit"
+
+# sqlit: the bundled MS ODBC driver (mssql-python) dlopens libssl/libcrypto from
+# /opt/homebrew/opt/openssl/lib, which is now OpenSSL 4 (unsupported). Point it
+# at openssl@3 instead; DYLD_LIBRARY_PATH wins over the hardcoded path.
+alias sqlit="DYLD_LIBRARY_PATH=/opt/homebrew/opt/openssl@3/lib sqlit"
+
+# storepi: pi with storecode guardrails (~/.pi/agent/storecode/storecode-guard.ts)
+# STOREPI_AUDIT=remote storepi  -> send hook audit events to storecode's Cloud Logging
+storepi() {
+  CLOUD_ML_REGION="eu" ANTHROPIC_VERTEX_BASE_URL="https://aiplatform.eu.rep.googleapis.com/v1" \
+  PI_OFFLINE=1 PI_SKIP_VERSION_CHECK=1 PI_TELEMETRY=0 \
+  STOREPI_AUDIT="${STOREPI_AUDIT:-local}" \
+    pi -e "$HOME/.pi/agent/storecode/storecode-guard.ts" --models 'anthropic-vertex/*' "$@"
+}
 
 # shell integrations
 eval "$(zoxide init --cmd cd zsh)"

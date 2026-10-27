@@ -1,0 +1,10 @@
+{
+  "theme": "rose-pine",
+  "expanded_nodes": [
+    "conn:ksju-extdb-at",
+    "conn:ksju-extdb-at/folder:databases",
+    "conn:ksju-extdb-at/folder:databases/db:NETS",
+    "conn:ksju-extdb-at/folder:databases/db:NETS/folder:tables",
+    "conn:ksju-extdb-at/folder:databases/db:NETS/folder:tables/table:dbo.ActivityLog"
+  ]
+}
