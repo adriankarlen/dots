@@ -79,3 +79,19 @@ git clone <this repo> ~/dots
 cd ~/dots
 ./dot init
 ```
+
+## Rex: dactyl
+
+`home/.config/rex/dactyl.lua` is a small session picker for
+[Rex](https://www.superlogical.com/rex), in the style of sesh and yeet.
+Press <kbd>Cmd</kbd>+<kbd>K</kbd> to open a floating `gum filter` with your
+open sessions, configured workspaces and zoxide directories. Picking one
+switches to it, or creates the session in that directory first.
+<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> switches back to the last session.
+
+Workspaces, startup rules, the blacklist and keys are set in
+`home/.config/rex/init.lua` with `require("dactyl").setup{ ... }`. Reload with
+`rex config reload`.
+
+Rex.app must have **Remote Control** turned on (Settings → Rex Server), or
+the picker can't switch sessions.
