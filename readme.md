@@ -80,18 +80,35 @@ cd ~/dots
 ./dot init
 ```
 
-## Rex: dactyl
+## Rex
 
-`home/.config/rex/dactyl.lua` is a small session picker for
-[Rex](https://www.superlogical.com/rex), in the style of sesh and yeet.
-Press <kbd>Cmd</kbd>+<kbd>K</kbd> to open a floating `gum filter` with your
-open sessions, configured workspaces and zoxide directories. Picking one
-switches to it, or creates the session in that directory first.
-<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> switches back to the last session.
+[Rex](https://www.superlogical.com/rex) is configured in Lua under
+`home/.config/rex/`. Reload with `rex config reload`; `rex keymap` lists every
+binding.
 
-Workspaces, startup rules, the blacklist and keys are set in
-`home/.config/rex/init.lua` with `require("dactyl").setup{ ... }`. Reload with
-`rex config reload`.
+```
+rex/
+├── init.lua            # only requires the files below
+├── config/
+│   ├── actions.lua     # custom actions: lazygit, pkgrun tab
+│   ├── sessions.lua    # dactyl workspaces, rules and blacklist
+│   └── keys.lua        # all key bindings
+└── plugins/
+    └── dactyl.lua      # session picker
+```
+
+Keys follow tmux/herdr: <kbd>Ctrl</kbd>+<kbd>A</kbd> enters a one-shot
+`prefix` mode, so `ctrl+a c` opens a tab, `ctrl+a g` opens lazygit and
+`ctrl+a t` opens dactyl. Unbound keys do nothing there and Escape cancels.
+`ctrl+a r` enters a resize mode that stays on until Escape or Enter.
+<kbd>Ctrl</kbd>+<kbd>H/J/K/L</kbd> move between panes, but go to Neovim when it
+is focused.
+
+**dactyl** is a session picker in the style of sesh and yeet. It opens a
+floating `gum filter` with your open sessions, configured workspaces and
+zoxide directories. Picking one switches to it, or creates the session in
+that directory first. `ctrl+a shift+b` (or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>)
+switches back to the last session.
 
 Rex.app must have **Remote Control** turned on (Settings → Rex Server), or
-the picker can't switch sessions.
+dactyl can't switch sessions.

@@ -4,8 +4,8 @@
 -- floating `gum filter` pane. Picking an entry switches to that session, or
 -- creates it in the right directory first.
 --
--- Usage (init.lua):
---   require("dactyl").setup{
+-- Usage:
+--   require("plugins.dactyl").setup{
 --     keys = { pick = "cmd+k", last = "cmd+shift+k" },
 --     blacklist = { "^scratch$" },
 --     workspaces = { { name = "dots", path = "~/dots", startup = "nvim" } },
