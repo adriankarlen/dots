@@ -1,6 +1,4 @@
--- Rex configuration. Reload with `rex config reload`.
-
--- dactyl: sesh/yeet-style session picker (sessions, workspaces, zoxide).
+-- dactyl: session picker (sessions, workspaces, zoxide).
 require("dactyl").setup {
   keys = { pick = "cmd+k", last = "cmd+shift+k" },
   blacklist = { "^scratch$", "^_" },
@@ -27,7 +25,9 @@ rex.action {
         options = { command = { "lazygit" }, cwd = p.foreground and p.foreground.cwd },
       },
     }
-    if err ~= nil then error(err, 0) end
+    if err ~= nil then
+      error(err, 0)
+    end
   end,
 }
 rex.bind("cmd+g", "lazygit")

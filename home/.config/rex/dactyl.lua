@@ -29,6 +29,48 @@ local ICONS = {
   dir = "\27[36m\239\132\148\27[39m",
 }
 
+---@class dactyl.Keys
+---@field pick? string|false Opens the picker. `false` leaves it unbound.
+---@field last? string|false Switches to the last session. `false` leaves it unbound.
+
+---@class dactyl.Workspace
+---@field name string
+---@field path? string Defaults to `~`.
+---@field startup? string Typed into the new session's shell.
+
+---@class dactyl.Rule
+---@field path_glob string Such as `~/repos/**`.
+---@field startup? string
+
+---@class dactyl.Config
+---@field keys dactyl.Keys
+---@field blacklist string[] Lua patterns matched against session and workspace names.
+---@field workspaces dactyl.Workspace[]
+---@field rules dactyl.Rule[]
+---@field dir_length integer Folder levels used to name sessions outside git repos.
+---@field icons boolean
+---@field zoxide boolean
+---@field bounds number[] Floating pane `{ x, y, w, h }` as fractions of the window.
+---@field placeholder string
+---@field prompt string
+---@field label string Name shown in the floating pane's header.
+---@field gum_setup string|false Shell run before gum, e.g. to load a GUM_* theme.
+
+---@class dactyl.Options
+---@field keys? dactyl.Keys
+---@field blacklist? string[]
+---@field workspaces? dactyl.Workspace[]
+---@field rules? dactyl.Rule[]
+---@field dir_length? integer
+---@field icons? boolean
+---@field zoxide? boolean
+---@field bounds? number[]
+---@field placeholder? string
+---@field prompt? string
+---@field label? string
+---@field gum_setup? string|false
+
+---@type dactyl.Config
 local defaults = {
   keys = { pick = "cmd+k", last = "cmd+shift+k" },
   -- Lua patterns matched against session and workspace names.
@@ -47,10 +89,11 @@ local defaults = {
   prompt = " ",
   -- Name shown in the floating pane's header.
   label = "dactyl",
-  -- Run before gum, e.g. to load a GUM_* theme. Set to "" to skip.
+  -- Run before gum, e.g. to load a GUM_* theme. Set to false to skip.
   gum_setup = "command -v gum-rose-pine >/dev/null && source gum-rose-pine",
 }
 
+---@type dactyl.Config
 local cfg = defaults
 
 -- Helpers -------------------------------------------------------------------
@@ -404,6 +447,7 @@ end
 
 -- Setup ---------------------------------------------------------------------
 
+---@param opts? dactyl.Options
 function M.setup(opts)
   cfg = merge(defaults, opts)
   cfg.keys = merge(defaults.keys, opts and opts.keys)
