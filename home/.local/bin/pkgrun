@@ -1,19 +1,33 @@
 #!/bin/bash
-set -e
+# pkgrun <script> [args...]: run a package.json script with the project's
+# package manager, chosen from the nearest lockfile in this or a parent
+# directory. Runs in the current directory, so it works in monorepo packages.
 
-CMD="${1:?Usage: pkgrun <script>}"
-
-if [ -f "bun.lock" ] || [ -f "bun.lockb" ]; then
-    PM="bun"
-elif [ -f "pnpm-lock.yaml" ]; then
-    PM="pnpm"
-elif [ -f "package-lock.json" ]; then
-    PM="npm"
-elif [ -f "yarn.lock" ]; then
-    PM="yarn"
-else
-    echo "pkgrun: no lockfile found in $PWD" >&2
-    exit 1
+if [ $# -eq 0 ]; then
+  echo "Usage: pkgrun <script> [args...]" >&2
+  exit 2
 fi
 
-exec $PM run "$CMD"
+dir="$PWD"
+while :; do
+  if [ -f "$dir/bun.lock" ] || [ -f "$dir/bun.lockb" ]; then
+    pm="bun"
+  elif [ -f "$dir/pnpm-lock.yaml" ]; then
+    pm="pnpm"
+  elif [ -f "$dir/package-lock.json" ]; then
+    pm="npm"
+  elif [ -f "$dir/yarn.lock" ]; then
+    pm="yarn"
+  fi
+  if [ -n "$pm" ] || [ "$dir" = "/" ]; then
+    break
+  fi
+  dir="$(dirname "$dir")"
+done
+
+if [ -z "$pm" ]; then
+  echo "pkgrun: no lockfile found in $PWD or its parents" >&2
+  exit 1
+fi
+
+exec "$pm" run "$@"
