@@ -60,21 +60,10 @@ rex.bind("resize/shift+0", "pane.balance") -- =
 rex.bind("resize/enter", "client.mode.exit")
 
 -- ctrl+h/j/k/l move between Rex panes, but go to (n)vim when it is focused so
--- smart-splits can handle them there.
----@type table<string, boolean>
-local VIM = { nvim = true, vim = true }
-for key, direction in pairs { h = "left", j = "down", k = "up", l = "right" } do
-  rex.bind("ctrl+" .. key, function(ctx)
-    if ctx.block_id then
-      local p = rex.block.call("com.superlogical.terminal", "process", { block_id = ctx.block_id })
-      if p and p.foreground and VIM[p.foreground.name] then
-        return false
-      end
-    end
-    rex.session.focus_direction { direction = direction }
-    return true
-  end)
-end
+-- smart-splits.nvim can handle them there (rex backend on the Neovim side).
+require("plugins.smart_splits").setup {
+  keys = { focus = "ctrl", resize = false },
+}
 
 -- Sessions (herdr workspaces) -------------------------------------------------
 
