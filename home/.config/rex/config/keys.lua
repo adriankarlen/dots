@@ -27,7 +27,7 @@ prefix("c", "client.tab.new")
 prefix("p", "client.tab.previous")
 prefix("shift+,", "client.tab.rename")
 for i = 1, 9 do
-  prefix(tostring(i), "client.tab.goto", { index = i })
+  prefix(tostring(i), "session_tab_goto", { index = i })
 end
 prefix("n", "pkgrun", { script = "dev" })
 

@@ -23,6 +23,30 @@ rex.action {
   end,
 }
 
+-- Like client.tab.goto, but counts only the current session's tabs. The
+-- built-in action counts every tab in the horizontal tab bar, across sessions.
+rex.action {
+  name = "session_tab_goto",
+  title = "Go to Tab in Session",
+  description = "Show the session's Nth tab. Tabs count from 1, and -1 means the last tab.",
+  category = "Tab",
+  args = { index = "integer" },
+  run = function(ctx, args)
+    local view, err = rex.session.view {}
+    if view == nil then
+      error(err, 0)
+    end
+    local windows = view.windows or {}
+    local w = windows[args.index == -1 and #windows or args.index]
+    if w == nil then
+      return
+    end
+    -- The app keeps its own tab selection, so focus_window alone moves the
+    -- server's active tab without changing what the app shows.
+    rex.client.queue("session.select", { session_id = ctx.session_id, window_id = w.window_id })
+  end,
+}
+
 -- `pkgrun <script>` (~/.local/bin/pkgrun) in a background tab named after the
 -- script, in the focused pane's directory. It is typed into a shell, so the
 -- tab stays open when the script stops.
