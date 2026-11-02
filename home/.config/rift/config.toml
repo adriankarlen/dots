@@ -82,6 +82,7 @@ app_rules = [
   { app_id = "org.wezfurlong.wezterm", workspace = 1 },
   { app_id = "com.microsoft.VSCode", workspace = 1 },
   { app_id = "com.visualstudio.code", workspace = 1 },
+  { app_id = "com.superlogical.rex", workspace = 1 },
   { app_id = "com.microsoft.teams", workspace = 2 },
   { app_id = "com.microsoft.teams2", workspace = 2 },
   { app_id = "com.microsoft.Outlook", workspace = 2 },
