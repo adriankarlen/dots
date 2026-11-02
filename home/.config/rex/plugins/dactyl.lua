@@ -4,12 +4,18 @@
 -- floating `gum filter` pane. Picking an entry switches to that session, or
 -- creates it in the right directory first.
 --
+-- A second picker lists the coding agents running in every session, with the
+-- status they report through the Program Status Protocol (OSC 7501). Picking
+-- one switches to its session and focuses its pane. Agents that don't report
+-- a status are found by their process name and shown as `unknown`.
+--
 -- Usage:
 --   require("plugins.dactyl").setup{
---     keys = { pick = "cmd+k", last = "cmd+shift+k" },
+--     keys = { pick = "cmd+k", last = "cmd+shift+k", agents = "cmd+j" },
 --     blacklist = { "^scratch$" },
 --     workspaces = { { name = "dots", path = "~/dots", startup = "nvim" } },
 --     rules = { { path_glob = "~/repos/**", startup = "nvim" } },
+--     agents = { processes = { "claude", "codex" } },
 --   }
 --
 -- Switching sessions from the picker needs Remote Control turned on in
@@ -18,20 +24,29 @@
 local M = {}
 
 local HOME = os.getenv "HOME" or ""
-local SHELL_FLAVOR = "com.superlogical.terminal.shell"
+local TERMINAL = "com.superlogical.terminal"
+local SHELL_FLAVOR = TERMINAL .. ".shell"
 local STATE_DIR = (os.getenv "XDG_STATE_HOME" or (HOME .. "/.local/state")) .. "/dactyl"
 local LAST_FILE = STATE_DIR .. "/last"
 
 -- Nerd Font icons, same as yeet: session, workspace, directory.
 local ICONS = {
-  session = "\27[36m\239\146\137\27[39m",
-  workspace = "\27[90m\238\152\149\27[39m",
-  dir = "\27[36m\239\132\148\27[39m",
+  session = "\27[36m\27[39m",
+  workspace = "\27[90m\27[39m",
+  dir = "\27[36m\27[39m",
 }
 
 ---@class dactyl.Keys
 ---@field pick? string|false Opens the picker. `false` leaves it unbound.
 ---@field last? string|false Switches to the last session. `false` leaves it unbound.
+---@field agents? string|false Opens the agent picker. `false` leaves it unbound.
+
+---@class dactyl.Agents
+---@field processes string[] Process names counted as agents when they report no status.
+---@field placeholder string
+---@field glyphs table<string, string> Short mark per app, such as `pi = "π"`. Other apps show their name.
+---@field colors table<string, string> `#rrggbb` per state (`blocked`, `error`, `done`, `working`, `idle`) and for `glyph`, `subtle` and `muted` text.
+---@field label_width integer Longest label shown before it is cut short.
 
 ---@class dactyl.Workspace
 ---@field name string
@@ -47,6 +62,7 @@ local ICONS = {
 ---@field blacklist string[] Lua patterns matched against session and workspace names.
 ---@field workspaces dactyl.Workspace[]
 ---@field rules dactyl.Rule[]
+---@field agents dactyl.Agents
 ---@field dir_length integer Folder levels used to name sessions outside git repos.
 ---@field icons boolean
 ---@field zoxide boolean
@@ -61,6 +77,7 @@ local ICONS = {
 ---@field blacklist? string[]
 ---@field workspaces? dactyl.Workspace[]
 ---@field rules? dactyl.Rule[]
+---@field agents? dactyl.Agents
 ---@field dir_length? integer
 ---@field icons? boolean
 ---@field zoxide? boolean
@@ -72,13 +89,31 @@ local ICONS = {
 
 ---@type dactyl.Config
 local defaults = {
-  keys = { pick = "cmd+k", last = "cmd+shift+k" },
+  keys = { pick = "cmd+k", last = "cmd+shift+k", agents = "cmd+j" },
   -- Lua patterns matched against session and workspace names.
   blacklist = {},
   -- { name = "dots", path = "~/dots", startup = "nvim" }
   workspaces = {},
   -- { path_glob = "~/repos/**", startup = "nvim" }
   rules = {},
+  agents = {
+    -- Foreground process names counted as agents when they report no status.
+    processes = { "claude", "codex", "opencode", "gemini", "aider", "amp" },
+    placeholder = "Pick an agent",
+    glyphs = { pi = "󰏿", claude = "", ["claude-code"] = "", opencode = "󰝣" }, -- opencode: md-square_outline
+    -- Rosé Pine.
+    colors = {
+      blocked = "#eb6f92",
+      error = "#eb6f92",
+      done = "#9ccfd8",
+      working = "#f6c177",
+      idle = "#6e6a86",
+      glyph = "#c4a7e7",
+      subtle = "#908caa",
+      muted = "#6e6a86",
+    },
+    label_width = 36,
+  },
   -- Folder levels used to name sessions outside git repos.
   dir_length = 1,
   icons = true,
@@ -308,36 +343,388 @@ local function parse_target(line)
   return trim(s)
 end
 
--- Actions -------------------------------------------------------------------
+-- Agents --------------------------------------------------------------------
 
-local function pick(ctx)
-  local items = build_items(ctx.session_id)
-  if #items == 0 then
-    return
+-- Ordered by how much they need you. A state Rex adds later counts as idle.
+-- `color` names an entry in `agents.colors`. Icons are Nerd Font glyphs.
+local AGENT_STATES = {
+  blocked = { rank = 1, icon = "", color = "blocked" }, -- fa-hand_paper_o
+  error = { rank = 2, icon = "", color = "error" }, -- fa-times_circle
+  done = { rank = 3, icon = "", color = "done" }, -- fa-check_circle
+  working = { rank = 4, icon = "", color = "working" }, -- fa-spinner
+  idle = { rank = 5, icon = "", color = "idle" }, -- fa-pause_circle
+  unknown = { rank = 6, icon = "󰘥", color = "idle" }, -- md-help_circle_outline
+}
+
+-- States that outlive the program that reported them. Rex drops `working`
+-- and `blocked` itself when the program exits.
+local STICKY_STATES = { done = true, error = true, idle = true }
+
+-- Colour text with a `#rrggbb` hex colour, resetting only the foreground so
+-- gum's cursor row styling still shows through.
+local function paint(hex, s)
+  local r, g, b = (hex or ""):match "^#(%x%x)(%x%x)(%x%x)$"
+  if not r or s == "" then
+    return s
+  end
+  return string.format("\27[38;2;%d;%d;%dm%s\27[39m", tonumber(r, 16), tonumber(g, 16), tonumber(b, 16), s)
+end
+
+local function color(name)
+  return cfg.agents.colors[name]
+end
+
+-- Display width of a UTF-8 string, close enough for names and labels.
+local function width(s)
+  return #s:gsub("[\128-\191]", "")
+end
+
+local function pad(s, w)
+  return s .. string.rep(" ", w - width(s))
+end
+
+local function one_line(s)
+  return trim((s or ""):gsub("%c", " "))
+end
+
+-- rex.call, but attach to every session first if the server asks for it.
+-- Calls into another session fail until the connection is attached to it.
+local function server_caller()
+  local attached = false
+  return function(method, args)
+    local r, err = rex.call(method, args)
+    if r == nil and not attached and tostring(err):find("not attached", 1, true) then
+      attached = true
+      rex.call("session.attach_all", { event_scope = "session" })
+      r, err = rex.call(method, args)
+    end
+    return r, err
+  end
+end
+
+-- The configured agent name the foreground process runs as, if any.
+local function agent_process(fg)
+  if not fg then
+    return nil
+  end
+  for _, cand in ipairs { fg.argv0, fg.name } do
+    local name = cand and cand:gsub("^%-", ""):match "[^/]*$"
+    for _, p in ipairs(cfg.agents.processes) do
+      if name == p then
+        return name
+      end
+    end
+  end
+  return nil
+end
+
+-- A record still belongs to the running program if it reported while that
+-- program was in the foreground.
+local function live(record, fg)
+  if not STICKY_STATES[record.state] or not record.owner then
+    return true
+  end
+  return fg ~= nil and record.owner.pid == fg.pid and record.owner.name == fg.name
+end
+
+-- The most urgent live status record of a terminal.
+local function agent_status(records, fg)
+  local best
+  for _, r in ipairs(records or {}) do
+    if live(r, fg) then
+      local state = AGENT_STATES[r.state] and r.state or "idle"
+      if not best or AGENT_STATES[state].rank < AGENT_STATES[best.state].rank then
+        best = {
+          state = state,
+          app = r.effective_app or r.app,
+          kind = r.kind,
+          msg = r.msg,
+          updated_at = r.updated_at,
+        }
+      end
+    end
+  end
+  return best
+end
+
+-- Every agent in every session but the pane the picker was opened from,
+-- the most urgent first.
+local function list_agents(current_block)
+  local call = server_caller()
+  local agents = {}
+  for order, s in ipairs(list_sessions()) do
+    local tabs = {}
+    local view = call("session.view", { session_id = s.session_id })
+    for i, w in ipairs(view and view.windows or {}) do
+      -- Rex names unnamed tabs "Window <id suffix>". Only keep real names.
+      local label = w.label and not w.label:find "^Window %x+$" and one_line(w.label) or nil
+      tabs[w.window_id] = { index = i, label = label ~= "" and label or nil }
+    end
+
+    local blocks = call("session.list_blocks", { session_id = s.session_id })
+    for _, b in ipairs(blocks and blocks.blocks or {}) do
+      if b.creator_name == TERMINAL and b.placement == "placed" and b.window_id and b.block_id ~= current_block then
+        local function method(name)
+          return call("block.method", { session_id = s.session_id, block_id = b.block_id, method = name })
+        end
+
+        local proc = method "process"
+        local fg = proc and proc.foreground
+        local status = method "program_status"
+        local agent = agent_status(status and status.records, fg)
+        if not agent then
+          local name = agent_process(fg)
+          agent = name and { state = "unknown", app = name }
+        end
+
+        if agent then
+          local title = method "title"
+          local tab = tabs[b.window_id] or { index = 0 }
+          agent.app = agent.app or agent_process(fg) or "agent"
+          agent.title = one_line(title and title.title or "")
+          agent.cwd_name = fg and fg.cwd and fg.cwd:match "([^/]+)/*$"
+          agent.session = s.label
+          agent.session_id = s.session_id
+          agent.session_order = order
+          agent.tab = tab.index
+          agent.tab_label = tab.label
+          agent.window_id = b.window_id
+          agent.block_id = b.block_id
+          agents[#agents + 1] = agent
+        end
+      end
+    end
   end
 
-  local list = os.tmpname()
-  local f = assert(io.open(list, "w"))
-  f:write(table.concat(items, "\n"), "\n")
-  f:close()
+  table.sort(agents, function(a, b)
+    local ra, rb = AGENT_STATES[a.state].rank, AGENT_STATES[b.state].rank
+    if ra ~= rb then
+      return ra < rb
+    end
+    if a.session_order ~= b.session_order then
+      return a.session_order < b.session_order
+    end
+    return a.tab < b.tab
+  end)
+  return agents
+end
 
-  local script = [[
-list="$1" client="$2" from="$3" placeholder="$4" setup="$5" prompt="$6"
+-- Seconds since the epoch for an RFC 3339 timestamp, or nil.
+local function parse_time(stamp)
+  local y, mo, d, h, mi, s, rest = (stamp or ""):match "^(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)%.?%d*(.*)$"
+  if not y then
+    return nil
+  end
+  local offset = 0
+  local sign, oh, om = rest:match "^([+-])(%d+):(%d+)$"
+  if sign then
+    offset = (tonumber(oh) * 3600 + tonumber(om) * 60) * (sign == "-" and -1 or 1)
+  end
+  -- os.time reads the table as local time. Shift it to UTC, then by the
+  -- stamp's own offset.
+  local t = os.time { year = y, month = mo, day = d, hour = h, min = mi, sec = s, isdst = false }
+  local utc = os.date("!*t", t)
+  utc.isdst = false
+  return t + (t - os.time(utc)) - offset
+end
+
+local function ago(stamp)
+  local t = parse_time(stamp)
+  if not t then
+    return ""
+  end
+  local s = math.max(os.time() - t, 0)
+  if s < 60 then
+    return "now"
+  elseif s < 3600 then
+    return math.floor(s / 60) .. "m"
+  elseif s < 86400 then
+    return math.floor(s / 3600) .. "h"
+  end
+  return math.floor(s / 86400) .. "d"
+end
+
+local function shorten(s, w)
+  if width(s) <= w then
+    return s
+  end
+  local out, n = {}, 0
+  for ch in s:gmatch "[%z\1-\127\194-\244][\128-\191]*" do
+    if n >= w - 1 then
+      break
+    end
+    out[#out + 1] = ch
+    n = n + 1
+  end
+  return table.concat(out) .. "…"
+end
+
+-- What tells an agent apart from the others in its session: the message it
+-- reported (pi's session name, or what a blocked agent waits for), else the
+-- tab's name. Agents without a status fall back to their terminal title.
+local function agent_label(a)
+  local label = one_line(a.msg)
+  if label == "" and a.tab_label then
+    label = a.tab_label
+  end
+  if label == "" and a.state == "unknown" then
+    -- Skip titles that only say the app and where it runs, like
+    -- "OpenCode - dots".
+    local title = a.title:gsub("^[^%w]+", "")
+    local head, tail = title:match "^(.-)%s+[^%w%s]+%s+(.+)$"
+    if head and head:lower():gsub("[^%w]", "") == a.app:lower():gsub("[^%w]", "") then
+      title = tail
+    end
+    if title ~= a.session and title ~= a.cwd_name and title:lower() ~= a.app:lower() then
+      label = title
+    end
+  end
+  return label
+end
+
+-- Coloured counts per state for the picker header, most urgent first.
+local function agent_header(agents)
+  local counts = {}
+  for _, a in ipairs(agents) do
+    counts[a.state] = (counts[a.state] or 0) + 1
+  end
+  local states = {}
+  for name, st in pairs(AGENT_STATES) do
+    if counts[name] then
+      states[#states + 1] = { name = name, st = st }
+    end
+  end
+  table.sort(states, function(a, b)
+    return a.st.rank < b.st.rank
+  end)
+  local parts = {}
+  for _, s in ipairs(states) do
+    local mark = cfg.icons and s.st.icon or s.name
+    parts[#parts + 1] = paint(color(s.st.color), mark) .. " " .. paint(color "subtle", tostring(counts[s.name]))
+  end
+  return table.concat(parts, "   ")
+end
+
+-- One aligned picker line per agent, plus the arguments for
+-- dactyl_agent_focus on the matching line of `ids`.
+local function agent_lines(agents)
+  -- Number tabs only where two agents of a session would look the same.
+  local groups = {}
+  for _, a in ipairs(agents) do
+    a.label = shorten(agent_label(a), cfg.agents.label_width)
+    local key = a.session_id .. "\0" .. a.label
+    groups[key] = (groups[key] or 0) + 1
+  end
+
+  local w_session, w_app, w_label, w_time = 0, 0, 0, 0
+  for _, a in ipairs(agents) do
+    a.glyph = cfg.agents.glyphs[a.app] or a.app
+    a.tab_mark = groups[a.session_id .. "\0" .. a.label] > 1 and ("tab " .. a.tab) or ""
+    a.time = a.state ~= "unknown" and ago(a.updated_at) or ""
+    local label_w = width(a.label) + (a.tab_mark ~= "" and a.label ~= "" and 2 or 0) + width(a.tab_mark)
+    w_session = math.max(w_session, width(a.session))
+    w_app = math.max(w_app, width(a.glyph))
+    w_label = math.max(w_label, label_w)
+    w_time = math.max(w_time, width(a.time))
+  end
+
+  local lines, ids, seen = {}, {}, {}
+  for _, a in ipairs(agents) do
+    local st = AGENT_STATES[a.state]
+    local label = paint(color "subtle", a.label)
+    if a.tab_mark ~= "" then
+      label = label .. (a.label ~= "" and "  " or "") .. paint(color "muted", a.tab_mark)
+    end
+    local label_w = width(a.label) + (a.tab_mark ~= "" and a.label ~= "" and 2 or 0) + width(a.tab_mark)
+
+    local line = table.concat {
+      paint(color(st.color), cfg.icons and st.icon or pad(a.state, 7)),
+      "  ",
+      pad(a.session, w_session),
+      "  ",
+      paint(color "glyph", a.glyph),
+      string.rep(" ", w_app - width(a.glyph)),
+      "  ",
+      label,
+      string.rep(" ", w_label - label_w),
+      "  ",
+      string.rep(" ", w_time - width(a.time)),
+      paint(color "muted", a.time),
+    }
+    line = line:gsub("%s+$", "")
+    -- Keep lines unique so the picked one maps back to a single pane.
+    if seen[line] then
+      line = line .. paint(color "muted", "  #" .. a.block_id:sub(-4))
+    end
+    seen[line] = true
+
+    lines[#lines + 1] = line
+    ids[#ids + 1] = table.concat({
+      "session_id=" .. a.session_id,
+      "window_id=" .. a.window_id,
+      "block_id=" .. a.block_id,
+    }, " ")
+  end
+  return lines, ids
+end
+
+-- Picker --------------------------------------------------------------------
+
+local function write_lines(lines)
+  local path = os.tmpname()
+  local f = assert(io.open(path, "w"))
+  f:write(table.concat(lines, "\n"), "\n")
+  f:close()
+  return path
+end
+
+-- The picked line is passed to the action as `target=<line>`. With `ids`, the
+-- matching line of `ids` is passed instead, split into `key=value` words.
+local PICKER_SCRIPT = [[
+list="$1" ids="$2" client="$3" from="$4" placeholder="$5" setup="$6" prompt="$7" action="$8" header="$9"
 # Clear the arguments so a sourced theme script doesn't inherit them.
 set --
 printf '\033]2;dactyl\007'
 [ -n "$setup" ] && eval "$setup" >/dev/null 2>&1
 choice=$(gum filter --limit 1 --no-sort --fuzzy --no-strip-ansi \
-  --placeholder "$placeholder" --prompt "$prompt" < "$list")
+  --placeholder "$placeholder" --prompt "$prompt" --header "$header" < "$list")
 status=$?
+args=""
+if [ $status -eq 0 ] && [ -n "$choice" ] && [ -n "$ids" ]; then
+  # Find the picked line, ignoring colors and surrounding blanks.
+  n=$(C="$choice" awk '
+    function plain(x) {
+      gsub(sprintf("%c", 27) "\\[[0-9;]*m", "", x)
+      gsub(/^[ \t]+|[ \t]+$/, "", x)
+      return x
+    }
+    BEGIN { c = plain(ENVIRON["C"]) }
+    plain($0) == c { print NR; exit }
+  ' "$list")
+  [ -n "$n" ] && args=$(sed -n "${n}p" "$ids")
+fi
 rm -f "$list"
+[ -n "$ids" ] && rm -f "$ids"
 [ $status -eq 0 ] && [ -n "$choice" ] || exit 0
-if [ -n "$client" ]; then
-  rex -C "$client" do dactyl_connect target="$choice" from="$from" >/dev/null
+if [ -z "$ids" ]; then
+  set -- target="$choice"
+elif [ -n "$args" ]; then
+  set -- $args
 else
-  rex do dactyl_connect target="$choice" from="$from" >/dev/null
+  exit 0
+fi
+if [ -n "$client" ]; then
+  rex -C "$client" do "$action" "$@" from="$from" >/dev/null
+else
+  rex do "$action" "$@" from="$from" >/dev/null
 fi || { echo "dactyl: could not connect to $choice"; read -r -n 1; }
 ]]
+
+---@param ctx table
+---@param opts { lines: string[], ids?: string[], placeholder: string, action: string, header?: string }
+local function open_picker(ctx, opts)
+  local list = write_lines(opts.lines)
+  local ids = opts.ids and write_lines(opts.ids) or ""
 
   local b = cfg.bounds
   local _, err = rex.session.new_layer {
@@ -354,14 +741,17 @@ fi || { echo "dactyl: could not connect to $choice"; read -r -n 1; }
             "-c",
             'exec -a "$0" bash -c "$@"',
             cfg.label,
-            script,
+            PICKER_SCRIPT,
             cfg.label,
             list,
+            ids,
             ctx.client_id or "",
             ctx.session_id or "",
-            cfg.placeholder,
+            opts.placeholder,
             cfg.gum_setup or "",
             cfg.prompt,
+            opts.action,
+            opts.header or "",
           },
         },
       },
@@ -369,16 +759,56 @@ fi || { echo "dactyl: could not connect to $choice"; read -r -n 1; }
   }
   if err ~= nil then
     os.remove(list)
+    if ids ~= "" then
+      os.remove(ids)
+    end
     error("dactyl: " .. tostring(err), 0)
   end
 end
 
-local function select_session(id, from)
+-- Actions -------------------------------------------------------------------
+
+local function pick(ctx)
+  local items = build_items(ctx.session_id)
+  if #items == 0 then
+    return
+  end
+  open_picker(ctx, { lines = items, placeholder = cfg.placeholder, action = "dactyl_connect" })
+end
+
+local function pick_agent(ctx)
+  local agents = list_agents(ctx.block_id)
+  if #agents == 0 then
+    rex.log("info", "dactyl: no agents running")
+    return
+  end
+  local lines, ids = agent_lines(agents)
+  open_picker(ctx, {
+    lines = lines,
+    ids = ids,
+    placeholder = cfg.agents.placeholder,
+    action = "dactyl_agent_focus",
+    header = agent_header(agents),
+  })
+end
+
+local function select_session(id, from, window_id)
   if from and from ~= id then
     write_last(from)
   end
-  rex.client.queue("session.select", { session_id = id })
-  return { session_id = id }
+  rex.client.queue("session.select", { session_id = id, window_id = window_id })
+  return { session_id = id, window_id = window_id }
+end
+
+local function focus_agent(ctx, args)
+  local call = server_caller()
+  local _, err = call("session.focus_block", { session_id = args.session_id, block_id = args.block_id })
+  if err ~= nil then
+    error("dactyl: " .. tostring(err), 0)
+  end
+  local result = select_session(args.session_id, args.from or ctx.session_id, args.window_id)
+  result.block_id = args.block_id
+  return result
 end
 
 local function connect(ctx, args)
@@ -451,6 +881,10 @@ end
 function M.setup(opts)
   cfg = merge(defaults, opts)
   cfg.keys = merge(defaults.keys, opts and opts.keys)
+  local agents = opts and opts.agents or {}
+  cfg.agents = merge(defaults.agents, agents)
+  cfg.agents.glyphs = merge(defaults.agents.glyphs, agents.glyphs)
+  cfg.agents.colors = merge(defaults.agents.colors, agents.colors)
 
   rex.action {
     name = "dactyl",
@@ -478,11 +912,37 @@ function M.setup(opts)
     run = last,
   }
 
+  rex.action {
+    name = "dactyl_agents",
+    title = "Dactyl: Pick Agent…",
+    description = "Pick a running coding agent in any session by its status.",
+    category = "Sessions",
+    keywords = "agent pi claude codex status blocked done",
+    run = pick_agent,
+  }
+
+  rex.action {
+    name = "dactyl_agent_focus",
+    title = "Dactyl: Focus Agent",
+    description = "Switch to an agent's session and focus its pane.",
+    category = "Sessions",
+    args = {
+      session_id = "string",
+      block_id = "string",
+      window_id = "string?",
+      from = "string?",
+    },
+    run = focus_agent,
+  }
+
   if cfg.keys.pick then
     rex.bind(cfg.keys.pick, "dactyl")
   end
   if cfg.keys.last then
     rex.bind(cfg.keys.last, "dactyl_last")
+  end
+  if cfg.keys.agents then
+    rex.bind(cfg.keys.agents, "dactyl_agents")
   end
 end
 

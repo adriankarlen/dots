@@ -69,6 +69,7 @@ require("plugins.smart_splits").setup {
 
 prefix("t", "dactyl")
 prefix("shift+b", "dactyl_last")
+prefix("a", "dactyl_agents")
 prefix("w", "session.switch")
 prefix("shift+j", "session.next")
 prefix("shift+k", "session.previous")
@@ -78,6 +79,7 @@ prefix("shift+x", "session.close")
 
 rex.bind("cmd+k", "dactyl")
 rex.bind("cmd+shift+k", "dactyl_last")
+rex.bind("cmd+j", "dactyl_agents")
 
 -- Apps and client ---------------------------------------------------------------
 

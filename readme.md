@@ -94,7 +94,7 @@ rex/
 │   ├── sessions.lua    # dactyl workspaces, rules and blacklist
 │   └── keys.lua        # all key bindings
 └── plugins/
-    └── dactyl.lua      # session picker
+    └── dactyl.lua      # session and agent picker
 ```
 
 Keys follow tmux/herdr: <kbd>Ctrl</kbd>+<kbd>A</kbd> enters a one-shot
@@ -109,6 +109,14 @@ floating `gum filter` with your open sessions, configured workspaces and
 zoxide directories. Picking one switches to it, or creates the session in
 that directory first. `ctrl+a shift+b` (or <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd>)
 switches back to the last session.
+
+`ctrl+a a` (or <kbd>Cmd</kbd>+<kbd>J</kbd>) opens dactyl's agent picker. It
+lists the coding agents running in every session, with the status they
+report through the [Program Status Protocol](https://www.superlogical.com/rex/docs/build/program-status)
+(blocked, error, done, working, idle). Agents that need you come first.
+Picking one switches to its session and focuses its pane. Agents that don't
+report a status are found by process name (`agents.processes` in
+`sessions.lua`) and shown as `unknown`.
 
 Rex.app must have **Remote Control** turned on (Settings → Rex Server), or
 dactyl can't switch sessions.

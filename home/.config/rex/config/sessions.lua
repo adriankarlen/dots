@@ -1,7 +1,7 @@
--- dactyl: session picker (sessions, workspaces, zoxide).
+-- dactyl: session picker (sessions, workspaces, zoxide) and agent picker.
 -- Keys are bound in config/keys.lua.
 require("plugins.dactyl").setup {
-  keys = { pick = false, last = false },
+  keys = { pick = false, last = false, agents = false },
   blacklist = { "^scratch$", "^_" },
   workspaces = {
     { name = "dots", path = "~/dots", startup = "nvim" },
