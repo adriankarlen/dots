@@ -8,9 +8,9 @@ app_icon() {
   "com.google.Chrome" | "Google Chrome") echo " " ;;
   "net.imput.helium" | Helium) echo "󰛄 " ;;
   "com.brave.Browser" | Brave*) echo " " ;;
-  "com.microsoft.edgemac" | "Microsoft Edge") echo " " ;;
+  "com.microsoft.edgemac" | Microsoft\ Edge) echo " " ;;
   "org.mozilla.firefoxdeveloperedition" | \
-    "Firefox Developer Edition") echo " " ;;
+    Firefox\ Developer\ Edition) echo " " ;;
 
   # Terminals
   "com.apple.Terminal" | Terminal) echo " " ;;
@@ -19,17 +19,13 @@ app_icon() {
   "net.kovidgoyal.kitty" | kitty) echo "󰄛 " ;;
   "io.alacritty" | Alacritty) echo " " ;;
   "org.wezfurlong.wezterm" | WezTerm) echo " " ;;
+  "com.superlogical.rex" | Rex\ Beta) echo " " ;;
 
   # Editors / IDE
   Code | "com.microsoft.VSCode" | \
     "com.visualstudio.code") echo " " ;;
   "com.microsoft.VSCodeInsiders" | \
     "Visual Studio Code - Insiders") echo " " ;;
-  "com.jetbrains.intellij" | IntelliJ*) echo " " ;;
-  "com.jetbrains.pycharm" | PyCharm*) echo " " ;;
-  "com.jetbrains.webstorm" | WebStorm*) echo " " ;;
-  "com.sublimetext.4" | "Sublime Text") echo " " ;;
-  "com.apple.dt.Xcode" | Xcode) echo " " ;;
   "dev.zed.Zed" | Zed) echo "ℤ " ;;
 
   # Chat / meetings
@@ -38,7 +34,7 @@ app_icon() {
   "us.zoom.xos" | zoom.us | Zoom) echo " " ;;
   "com.microsoft.teams" | \
     "com.microsoft.teams2" | Microsoft\ Teams) echo "󰊻 " ;;
-  "com.microsoft.Outlook" | Microsoft\ Outlook) echo "󰇰 " ;;
+  "com.microsoft.Outlook" | Microsoft\ Outlook) echo "󰴢 " ;;
   "com.apple.FaceTime" | FaceTime) echo " " ;;
   "com.apple.iChat" | "com.apple.MobileSMS" | Messages) echo "󰭹 " ;;
   "com.apple.mail" | Mail) echo " " ;;
@@ -83,9 +79,8 @@ app_icon() {
 
   # Cloud / notes / productivity
   "com.notion.id" | Notion) echo " " ;;
-  "com.electron.logseq" | Logseq) echo " " ;;
+  "com.electron.logseq" | Logseq) tcho " " ;;
   "md.obsidian" | Obsidian) echo " " ;;
-  "com.todoist.mac.Todoist" | Todoist) echo " " ;;
   "com.apple.iWork.Pages" | Pages) echo " " ;;
   "com.apple.iWork.Numbers" | Numbers) echo " " ;;
   "com.apple.iWork.Keynote" | Keynote) echo " " ;;
