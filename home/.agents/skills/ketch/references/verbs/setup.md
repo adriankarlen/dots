@@ -40,6 +40,11 @@ On older ketch versions without `doctor`, configured-state detection is imperfec
    ketch config set brave_api_key <key>
    ```
    The missing-key error itself contains the signup URL and the exact fix command — surface it to the operator rather than paraphrasing.
+
+   If the operator wants to choose the fallback order themselves, `search_order` pins the `auto` chain to exactly the listed backends, in that order (no promotion, nothing unlisted; a listed provider without its key drops out):
+   ```sh
+   ketch config set search_order exa,tinyfish,brave
+   ```
 3. **searxng — the self-hosted option.** No key, no third-party rate limits. **Stock searxng in docker rejects `format=json`**, which ketch requires — mount a `settings.yml` with the json format enabled:
 
    ```yaml
@@ -77,7 +82,7 @@ On older ketch versions without `doctor`, configured-state detection is imperfec
 ## Code, docs, browser
 
 - **code:** `grepapp` is the default and keyless — a healthy probe means leave it alone. `sourcegraph` is keyless too (`sourcegraph_url` can point at another instance). `github` needs auth by any of: `gh auth login`, `$GITHUB_TOKEN`, or `ketch config set github_token <tok>`.
-- **docs:** `context7` needs a free key: `ketch config set context7_api_key <key>`. The `local` backend is planned but unimplemented — selecting it is `[precondition]` / exit 5, not a bug in your call.
+- **docs:** `context7` works without a key on its anonymous quota (~200 requests a month per IP); a free key lifts the cap: `ketch config set context7_api_key <key>`. The `local` backend is planned but unimplemented — selecting it is `[precondition]` / exit 5, not a bug in your call.
 - **browser** (JS-rendered pages): check `ketch browser status`. Either point at an installed binary — `ketch config set browser <binary>` — or download Chromium with `ketch browser install`. Both are mutations: propose, confirm.
 
 ---

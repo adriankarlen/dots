@@ -15,9 +15,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/sickn33/antigravity-awesome-skills.git",
       "skillPath": "skills/docker-expert/SKILL.md",
-      "skillFolderHash": "095d8eb2208b4853aa2d6ed829680c5e8943c0af",
+      "skillFolderHash": "5e224cc06152c7e3257bfe158c7a79f1ec646680",
       "installedAt": "2026-04-13T13:21:37.008Z",
-      "updatedAt": "2026-10-22T20:53:05.918Z"
+      "updatedAt": "2026-11-03T13:33:55.265Z"
     },
     "frontend-design": {
       "source": "anthropics/skills",
@@ -69,10 +69,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/blader/humanizer.git",
       "skillPath": "SKILL.md",
-      "skillFolderHash": "8c307f367c91bd974002f10f2be2965d642c13df",
+      "skillFolderHash": "0ef9fe5bc3572734fd3ae6c448fe00a30cd5dcf0",
       "pluginName": "humanizer",
       "installedAt": "2026-08-27T09:08:54.003Z",
-      "updatedAt": "2026-10-22T20:53:12.673Z"
+      "updatedAt": "2026-11-03T13:34:03.764Z"
     },
     "herdr": {
       "source": "herdrdev/herdr",
@@ -88,18 +88,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/1broseidon/ketch.git",
       "skillPath": "skills/ketch/SKILL.md",
-      "skillFolderHash": "515cc368de47740d82b632ff7f37383ade10b471",
+      "skillFolderHash": "f5d9c91188731d1cbd234d7b07537e3faae2977d",
       "installedAt": "2026-09-24T13:33:28.582Z",
-      "updatedAt": "2026-10-22T20:53:18.520Z"
+      "updatedAt": "2026-11-03T13:34:05.736Z"
     },
     "agent-browser": {
       "source": "vercel-labs/agent-browser",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/agent-browser.git",
       "skillPath": "skills/agent-browser/SKILL.md",
-      "skillFolderHash": "82def67855a0d2aad7794207951820fa5422fdb0",
+      "skillFolderHash": "29ba9c12789b1c54ab76ad40e2472e646d141b85",
       "installedAt": "2026-09-24T13:35:12.236Z",
-      "updatedAt": "2026-09-24T13:35:12.236Z"
+      "updatedAt": "2026-11-03T13:34:06.868Z"
     },
     "spp-jira-troubleshoot": {
       "source": "spp-technology/skills",
