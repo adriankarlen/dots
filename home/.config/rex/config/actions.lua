@@ -47,6 +47,32 @@ rex.action {
   end,
 }
 
+-- Close the focused pane, like tmux's kill-pane. The built-in pane.close
+-- refuses to close a tab's only tiled pane ("isn't available here right
+-- now"), so close the tab instead. Closing a session's last tab closes the
+-- session.
+rex.action {
+  name = "pane_close",
+  title = "Close Pane or Tab",
+  description = "Close the focused pane, or its tab when it is the tab's only pane.",
+  category = "Pane",
+  run = function(ctx)
+    local view = rex.session.view {}
+    for _, w in ipairs(view and view.windows or {}) do
+      for _, layer in ipairs(w.layers or {}) do
+        for _, b in ipairs(layer.blocks or {}) do
+          if b.block_id == ctx.block_id then
+            local last = layer.kind == "tiled" and #layer.blocks == 1
+            rex.client.queue(last and "client.tab.close" or "pane.close")
+            return
+          end
+        end
+      end
+    end
+    rex.client.queue "pane.close"
+  end,
+}
+
 -- `pkgrun <script>` (~/.local/bin/pkgrun) in a background tab named after the
 -- script, in the focused pane's directory. It is typed into a shell, so the
 -- tab stays open when the script stops.

@@ -43,7 +43,7 @@ prefix("shift+h", "pane.move.left")
 prefix("shift+l", "pane.move.right")
 prefix("v", "pane.split.right")
 prefix("-", "pane.split.down")
-prefix("x", "pane.close")
+prefix("x", "pane_close") -- closes the tab when it is the last pane
 prefix("z", "pane.zoom")
 prefix("f", "client.find.open")
 
