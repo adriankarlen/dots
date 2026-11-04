@@ -20,5 +20,11 @@
   "reviewAnalysis": {
     "semanticDiff": true,
     "callFlow": true
-  }
+  },
+  "theme": {
+    "mode": "system",
+    "light": "rose-pine",
+    "dark": "rose-pine"
+  },
+  "pfmReminder": true
 }
