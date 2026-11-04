@@ -17,6 +17,7 @@ packages=(
   "npm:@zenobius/pi-rose-pine"
   "npm:@czottmann/pi-automode"
   "npm:@juicesharp/rpiv-ask-user-question"
+  "npm:@plannotator/pi-extension"
 )
 
 for pkg in "${packages[@]}"; do
