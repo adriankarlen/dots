@@ -28,7 +28,8 @@ dots/
 │   ├── .config/
 │   │   └── nvim/       # git submodule → adriankarlen/nvim
 │   ├── .local/
-│   └── .pi/
+│   ├── .pi/
+│   └── .plannotator/   # config.json tracked, runtime state ignored
 └── readme.md
 ```
 

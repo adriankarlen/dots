@@ -55,6 +55,7 @@ readonly -a DOCTOR_PATHS=(
   ".config/nvim"
   ".agents"
   ".pi"
+  ".plannotator"
 )
 
 # Set by cmd_init's flag parsing; read by the init step functions.

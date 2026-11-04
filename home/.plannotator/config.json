@@ -1,4 +1,5 @@
 {
+  "agentTool": true,
   "diffOptions": {
     "diffStyle": "unified",
     "defaultDiffType": "since-base",
