@@ -26,6 +26,10 @@ restart_session_*
 /home/.config/dcg/*
 /home/.config/concord/*
 
+# Plannotator runtime/state (keep config tracked)
+/home/.plannotator/*
+!home/.plannotator/config.json
+
 # pi agent runtime/state (keep settings + customization resources tracked)
 /home/.pi/agent/*
 /home/.pi/todos/*
