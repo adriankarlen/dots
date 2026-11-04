@@ -24,7 +24,7 @@ restart_session_*
 /home/.config/pi/web-search-cache/
 /home/.config/kvist/zoom.json
 /home/.config/dcg/*
-/home/.config/dcg/config.toml
+/home/.config/concord/*
 
 # pi agent runtime/state (keep settings + customization resources tracked)
 /home/.pi/agent/*
