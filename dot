@@ -851,13 +851,52 @@ __update_yazi_packages() {
   __print_success "Yazi packages upgraded"
 }
 
+# Interactive on purpose: `:packupdate` (no `!`) opens vim.pack's
+# confirmation buffer so the changelog can be read before applying.
+# Afterwards a headless call waits for treesitter parser updates, since
+# :TSUpdate (also fired by the PackChanged hook) is async and would be cut
+# off by quitting Neovim.
+__update_nvim_plugins() {
+  if ! __command_exists nvim; then
+    __print_warning "nvim not installed, skipping plugin update"
+    return 0
+  fi
+
+  if [[ ! -t 0 || ! -t 1 ]]; then
+    __print_warning "No terminal attached, skipping interactive Neovim plugin update"
+    return 0
+  fi
+
+  __print_info "Review the changes. :w applies, :q skips, then :qa to continue."
+  nvim +packupdate
+
+  __print_info "Updating treesitter parsers..."
+  if ! nvim --headless -c "lua require('nvim-treesitter').update():wait(300000)" -c qa; then
+    __print_warning "Treesitter parser update reported issues"
+  fi
+
+  local nvim_dir="${DOTFILES_DIR}/home/.config/nvim"
+  if ! git -C "$nvim_dir" diff --quiet -- nvim-pack-lock.json 2>/dev/null; then
+    __print_info "nvim-pack-lock.json changed in ${nvim_dir} (not committed)"
+  fi
+
+  __print_success "Neovim plugins updated"
+}
+
+__update_nvim() {
+  if ! __install_nvim_nightly; then
+    __print_warning "Neovim nightly update failed (continuing with plugins)"
+  fi
+  __update_nvim_plugins
+}
+
 readonly -a UPDATE_STEPS=(
   "Homebrew packages       ;; __update_homebrew       ;; homebrew"
   "pi packages             ;; __update_pi_packages    ;; pi"
   "vp global packages      ;; __update_vp_packages    ;; vp"
   "uv tools                ;; __update_uv_tools       ;; uv"
   "Yazi packages           ;; __update_yazi_packages  ;; yazi"
-  "Neovim nightly          ;; __install_nvim_nightly  ;; nvim"
+  "Neovim nightly + plugins ;; __update_nvim         ;; nvim"
   "Node (vp)               ;; __install_node          ;; node"
   "Spicetify               ;; __setup_spicetify       ;; spicetify"
 )
@@ -919,7 +958,8 @@ cmd_update() {
       echo "Update everything this machine has installed: Homebrew itself plus"
       echo "every formula/cask/go entry in the Brewfile, pi itself and"
       echo "its installed packages, vp global npm packages, uv tools, Yazi"
-      echo "packages, Neovim nightly, Node LTS (via vp), and the Spicetify backup."
+      echo "packages, Neovim nightly and its plugins (interactive review), Node"
+      echo "LTS (via vp), and the Spicetify backup."
       echo
       echo "Give TARGET to update just one of these instead of everything."
       echo "Valid targets: $(__update_step_targets)"
@@ -931,7 +971,7 @@ cmd_update() {
       echo
       echo -e "${BOLD}EXAMPLES:${RESET}"
       echo "    ${SCRIPT_NAME} update              # update everything"
-      echo "    ${SCRIPT_NAME} update nvim         # update Neovim nightly only"
+      echo "    ${SCRIPT_NAME} update nvim         # update Neovim nightly + plugins only"
       return 0
       ;;
     --skip-spicetify)
