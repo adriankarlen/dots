@@ -37,13 +37,19 @@ export BUN_INSTALL="$HOME/.bun"
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 
-# PATH
-export PATH="$HOME/.local/nvim-nightly/bin:$PATH"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$PATH:$HOME/.spicetify"
-export PATH="$PATH:$HOME/.dotnet/tools"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:$HOME/go/bin"
+# PATH, highest priority first. Entries above $path override homebrew/system;
+# entries below are fallbacks (third-party tool dirs that shouldn't shadow
+# system commands).
+path=(
+  $HOME/.local/bin
+  $HOME/.local/nvim-nightly/bin
+  $BUN_INSTALL/bin
+  $HOME/.terragrunt/bin
+  $path # homebrew + system
+  $HOME/.dotnet/tools
+  $HOME/go/bin
+  $HOME/.spicetify
+)
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 # Vite+ bin (https://viteplus.dev)
