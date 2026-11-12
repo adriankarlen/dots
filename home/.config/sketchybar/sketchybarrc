@@ -16,25 +16,93 @@ PINE="0x31748f" # Pine (green)
 GOLD="0xf6c177" # Gold (yellow)
 ROSE="0xebbcba" # Rose (pink)
 
+# Font (macOS system font)
+FONT="SF Pro Text"
+
 # Text colors
 FG_PRIMARY="0xe0def4"   # Main text
 FG_SECONDARY="0x908caa" # Surface text
 FG_DIM="0x6e6a86"       # Muted text
 
 ##############################
-#  Bar – Transparent         #
+#  Neumorphism               #
+##############################
+# Everything (bar + pills) shares one surface colour; only the shadows
+# separate them. SketchyBar shadows are hard-edged with one shadow per
+# background, so each raised pill is a stack of brackets over the same
+# items: a few dark shadows to the bottom-right and a few light ones to the
+# top-left, alpha fading with distance to fake a blur.
+
+NEU_SURFACE="0xff${BG_BASE:2}" # bar + raised pills
+NEU_BAR="0xff${BG_BASE:2}"     # translucent bar (blurred); pills stay opaque,
+# shadows bleed through translucent fills
+NEU_SUNKEN="0xff12111b" # pressed (active) fill
+NEU_DARK="050408"       # shadow rgb
+NEU_LIGHT="45406a"      # highlight rgb
+NEU_DARK_ANGLE=45       # sketchybar: clockwise from +x, y down -> 45 = bottom-right
+NEU_LIGHT_ANGLE=225     # top-left
+NEU_HEIGHT=28
+NEU_RADIUS=10
+
+# "kind distance alpha", drawn in order: farthest/faintest first
+NEU_LAYERS=(
+  "dark 5 14" "dark 4 24" "dark 3 40" "dark 2 68" "dark 1 b0"
+  "light 4 14" "light 3 28" "light 2 50" "light 1 90"
+)
+
+# neu_raised <name> <member...>  (members may be /regex/)
+neu_raised() {
+  local name="$1" radius="${NEU_RADIUS}"
+  shift
+  if [[ "$1" == radius=* ]]; then
+    radius="${1#radius=}"
+    shift
+  fi
+
+  local i=0 kind dist alpha rgb angle layer
+  for layer in "${NEU_LAYERS[@]}"; do
+    read -r kind dist alpha <<<"$layer"
+    if [ "$kind" = dark ]; then
+      rgb=$NEU_DARK angle=$NEU_DARK_ANGLE
+    else
+      rgb=$NEU_LIGHT angle=$NEU_LIGHT_ANGLE
+    fi
+    sketchybar --add bracket "neu.$name.$i" "$@" \
+      --set "neu.$name.$i" \
+      background.drawing=on \
+      background.color=$NEU_SURFACE \
+      background.corner_radius="$radius" \
+      background.height=$NEU_HEIGHT \
+      background.border_width=0 \
+      background.shadow.drawing=on \
+      background.shadow.color="0x${alpha}${rgb}" \
+      background.shadow.angle="$angle" \
+      background.shadow.distance="$dist"
+    i=$((i + 1))
+  done
+}
+
+# Spacer between pills (items have no own background, so gaps come from here)
+neu_gap() {
+  sketchybar --add item "gap.$1" "$2" \
+    --set "gap.$1" width="${3:-10}" icon.drawing=off label.drawing=off \
+    background.drawing=off
+}
+
+##############################
+#  Bar                       #
 ##############################
 
 sketchybar --bar position=top \
-  height=34 \
-  color=0xff${BG_BASE:2} \
+  height=40 \
+  color=$NEU_BAR \
   shadow=off \
   sticky=on \
-  padding_left=10 \
-  padding_right=10 \
-  corner_radius=12 \
+  padding_left=8 \
+  padding_right=8 \
+  corner_radius=14 \
   border_width=0 \
-  blur_radius=0 \
+  blur_radius=30 \
   margin=6 \
   y_offset=4
 
@@ -42,15 +110,12 @@ sketchybar --bar position=top \
 #  Global defaults             #
 ################################
 
-MODULE_BG_ALPHA="d0"     # More opaque for visibility
-MODULE_BORDER_ALPHA="40" # Subtle borders
-
 default=(
-  padding_left=8
-  padding_right=8
+  padding_left=0
+  padding_right=0
 
-  icon.font="Berkeley Mono:Bold:16.0"
-  label.font="Berkeley Mono:Medium:13.0"
+  icon.font="$FONT:Bold:16.0"
+  label.font="$FONT:Medium:13.0"
 
   icon.font.size=16.0
   label.font.size=13.0
@@ -58,16 +123,14 @@ default=(
   icon.color=0xff${LOVE:2}
   label.color=0xff${FG_PRIMARY:2}
 
-  icon.padding_left=8
+  icon.padding_left=10
   icon.padding_right=6
-  label.padding_left=6
-  label.padding_right=8
+  label.padding_left=4
+  label.padding_right=10
 
-  background.color=0x${MODULE_BG_ALPHA}${BG_SURFACE:2}
-  background.corner_radius=10
-  background.height=28
-  background.border_width=1
-  background.border_color=0x${MODULE_BORDER_ALPHA}${LOVE:2}
+  background.drawing=off
+  background.color=0x00000000
+  background.border_width=0
   background.shadow.drawing=off
 )
 
@@ -79,25 +142,16 @@ sketchybar --default "${default[@]}"
 
 sketchybar --add item portal left \
   --set portal icon=󰀘 \
-  icon.font="Symbols Nerd Font:Regular:18.0" \
+  icon.font="Symbols Nerd Font:Regular:16.0" \
   icon.color=0xff${ROSE:2} \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
+  icon.width=$NEU_HEIGHT \
+  icon.align=center \
+  icon.padding_left=0 \
+  icon.padding_right=0 \
   label.drawing=off \
-  icon.padding_left=10 \
-  icon.padding_right=10 \
-  padding_left=4 \
   click_script="sketchybar --reload"
 
-sketchybar --add item cosmic_sep left \
-  --set cosmic_sep icon=│ \
-  icon.color=0x40${FG_DIM:2} \
-  background.drawing=off \
-  label.drawing=off \
-  icon.padding_left=4 \
-  icon.padding_right=4
+neu_gap portal left 12
 
 ############################
 #  Workspaces              #
@@ -119,16 +173,24 @@ for ((i = 0; i < workspace_count; i++)); do
   color_index=$((i % ${#SPACE_COLORS[@]}))
   space_color="${SPACE_COLORS[color_index]}"
 
+  # Pressed-in look for the active space (toggled in rift_workspaces.sh):
+  # darker fill + dark rim, light lip on the bottom-right edge.
   space=(
+    padding_left=2
+    padding_right=2
     icon="${SPACE_ICONS[i]}"
     icon.color=0xb0$space_color
     icon.highlight_color=0xff${FG_PRIMARY:2}
     icon.font.size=15.0
-    background.color=0x00000000
+    background.color=$NEU_SUNKEN
     background.corner_radius=8
-    background.border_width=0
-    background.height=24
-    background.shadow.drawing=off
+    background.height=22
+    background.border_width=1
+    background.border_color=0x90${NEU_DARK}
+    background.shadow.drawing=on
+    background.shadow.color=0x50${NEU_LIGHT}
+    background.shadow.angle=$NEU_DARK_ANGLE
+    background.shadow.distance=1
     label.drawing=off
     label.color=0xff${FG_SECONDARY:2}
     label.font="Symbols Nerd Font:Regular:14.0"
@@ -139,6 +201,8 @@ for ((i = 0; i < workspace_count; i++)); do
   sketchybar --add item "rift_space.$sid" left \
     --set "rift_space.$sid" "${space[@]}"
 done
+
+neu_gap spaces left 12
 
 # Run once at startup, then rely on rift events
 "$PLUGIN_DIR/rift_workspaces.sh"
@@ -153,14 +217,10 @@ rift-cli subscribe cli --event windows_changed --command "$PLUGIN_DIR/rift_works
 
 sketchybar --add item front_app left \
   --set front_app icon.drawing=off \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
   label.color=0xff${FG_PRIMARY:2} \
-  label.font="Berkeley Mono:SemiBold:13.0" \
+  label.font="$FONT:Semibold:13.0" \
   label.padding_left=12 \
-  label.padding_right=12 \
+  label.padding_right=6 \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
 
@@ -168,21 +228,23 @@ sketchybar --add item launcher left \
   --set launcher icon=󱓞 \
   icon.font.size=17.0 \
   icon.color=0xff${GOLD:2} \
+  icon.padding_left=6 \
+  icon.padding_right=12 \
   label.drawing=off \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
   click_script='sketchybar --set $NAME popup.drawing=toggle' \
   script='sketchybar --set $NAME popup.drawing=off' \
   popup.horizontal=on \
   popup.align=center \
-  popup.background.color=0xf0${BG_SURFACE:2} \
+  popup.y_offset=6 \
+  popup.background.color=$NEU_SURFACE \
   popup.background.corner_radius=12 \
   popup.background.border_width=0 \
-  popup.background.shadow.drawing=off
+  popup.background.shadow.drawing=on \
+  popup.background.shadow.color=0xa0${NEU_DARK} \
+  popup.background.shadow.angle=$NEU_DARK_ANGLE \
+  popup.background.shadow.distance=3
 
-launch_apps=("finder:" "ghostty:󱙝" "chrome:" "spotify:" "teams:󰊻")
+launch_apps=("finder:" "ghostty:󱙝" "chrome:" "spotify:" "teams:󰊻")
 app_names=("Finder" "Ghostty" "Chrome" "Spotify" "Microsoft Teams")
 app_colors=("${FOAM:2}" "${PINE:2}" "${GOLD:2}" "${PINE:2}" "${IRIS:2}")
 
@@ -195,13 +257,18 @@ for i in "${!launch_apps[@]}"; do
     --set "launch.$app" icon="$icon" \
     label="$name" \
     label.drawing=off \
+    padding_left=4 \
+    padding_right=4 \
     icon.font="Symbols Nerd Font:Regular:17.0" \
     icon.color=0xff$color \
-    background.color=0x00${BG_OVERLAY:2} \
+    background.drawing=on \
+    background.color=$NEU_SURFACE \
     background.corner_radius=8 \
-    background.border_width=1 \
-    background.border_color=0x30$color \
-    background.shadow.drawing=off \
+    background.height=28 \
+    background.shadow.drawing=on \
+    background.shadow.color=0x90${NEU_DARK} \
+    background.shadow.angle=$NEU_DARK_ANGLE \
+    background.shadow.distance=2 \
     click_script="open -a \"$name\""
 done
 
@@ -214,30 +281,20 @@ sketchybar --add item clock right \
   icon.font.size=16.0 \
   icon.color=0xff${LOVE:2} \
   label.color=0xff${FG_PRIMARY:2} \
-  label.font="Berkeley Mono:SemiBold:13.0" \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
-  label.padding_left=8 \
-  label.padding_right=0 \
+  label.font="$FONT:Semibold:13.0" \
+  label.padding_right=12 \
+  icon.padding_left=12 \
   update_freq=1 \
   click_script="open -a Calendar" \
   script="$PLUGIN_DIR/clock.sh"
+
+neu_gap clock right 12
 
 sketchybar --add item teams right \
   --set teams icon=󰊻 \
   icon.font="Symbols Nerd Font:Regular:16.0" \
   icon.color=0xff${IRIS:2} \
   label.color=0xff${FG_SECONDARY:2} \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
   update_freq=5 \
   script="$PLUGIN_DIR/teams.sh"
 
@@ -246,12 +303,6 @@ sketchybar --add item battery right \
   icon.font="Symbols Nerd Font:Regular:16.0" \
   icon.color=0xff${PINE:2} \
   label.color=0xff${FG_SECONDARY:2} \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
   update_freq=60 \
   script="$PLUGIN_DIR/battery.sh" \
   --subscribe battery system_woke power_source_change
@@ -261,15 +312,11 @@ sketchybar --add item volume right \
   icon.font.size=16.0 \
   icon.color=0xff${ROSE:2} \
   label.color=0xff${FG_SECONDARY:2} \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.border_width=0 \
-  background.padding_left=10 \
-  background.padding_right=10 \
-  background.shadow.drawing=off \
   update_freq=5 \
   script="$PLUGIN_DIR/volume.sh" \
   --subscribe volume volume_change
+
+neu_gap status right 12
 
 #######################################
 #  Media Player                       #
@@ -278,18 +325,25 @@ sketchybar --add item volume right \
 sketchybar --add item media.name right \
   --set media.name icon=󰓇 \
   icon.font.size=17.0 \
+  icon.padding_left=12 \
   label="Not Playing" \
   label.color=0xff${FG_PRIMARY:2} \
-  label.font="Berkeley Mono:SemiBold:13.0" \
+  label.font="$FONT:Semibold:13.0" \
+  label.padding_right=12 \
   icon.color=0xff${PINE:2} \
-  background.color=0x00000000 \
-  background.corner_radius=0 \
-  background.border_width=0 \
-  background.shadow.drawing=off \
-  padding_left=12 \
-  padding_right=12 \
   update_freq=3 \
   script="$PLUGIN_DIR/media.sh"
+
+################################
+#  Raised pills                #
+################################
+
+neu_raised portal radius=$((NEU_HEIGHT / 2)) portal
+neu_raised spaces '/rift_space\..*/'
+neu_raised apps front_app launcher
+neu_raised media media.name
+neu_raised status volume battery teams
+neu_raised clock clock
 
 #################
 #  Final launch #

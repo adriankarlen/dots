@@ -135,9 +135,9 @@ for ((i = 0; i < workspace_count; i++)); do
 
   # Add highlight based on active state
   if [ "$is_active" = "true" ]; then
-    args+=(icon.highlight=on)
+    args+=(icon.highlight=on background.drawing=on)
   else
-    args+=(icon.highlight=off)
+    args+=(icon.highlight=off background.drawing=off)
   fi
 
   if [ -n "$icons" ]; then
@@ -153,5 +153,5 @@ done
 max_spaces=10
 for ((i = workspace_count; i < max_spaces; i++)); do
   sid=$((i + 1))
-  sketchybar --set "rift_space.$sid" icon.highlight=off label.drawing=off 2>/dev/null
+  sketchybar --set "rift_space.$sid" icon.highlight=off background.drawing=off label.drawing=off 2>/dev/null
 done

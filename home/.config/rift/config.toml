@@ -32,7 +32,7 @@ default_orientation = "perpendicular"
 [settings.layout.gaps]
 
 [settings.layout.gaps.outer]
-top = 42
+top = 50
 left = 5
 bottom = 5
 right = 5
@@ -43,7 +43,7 @@ vertical = 10
 
 # built in display
 [settings.layout.gaps.per_display."37D8832A-2D66-02CA-B9F7-8F30A301B230".outer]
-top = 5
+top = 10
 left = 5
 bottom = 5
 right = 5
