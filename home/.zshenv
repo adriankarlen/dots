@@ -27,7 +27,9 @@ export CLOUD_ML_REGION="eu"
 export ANTHROPIC_VERTEX_BASE_URL="https://aiplatform.eu.rep.googleapis.com/v1"
 export EDITOR=nvim
 
-# dotnet
+# dotnet (SDKs + global tools installed by mise into one shared root;
+# tool apphosts like roslyn-language-server need DOTNET_ROOT to find it)
+export DOTNET_ROOT="$HOME/.local/share/mise/dotnet-root"
 export DOTNET_ENVIRONMENT=Development
 export ASPNETCORE_ENVIRONMENT=Development
 
@@ -43,14 +45,10 @@ export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
 path=(
   $HOME/.local/bin
   $HOME/.local/nvim-nightly/bin
+  $HOME/.local/share/mise/shims # mise tools (node, pnpm, dotnet, go, ...); see ~/.config/mise/config.toml
   $BUN_INSTALL/bin
-  $HOME/.terragrunt/bin
   $path # homebrew + system
-  $HOME/.dotnet/tools
   $HOME/go/bin
   $HOME/.spicetify
 )
 [[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
-
-# Vite+ bin (https://viteplus.dev)
-[[ -f "$HOME/.config/vite-plus/env" ]] && . "$HOME/.config/vite-plus/env"

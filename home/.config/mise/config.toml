@@ -1,0 +1,54 @@
+# ~/.config/mise/config.toml
+# Global tool versions for this machine. Team repos are never given a
+# mise.toml: mise reads the version files they already have instead
+# (.node-version / .nvmrc, package.json#packageManager). For a personal
+# override in one repo, use mise.local.toml (globally git-ignored via
+# ~/.config/git/ignore).
+
+[settings]
+# Read .node-version / .nvmrc and package.json#packageManager from repos.
+# dotnet is deliberately NOT listed: mise would install the exact
+# global.json sdk.version instead of letting .NET roll forward.
+idiomatic_version_file_enable_tools = ["node", "pnpm"]
+# mise prefers .nvmrc over .node-version when both exist; CI (setup-node) and
+# the team use .node-version (e.g. salary-exchange-choice-client: .nvmrc=lts/*,
+# .node-version=24). Every local repo with .nvmrc also has .node-version.
+idiomatic_version_file_disable_files = ["node:.nvmrc"]
+# npm: tools install through mise's embedded aube (same as "auto", made explicit)
+npm.package_manager = "aube"
+
+[tools]
+node = "lts"
+pnpm = "latest"
+aube = "latest"
+usage = "latest"      # needed for aube shell completions
+dotnet = ["10", "8"]
+go = "latest"
+deno = "latest"
+uv = "latest"         # uv keeps managing Python + uv tools
+terraform = "latest"  # infra repos override via their committed mise.toml
+terragrunt = "latest"
+
+# global npm CLIs (was scripts/install-vp-packages.sh)
+"npm:@biomejs/biome" = "latest"
+"npm:@spp-technology/sppackel-cli" = "latest"
+"npm:agent-browser" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:oxfmt" = "latest"
+"npm:oxlint" = "latest"
+"npm:storyquery" = { version = "latest", allow_low_downloads = true }
+"npm:svelte-language-server" = { version = "latest", trust_policy_excludes = [
+  "svelte@4.2.20",
+] }
+"npm:typescript" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:yaml-language-server" = "latest"
+
+# go packages (was a Brewfile `go` entry, which needs Homebrew go)
+"go:github.com/adriankarlen/det-blir-nog-regn" = "latest"
+
+# .NET global tools (was dotnet tool install -g)
+"dotnet:roslyn-language-server" = { version = "latest", prerelease = true }
+"dotnet:roslynator.dotnet.cli" = "latest"
+"dotnet:easydotnet" = "latest"
+"dotnet:PowerShell" = "7.6"                                                 # pwsh for Pimmy.ps1; 7.6 LTS targets net10.0

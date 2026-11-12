@@ -4,7 +4,6 @@ tap "asmvik/formulae"
 tap "atlassian/acli"
 tap "felixkratz/formulae"
 tap "gromgit/brewtils"
-tap "isen-ng/dotnet-sdk-versions"
 tap "jandedobbeleer/oh-my-posh"
 tap "koekeishiya/formulae"
 tap "sst/tap"
@@ -33,15 +32,11 @@ brew "gum"
 brew "yazi"
 
 # Development Languages & Runtimes
-brew "deno"
-brew "dotnet", link: false
-brew "go"
 brew "lua"
 brew "luajit"
 brew "luarocks"
+brew "mise" # runtime/tool versions (see home/.config/mise/config.toml)
 brew "pkgconf"
-brew "powershell", link: false
-brew "uv"
 
 # Development Tools
 brew "gh"
@@ -107,16 +102,8 @@ cask "copilot-cli"
 cask "copilot-language-server"
 cask "microsoft-auto-update"
 cask "microsoft-outlook"
-cask "powershell"
 cask "visual-studio-code"
 
-# .NET SDKs
-cask "dotnet-sdk"
-cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8"
-cask "isen-ng/dotnet-sdk-versions/dotnet-sdk8-0-400"
-
-# Go Packages
-go "github.com/adriankarlen/det-blir-nog-regn"
-
-# npm Packages: managed via vp instead (see scripts/install-vp-packages.sh)
+# Runtimes (node, pnpm, .NET + PowerShell, go, deno, uv, terraform), global npm
+# CLIs, .NET tools and go packages: managed via mise (see home/.config/mise/config.toml)
 # Python CLI tools: managed via uv instead (see scripts/install-uv-tools.sh)

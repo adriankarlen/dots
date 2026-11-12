@@ -40,7 +40,6 @@ readonly LINK_PATH="${LINK_DIR}/${SCRIPT_NAME}"
 readonly PACKAGES_DIR="${DOTFILES_DIR}/packages"
 readonly BREWFILE="${PACKAGES_DIR}/Brewfile"
 readonly PI_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-pi-packages.sh"
-readonly VP_PACKAGES_SCRIPT="${DOTFILES_DIR}/scripts/install-vp-packages.sh"
 readonly UV_TOOLS_SCRIPT="${DOTFILES_DIR}/scripts/install-uv-tools.sh"
 
 # Representative paths to spot-check in `doctor`. Mix of top-level files
@@ -430,7 +429,7 @@ cmd_edit() {
 
 # ─── Init: Homebrew-driven machine bootstrap ───────────────────────────────
 # Adapted from dmmulroy/.dotfiles' resilient install/bundle patterns, but
-# trimmed to what this repo actually needs (no bun/vite+/pi/ssh-key/font/
+# trimmed to what this repo actually needs (no bun/pi/ssh-key/font/
 # fish steps). Every step below is written to be safe to re-run.
 
 __parse_brewfile_entry() {
@@ -657,16 +656,21 @@ __nvim_nightly_status() {
   echo -e "${local_hash}\t${remote_hash}"
 }
 
-__install_node() {
-  if ! __command_exists vp; then
-    __print_warning "vp (Vite+) not installed, skipping Node install"
+# Installs every tool in ~/.config/mise/config.toml (Node, pnpm, aube, .NET
+# SDKs + global tools, go, deno, uv, terraform, global npm CLIs, ...).
+# Safe to re-run: `mise install` no-ops for versions already installed.
+__install_mise_tools() {
+  if ! __command_exists mise; then
+    __print_warning "mise not installed, skipping mise tool install"
     return 0
   fi
 
-  __print_info "Installing Node LTS via vp..."
-  vp env install lts
-  vp env default lts
-  __print_success "Node LTS installed via vp"
+  __print_info "Installing mise tools..."
+  mise install
+  # Later steps (e.g. uv tools) need mise-managed binaries, but this shell
+  # started before ~/.zshenv put the shims dir on PATH on a fresh machine.
+  export PATH="${HOME}/.local/share/mise/shims:${PATH}"
+  __print_success "mise tools installed"
 }
 
 __install_yazi_packages() {
@@ -696,22 +700,6 @@ __install_pi_packages() {
   __print_success "pi packages installed"
 }
 
-__install_vp_packages() {
-  if ! __command_exists vp; then
-    __print_warning "vp not installed, skipping vp global package install"
-    return 0
-  fi
-
-  if [[ ! -x "$VP_PACKAGES_SCRIPT" ]]; then
-    __print_error "Script not found or not executable: ${VP_PACKAGES_SCRIPT}"
-    return 1
-  fi
-
-  __print_info "Installing vp global packages..."
-  "$VP_PACKAGES_SCRIPT"
-  __print_success "vp global packages installed"
-}
-
 __install_uv_tools() {
   if ! __command_exists uv; then
     __print_warning "uv not installed, skipping uv tool install"
@@ -739,10 +727,9 @@ readonly -a INIT_STEPS=(
   "Background services     ;; __start_services"
   "Spicetify               ;; __setup_spicetify"
   "Neovim nightly          ;; __install_nvim_nightly"
-  "Node (vp)               ;; __install_node"
+  "mise tools              ;; __install_mise_tools"
   "Yazi packages           ;; __install_yazi_packages"
   "pi packages             ;; __install_pi_packages"
-  "vp global packages      ;; __install_vp_packages"
   "uv tools                ;; __install_uv_tools"
 )
 
@@ -772,9 +759,9 @@ __run_init_steps() {
 # Companion to `init`, but for machines that are already bootstrapped.
 # Reuses several init step functions directly (they're written to be safe
 # to re-run and effectively double as "update" steps): __install_nvim_nightly
-# re-downloads whatever the nightly tag currently points at, __install_node
-# re-resolves and installs the current LTS via vp, and __setup_spicetify
-# reapplies the backup (needed again after spicetify-cli itself is upgraded).
+# re-downloads whatever the nightly tag currently points at, and
+# __setup_spicetify reapplies the backup (needed again after spicetify-cli
+# itself is upgraded).
 
 __update_homebrew() {
   if ! __command_exists brew; then
@@ -810,15 +797,20 @@ __update_pi_packages() {
   __print_success "pi packages updated"
 }
 
-__update_vp_packages() {
-  if ! __command_exists vp; then
-    __print_warning "vp not installed, skipping vp global package update"
+# `mise install` first so tools newly added to ~/.config/mise/config.toml
+# get installed, then `mise upgrade` moves "latest"/range requests (node lts,
+# pnpm, npm:/dotnet: tools, ...) to the newest matching versions.
+__update_mise_tools() {
+  if ! __command_exists mise; then
+    __print_warning "mise not installed, skipping mise tool update"
     return 0
   fi
 
-  __print_info "Updating vp global packages..."
-  vp update -g --latest
-  __print_success "vp global packages updated"
+  __print_info "Installing new mise tools..."
+  mise install
+  __print_info "Upgrading mise tools..."
+  mise upgrade
+  __print_success "mise tools updated"
 }
 
 __update_uv_tools() {
@@ -893,11 +885,10 @@ __update_nvim() {
 readonly -a UPDATE_STEPS=(
   "Homebrew packages       ;; __update_homebrew       ;; homebrew"
   "pi packages             ;; __update_pi_packages    ;; pi"
-  "vp global packages      ;; __update_vp_packages    ;; vp"
+  "mise tools              ;; __update_mise_tools     ;; mise"
   "uv tools                ;; __update_uv_tools       ;; uv"
   "Yazi packages           ;; __update_yazi_packages  ;; yazi"
   "Neovim nightly + plugins ;; __update_nvim         ;; nvim"
-  "Node (vp)               ;; __install_node          ;; node"
   "Spicetify               ;; __setup_spicetify       ;; spicetify"
 )
 
@@ -956,10 +947,10 @@ cmd_update() {
       echo -e "    ${SCRIPT_NAME} update [TARGET] [--skip-spicetify]"
       echo
       echo "Update everything this machine has installed: Homebrew itself plus"
-      echo "every formula/cask/go entry in the Brewfile, pi itself and"
-      echo "its installed packages, vp global npm packages, uv tools, Yazi"
-      echo "packages, Neovim nightly and its plugins (interactive review), Node"
-      echo "LTS (via vp), and the Spicetify backup."
+      echo "every formula/cask entry in the Brewfile, pi itself and"
+      echo "its installed packages, mise tools (Node, pnpm, .NET, global npm"
+      echo "CLIs, ...), uv tools, Yazi packages, Neovim nightly and its plugins"
+      echo "(interactive review), and the Spicetify backup."
       echo
       echo "Give TARGET to update just one of these instead of everything."
       echo "Valid targets: $(__update_step_targets)"
@@ -1034,8 +1025,8 @@ cmd_outdated() {
     echo
     echo "Check every package manager and tool this machine tracks for available"
     echo "updates: Homebrew formulae/casks (including auto-updating casks, via"
-    echo "--greedy), pi packages, vp-managed global npm packages and Node.js"
-    echo "itself, uv tools, and Yazi packages/flavors. Prints one"
+    echo "--greedy), pi packages, mise tools (Node, pnpm, .NET, global npm"
+    echo "CLIs, ...), uv tools, and Yazi packages/flavors. Prints one"
     echo "combined, easy-to-scan report per source. Refreshes Homebrew's package"
     echo "index first. Spicetify isn't checked separately: its only versioned"
     echo "part, spicetify-cli, already shows up under Homebrew formulae."
@@ -1073,29 +1064,19 @@ cmd_outdated() {
     __print_warning "Homebrew not installed, skipping"
   fi
 
-  if __command_exists vp; then
-    local vp_json vp_rows
-    # `vp outdated` exits non-zero when anything is outdated, so don't use
-    # `|| echo '{}'` here — that would append a second JSON document.
-    vp_json="$(vp outdated -g --format json 2>/dev/null)" || true
-    [[ -n "$vp_json" ]] || vp_json='{}'
+  if __command_exists mise; then
+    local mise_json mise_rows
+    # Run from $HOME so only the global config is checked, not whatever
+    # project dots happens to be invoked from.
+    mise_json="$(cd "$HOME" && mise outdated --json 2>/dev/null)" || true
+    [[ -n "$mise_json" ]] || mise_json='{}'
 
-    vp_rows="$(jq -r 'to_entries[] | "\(.key)\t\(.value.current)\t\(.value.latest)"' <<<"$vp_json")"
-    __outdated_section "vp global packages" "NAME\tCURRENT\tLATEST" "$vp_rows"
-    count=$(jq 'keys | length' <<<"$vp_json")
+    mise_rows="$(jq -r 'to_entries[] | "\(.key)\t\(.value.current)\t\(.value.latest)"' <<<"$mise_json")"
+    __outdated_section "mise tools" "NAME\tCURRENT\tLATEST" "$mise_rows"
+    count=$(jq 'keys | length' <<<"$mise_json")
     grand_total=$((grand_total + count))
-
-    local vp_node_current vp_node_latest_lts
-    vp_node_current="$(vp env current --json 2>/dev/null | jq -r '.node.version // empty')"
-    vp_node_latest_lts="$(vp env list-remote --lts --json 2>/dev/null | jq -r '.node[] | select(.latest_lts==true) | .version' | tail -1)"
-    if [[ -n "$vp_node_current" && -n "$vp_node_latest_lts" && "$vp_node_current" != "$vp_node_latest_lts" ]]; then
-      __outdated_section "Node.js (vp)" "CURRENT\tLATEST_LTS" "${vp_node_current}\t${vp_node_latest_lts}"
-      ((++grand_total))
-    else
-      __print_success "Node.js (vp): up to date${vp_node_current:+ (${vp_node_current})}"
-    fi
   else
-    __print_warning "vp not installed, skipping"
+    __print_warning "mise not installed, skipping"
   fi
 
   if __command_exists uv; then
@@ -1184,9 +1165,8 @@ cmd_init() {
       echo "Bootstrap this machine: install Homebrew, install Brewfile packages,"
       echo "stow dotfiles, apply macOS defaults, start background services"
       echo "(skhd/sketchybar/borders), set up Spicetify, install Neovim nightly,"
-      echo "Node LTS (via vp), Yazi packages, pi"
-      echo "packages (see scripts/install-pi-packages.sh), vp global npm"
-      echo "packages (see scripts/install-vp-packages.sh), and uv tools"
+      echo "mise tools (see home/.config/mise/config.toml), Yazi packages, pi"
+      echo "packages (see scripts/install-pi-packages.sh), and uv tools"
       echo "(see scripts/install-uv-tools.sh)."
       echo
       echo "Safe to re-run: every step checks existing state before acting."
@@ -1270,7 +1250,7 @@ cmd_help() {
   echo "    Target:   ${STOW_TARGET}"
   echo "    Brewfile: ${BREWFILE}"
   echo "    Pi pkgs:  ${PI_PACKAGES_SCRIPT}"
-  echo "    Vp pkgs:  ${VP_PACKAGES_SCRIPT}"
+  echo "    mise:     ${HOME_DIR}/.config/mise/config.toml"
   echo "    Uv tools: ${UV_TOOLS_SCRIPT}"
   echo "    Ignore:   ${HOME_DIR}/.stow-local-ignore"
 }

@@ -1,0 +1,5 @@
+# Global git ignore (git reads ~/.config/git/ignore by default).
+
+# mise: personal per-repo overrides, never committed to team repos
+mise.local.toml
+.mise.local.toml

@@ -121,6 +121,6 @@ if [[ -z "$SSH_CONNECTION" ]]; then
   secret_load GOOGLE_CLOUD_PROJECT
 fi
 
-# Vite+ (https://viteplus.dev): PATH is set in ~/.zshenv; re-source here,
-# after compinit, so its `vp`/`vpr` completions get registered.
-. "$HOME/.config/vite-plus/env"
+# mise: shims are on PATH via ~/.zshenv (non-interactive shells, editors);
+# activate here so interactive shells switch versions per directory on cd.
+eval "$(mise activate zsh)"
