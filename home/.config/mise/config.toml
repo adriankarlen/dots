@@ -52,3 +52,4 @@ terragrunt = "latest"
 "dotnet:roslynator.dotnet.cli" = "latest"
 "dotnet:easydotnet" = "latest"
 "dotnet:PowerShell" = "7.6"                                                 # pwsh for Pimmy.ps1; 7.6 LTS targets net10.0
+sonarqube-cli = "latest"
