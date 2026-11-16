@@ -16,8 +16,10 @@ PINE="0x31748f" # Pine (green)
 GOLD="0xf6c177" # Gold (yellow)
 ROSE="0xebbcba" # Rose (pink)
 
-# Font (macOS system font)
-FONT="SF Pro Text"
+# Fonts
+FONT="SF Pro Text"                      # text
+ICON_FONT="SF Pro"                      # SF Symbols live in the private-use area of SF Pro
+APP_FONT="sketchybar-app-font:Regular"  # app icons, written as ligatures like :spotify:
 
 # Text colors
 FG_PRIMARY="0xe0def4"   # Main text
@@ -114,7 +116,7 @@ default=(
   padding_left=0
   padding_right=0
 
-  icon.font="$FONT:Bold:16.0"
+  icon.font="$ICON_FONT:Semibold:16.0"
   label.font="$FONT:Medium:13.0"
 
   icon.font.size=16.0
@@ -193,7 +195,7 @@ for ((i = 0; i < workspace_count; i++)); do
     background.shadow.distance=1
     label.drawing=off
     label.color=0xff${FG_SECONDARY:2}
-    label.font="Symbols Nerd Font:Regular:14.0"
+    label.font="$APP_FONT:15.0"
     label.padding_left=4
     label.padding_right=4
   )
@@ -212,7 +214,7 @@ rift-cli subscribe cli --event workspace_changed --command "$PLUGIN_DIR/rift_wor
 rift-cli subscribe cli --event windows_changed --command "$PLUGIN_DIR/rift_workspaces.sh"
 
 ################################
-#  LEFT: Apps & Controls       #
+#  LEFT: Front app             #
 ################################
 
 sketchybar --add item front_app left \
@@ -220,65 +222,17 @@ sketchybar --add item front_app left \
   label.color=0xff${FG_PRIMARY:2} \
   label.font="$FONT:Semibold:13.0" \
   label.padding_left=12 \
-  label.padding_right=6 \
+  label.padding_right=12 \
   script="$PLUGIN_DIR/front_app.sh" \
   --subscribe front_app front_app_switched
-
-sketchybar --add item launcher left \
-  --set launcher icon=󱓞 \
-  icon.font.size=17.0 \
-  icon.color=0xff${GOLD:2} \
-  icon.padding_left=6 \
-  icon.padding_right=12 \
-  label.drawing=off \
-  click_script='sketchybar --set $NAME popup.drawing=toggle' \
-  script='sketchybar --set $NAME popup.drawing=off' \
-  popup.horizontal=on \
-  popup.align=center \
-  popup.y_offset=6 \
-  popup.background.color=$NEU_SURFACE \
-  popup.background.corner_radius=12 \
-  popup.background.border_width=0 \
-  popup.background.shadow.drawing=on \
-  popup.background.shadow.color=0xa0${NEU_DARK} \
-  popup.background.shadow.angle=$NEU_DARK_ANGLE \
-  popup.background.shadow.distance=3
-
-launch_apps=("finder:" "ghostty:󱙝" "chrome:" "spotify:" "teams:󰊻")
-app_names=("Finder" "Ghostty" "Chrome" "Spotify" "Microsoft Teams")
-app_colors=("${FOAM:2}" "${PINE:2}" "${GOLD:2}" "${PINE:2}" "${IRIS:2}")
-
-for i in "${!launch_apps[@]}"; do
-  IFS=':' read -r app icon <<<"${launch_apps[i]}"
-  name="${app_names[i]}"
-  color="${app_colors[i]}"
-
-  sketchybar --add item "launch.$app" popup.launcher \
-    --set "launch.$app" icon="$icon" \
-    label="$name" \
-    label.drawing=off \
-    padding_left=4 \
-    padding_right=4 \
-    icon.font="Symbols Nerd Font:Regular:17.0" \
-    icon.color=0xff$color \
-    background.drawing=on \
-    background.color=$NEU_SURFACE \
-    background.corner_radius=8 \
-    background.height=28 \
-    background.shadow.drawing=on \
-    background.shadow.color=0x90${NEU_DARK} \
-    background.shadow.angle=$NEU_DARK_ANGLE \
-    background.shadow.distance=2 \
-    click_script="open -a \"$name\""
-done
 
 ################################
 #  RIGHT: System Monitors      #
 ################################
 
 sketchybar --add item clock right \
-  --set clock icon=󰥔 \
-  icon.font.size=16.0 \
+  --set clock icon=􀐬 \
+  icon.font="$ICON_FONT:Semibold:15.0" \
   icon.color=0xff${LOVE:2} \
   label.color=0xff${FG_PRIMARY:2} \
   label.font="$FONT:Semibold:13.0" \
@@ -291,16 +245,16 @@ sketchybar --add item clock right \
 neu_gap clock right 12
 
 sketchybar --add item teams right \
-  --set teams icon=󰊻 \
-  icon.font="Symbols Nerd Font:Regular:16.0" \
+  --set teams icon=:microsoft_teams: \
+  icon.font="$APP_FONT:16.0" \
   icon.color=0xff${IRIS:2} \
   label.color=0xff${FG_SECONDARY:2} \
   update_freq=5 \
   script="$PLUGIN_DIR/teams.sh"
 
 sketchybar --add item battery right \
-  --set battery icon=󰁹 \
-  icon.font="Symbols Nerd Font:Regular:16.0" \
+  --set battery icon=􀛨 \
+  icon.font="$ICON_FONT:Semibold:16.0" \
   icon.color=0xff${PINE:2} \
   label.color=0xff${FG_SECONDARY:2} \
   update_freq=60 \
@@ -308,8 +262,8 @@ sketchybar --add item battery right \
   --subscribe battery system_woke power_source_change
 
 sketchybar --add item volume right \
-  --set volume icon=󰕾 \
-  icon.font.size=16.0 \
+  --set volume icon=􀊩 \
+  icon.font="$ICON_FONT:Semibold:16.0" \
   icon.color=0xff${ROSE:2} \
   label.color=0xff${FG_SECONDARY:2} \
   update_freq=5 \
@@ -323,8 +277,8 @@ neu_gap status right 12
 #######################################
 
 sketchybar --add item media.name right \
-  --set media.name icon=󰓇 \
-  icon.font.size=17.0 \
+  --set media.name icon=:spotify: \
+  icon.font="$APP_FONT:16.0" \
   icon.padding_left=12 \
   label="Not Playing" \
   label.color=0xff${FG_PRIMARY:2} \
@@ -340,7 +294,7 @@ sketchybar --add item media.name right \
 
 neu_raised portal radius=$((NEU_HEIGHT / 2)) portal
 neu_raised spaces '/rift_space\..*/'
-neu_raised apps front_app launcher
+neu_raised apps front_app
 neu_raised media media.name
 neu_raised status volume battery teams
 neu_raised clock clock

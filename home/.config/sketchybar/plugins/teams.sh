@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ICON="󰊻"
+ICON=":microsoft_teams:"
 
 if ! pgrep -xq "MSTeams"; then
     sketchybar --set "$NAME" drawing=off

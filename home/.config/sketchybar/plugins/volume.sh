@@ -6,16 +6,18 @@
 OUTPUT=$(SwitchAudioSource -c 2>/dev/null)
 
 case "$OUTPUT" in
-*AirPods* | *Onyx*) ICON="󰥰" ;;
-*Speakers*) ICON="󰓃" ;;
-*) ICON="󰕾" ;;
+# SF Symbols: airpods, headphones, hifispeaker.fill, speaker.wave.3
+*AirPods*) ICON="􀟥" ;;
+*Onyx*) ICON="􀑈" ;;
+*Speakers*) ICON="􀟐" ;;
+*) ICON="􀊩" ;;
 esac
 
 if [ "$SENDER" = "volume_change" ]; then
   VOLUME="$INFO"
 
   if [ "$VOLUME" = "0" ]; then
-    ICON="󰖁"
+    ICON="􀊣" # speaker.slash
   fi
 
   sketchybar --set "$NAME" icon="$ICON" label="$VOLUME%"
