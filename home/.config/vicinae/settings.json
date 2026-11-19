@@ -34,7 +34,7 @@
    "providers": {
       "applications": {
          "entrypoints": {
-            "com.mitchellh.ghostty": {
+            "com.superlogical.rex": {
                "shortcut": "alt+RETURN"
             }
          }
