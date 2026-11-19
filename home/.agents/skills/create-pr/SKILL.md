@@ -2,9 +2,9 @@
 name: create-pr
 description: >
   Branch, commit the current work in logical conventional-commit chunks, push,
-  open a GitHub pull request with `gh`, and move any linked Jira/Linear ticket
-  to code review. Use when the user asks to open, create, make or raise a PR or
-  pull request, ship or submit the work, or push it up for review.
+  and open a GitHub pull request with `gh`. Use when the user asks to open,
+  create, make or raise a PR or pull request, ship or submit the work, or push
+  it up for review.
 ---
 
 Create a pull request for the current work.
@@ -26,7 +26,7 @@ Create a pull request for the current work.
 
 3. **PR**: Push the branch and create the PR with `gh pr create`.
 
-4. **Issue tracker**: Look for a ticket or issue reference (e.g. a Jira/Linear key like `PROJ-123`, or a GitHub issue like `#123`) in the branch name, commit messages, or conversation context. If one exists, update it to reflect that a PR is now open, moving it to the closest matching "in code review" status if the tracker supports one. If no ticket or issue is referenced, skip this step.
+This skill does not touch issue trackers (Jira, Linear, GitHub issues). Only update a ticket when the user asks for it directly.
 
 ## PR title and body rules
 
