@@ -74,4 +74,9 @@ restart_session_*
 /packages/failed_packages_*.txt
 
 # company-only scripts (kept local, not committed)
-/home/.local/bin/storepi
+/home/.local/bin/sppi
+
+# teams-weather: personal work toy, kept local only (still stowed)
+/home/.local/bin/teams-weather
+/home/Library/LaunchAgents/se.adriankarlen.teams-weather.plist
+/scripts/teams-weather-app/
