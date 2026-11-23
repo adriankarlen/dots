@@ -1,2 +1,2 @@
-[tabs]
-orientation = "vertical"
+[layout.tabs]
+region = "left"
