@@ -7,12 +7,23 @@
 # shells, which shoves the system paths in front of ours. ~/.zprofile
 # re-sources this file to put our PATH order back.
 
-# keep PATH free of duplicates across nested shells / re-sourcing
-typeset -U path PATH
+# keep PATH/fpath free of duplicates across nested shells / re-sourcing.
+# fpath matters for startup speed: compinit counts files per fpath entry, so a
+# duplicated entry makes login and non-login shells disagree on the count and
+# forces a full ~/.zcompdump rebuild every time you switch between them.
+typeset -U path PATH fpath FPATH
 
-# homebrew
-if [[ -x "/opt/homebrew/bin/brew" ]]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+# homebrew: static equivalent of `eval "$(brew shellenv)"` (saves ~50ms per
+# sourcing; this file runs twice in login shells). Re-check against
+# `brew shellenv zsh` if homebrew changes what it exports.
+if [[ -d /opt/homebrew ]]; then
+  export HOMEBREW_PREFIX=/opt/homebrew
+  export HOMEBREW_CELLAR=/opt/homebrew/Cellar
+  export HOMEBREW_REPOSITORY=/opt/homebrew
+  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+  [[ -z ${MANPATH-} || $MANPATH == :* ]] || export MANPATH=":$MANPATH"
+  export INFOPATH="/opt/homebrew/share/info:${INFOPATH#/opt/homebrew/share/info:}"
 fi
 
 # env vars

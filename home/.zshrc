@@ -15,26 +15,54 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/ohmyposh/theme.toml")"
 fi
 
-# zsh plugins
-zinit light Aloxaf/fzf-tab
-zinit light zdharma-continuum/fast-syntax-highlighting
+# zsh snippets that must be in place before compinit / for `zsh -ilc env`
+# callers (gcloud puts its bin dir on PATH).
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
-
-# zsh snippets
 zinit snippet OMZP::bun
 zinit snippet OMZP::gh
-zinit snippet OMZP::command-not-found
 zinit snippet OMZP::gcloud
 
-# load completions
-autoload -Uz compinit && compinit
-
+# completions: full compinit (security audit + new-file check, then rewrite
+# the dump) at most once a day; otherwise load the cached dump with -C.
+# After installing new completions mid-day: `rm ~/.zcompdump*` or `compinit`.
+# Runs at startup, not deferred: mise's hook runs its own full `compinit` at
+# the first prompt if compdef doesn't exist yet.
+() {
+  setopt localoptions extendedglob
+  local dump=${ZDOTDIR:-$HOME}/.zcompdump
+  autoload -Uz compinit
+  if [[ -n $dump(#qN.mh+24) || ! -s $dump ]]; then
+    compinit -d $dump
+  else
+    compinit -C -d $dump
+  fi
+  # byte-compile the dump in the background so the next shell loads it faster
+  { [[ -s $dump && ( ! -s $dump.zwc || $dump -nt $dump.zwc ) ]] && zcompile $dump } &!
+}
 zinit cdreplay -q
+
+# fzf keybindings/completion. Must run after fzf-tab so `**<tab>` falls back
+# to fzf-tab instead of plain completion.
+_zshrc_fzf() {
+  eval "$(fzf --zsh)"
+}
+
+# plugins, loaded in "turbo" mode: right after the first prompt is drawn
+# instead of before it. Order matters and is preserved:
+# fzf-tab (after compinit) -> widget wrappers -> fzf.
+# Turbo never runs in `zsh -i -c ...` (no prompt), so anything that sets env
+# vars tools read via `zsh -ilc env` must stay out of here.
+zinit wait lucid for \
+  OMZP::command-not-found \
+  Aloxaf/fzf-tab \
+  zdharma-continuum/fast-syntax-highlighting \
+  atload'_zsh_autosuggest_start; bindkey "^y" autosuggest-accept; _zshrc_fzf' \
+    zsh-users/zsh-autosuggestions
 
 # bindings
 bindkey -e
-bindkey '^y' autosuggest-accept
+# ^y -> autosuggest-accept is bound in the autosuggestions atload above: binding
+# it before the widget exists makes fast-syntax-highlighting warn at load.
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
@@ -98,7 +126,7 @@ alias sqlit="DYLD_LIBRARY_PATH=/opt/homebrew/opt/openssl@3/lib sqlit"
 
 # shell integrations
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(fzf --zsh)"
+# fzf is loaded with the plugins above (_zshrc_fzf)
 # secrets (skip on SSH sessions)
 secret_set() {
   security add-generic-password -a "$USER" -s "shell:$1" -w "$2" -U
@@ -115,10 +143,29 @@ secret_load() {
   export "${2:-$1}"="$val"
 }
 
+# Loaded at startup (not deferred) so `zsh -ilc env` callers such as editors
+# still see them. The Keychain reads run in parallel: ~1x instead of ~3x the
+# cost of one `security` call.
 if [[ -z "$SSH_CONNECTION" ]]; then
-  secret_load NODE_AUTH_TOKEN
-  secret_load NPM_PAT
-  secret_load GOOGLE_CLOUD_PROJECT
+  () {
+    local name fd val
+    local -A fds
+    for name in "$@"; do
+      exec {fd}< <(secret_get "$name")
+      fds[$name]=$fd
+    done
+    for name in "$@"; do
+      fd=$fds[$name]
+      val=
+      IFS= read -r -u $fd val
+      if [[ -n $val ]]; then
+        export "$name=$val"
+      else
+        echo "secret '$name' not found in Keychain" >&2
+      fi
+      exec {fd}<&-
+    done
+  } NODE_AUTH_TOKEN NPM_PAT GOOGLE_CLOUD_PROJECT
 fi
 
 # mise: shims are on PATH via ~/.zshenv (non-interactive shells, editors);
